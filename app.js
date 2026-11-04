@@ -97,6 +97,7 @@ document.addEventListener('DOMContentLoaded', () => {
         name: 'Ocular & SANS Monitoring',
         subtitle: 'Spaceflight-Associated Neuro-ocular Syndrome',
         status: 'attention',
+        primaryIndicator: 'opticDisc',
         yUnit: 'µm',
         baselineMin: 270,
         baselineMax: 300,
@@ -123,6 +124,7 @@ document.addEventListener('DOMContentLoaded', () => {
         name: 'Cardiovascular & Hemodynamics',
         subtitle: 'Arterial Baroreflex & Central Venous Equilibrium',
         status: 'in-range',
+        primaryIndicator: 'systolic',
         yUnit: 'mmHg',
         baselineMin: 95,
         baselineMax: 130,
@@ -149,6 +151,7 @@ document.addEventListener('DOMContentLoaded', () => {
         name: 'Neuro-Vestibular Adaptation',
         subtitle: 'Otolith Asymmetry & Spatial Orientation',
         status: 'in-range',
+        primaryIndicator: 'vorGain',
         yUnit: 'Gain',
         baselineMin: 0.95,
         baselineMax: 1.05,
@@ -175,6 +178,7 @@ document.addEventListener('DOMContentLoaded', () => {
         name: 'Axial Spine & Musculoskeletal',
         subtitle: 'Intervertebral Disc Hydration & Height Elongation',
         status: 'in-range',
+        primaryIndicator: 'spineElongation',
         yUnit: 'cm',
         baselineMin: 1.5,
         baselineMax: 4.5,
@@ -201,6 +205,7 @@ document.addEventListener('DOMContentLoaded', () => {
         name: 'Pulmonary Gas Exchange & Atmosphere',
         subtitle: 'Alveolar Ventilation & Ambient pCO2 Matching',
         status: 'in-range',
+        primaryIndicator: 'pco2',
         yUnit: 'mmHg',
         baselineMin: 1.5,
         baselineMax: 3.0,
@@ -227,6 +232,7 @@ document.addEventListener('DOMContentLoaded', () => {
         name: 'Lower Limbs & Venous Return',
         subtitle: 'Soleus & Gastrocnemius Density Countermeasures',
         status: 'in-range',
+        primaryIndicator: 'calfCircumference',
         yUnit: 'cm',
         baselineMin: 36.5,
         baselineMax: 38.5,
@@ -344,6 +350,128 @@ document.addEventListener('DOMContentLoaded', () => {
       applyTheme(e.matches ? 'dark' : 'light', false);
     }
   });
+
+  // ================= THREE-REFERENCE STATUS MODEL & RULER ENGINE (PHASE 4) =================
+  function generateSynthesisSentence(indicator, currentVal, status) {
+    const earthMin = indicator.earthNominal.min;
+    const earthMax = indicator.earthNominal.max;
+    const flightMin = indicator.expectedInFlight.min;
+    const flightMax = indicator.expectedInFlight.max;
+    const baseline = indicator.personalBaseline;
+    const unit = indicator.unit;
+    const label = indicator.label;
+
+    const inEarth = currentVal >= earthMin && currentVal <= earthMax;
+    const inFlight = currentVal >= flightMin && currentVal <= flightMax;
+    const diffFromBaseline = currentVal - baseline;
+    const pctDiff = baseline !== 0 ? ((diffFromBaseline / baseline) * 100).toFixed(1) : diffFromBaseline.toFixed(1);
+    const diffSign = diffFromBaseline > 0 ? '+' : '';
+    const diffText = `${diffSign}${diffFromBaseline.toFixed(1)} ${unit} (${diffSign}${pctDiff}%)`;
+
+    let sentence = `<strong>${label} is ${currentVal} ${unit}:</strong> `;
+    if (inEarth && inFlight) {
+      sentence += `within standard Earth clinical range (${earthMin}–${earthMax} ${unit}) and expected in-flight adaptation range (${flightMin}–${flightMax} ${unit}). Aligns with personal baseline (${baseline} ${unit}, ${diffText}). Status: <strong>In range</strong>.`;
+    } else if (!inEarth && inFlight) {
+      sentence += `shifted relative to 1g Earth normal (${earthMin}–${earthMax} ${unit}), but within expected in-flight adaptation range (${flightMin}–${flightMax} ${unit}). Baseline variance is ${diffText} from personal baseline (${baseline} ${unit}). Status: <strong>Within expected range</strong>.`;
+    } else {
+      sentence += `exceeds expected in-flight envelope (${flightMin}–${flightMax} ${unit}) and Earth reference (${earthMin}–${earthMax} ${unit}). Observed variance of ${diffText} from personal baseline (${baseline} ${unit}). Status: <strong>${STATUS_CONFIG[status]?.label || 'Attention'}</strong>.`;
+    }
+    return sentence;
+  }
+
+  function renderThreeRuler(containerId, indicatorKey, currentVal, status) {
+    const container = document.getElementById(containerId);
+    if (!container) return;
+    const ind = (window.CLINICAL_INDICATORS && window.CLINICAL_INDICATORS[indicatorKey]) || (typeof CLINICAL_INDICATORS !== 'undefined' && CLINICAL_INDICATORS[indicatorKey]);
+    if (!ind) {
+      container.innerHTML = '';
+      return;
+    }
+
+    const earthMin = ind.earthNominal.min;
+    const earthMax = ind.earthNominal.max;
+    const flightMin = ind.expectedInFlight.min;
+    const flightMax = ind.expectedInFlight.max;
+    const baseline = ind.personalBaseline;
+    const sd = ind.personalSd || 1.0;
+    const unit = ind.unit;
+
+    // Common axis scale
+    const allPoints = [earthMin, earthMax, flightMin, flightMax, baseline - sd, baseline + sd, currentVal];
+    const dataMin = Math.min(...allPoints);
+    const dataMax = Math.max(...allPoints);
+    const pad = (dataMax - dataMin) * 0.15 || 2;
+    const axisMin = dataMin - pad;
+    const axisMax = dataMax + pad;
+    const axisRange = axisMax - axisMin || 1;
+
+    function toPct(val) {
+      const p = ((val - axisMin) / axisRange) * 100;
+      return Math.max(0, Math.min(100, p));
+    }
+
+    const earthLeft = toPct(earthMin);
+    const earthWidth = Math.max(2, toPct(earthMax) - earthLeft);
+
+    const flightLeft = toPct(flightMin);
+    const flightWidth = Math.max(2, toPct(flightMax) - flightLeft);
+
+    const baseBandLeft = toPct(baseline - sd);
+    const baseBandWidth = Math.max(2, toPct(baseline + sd) - baseBandLeft);
+    const basePipLeft = toPct(baseline);
+    const curPipLeft = toPct(currentVal);
+
+    const statusColor = status === 'emergency' ? 'var(--color-vermillion)'
+      : status === 'flight-surgeon' ? 'var(--color-vermillion)'
+      : status === 'attention' ? 'var(--color-ochre)'
+      : 'var(--color-emerald)';
+
+    const synthesisHtml = generateSynthesisSentence(ind, currentVal, status);
+
+    container.innerHTML = `
+      <div class="ruler-header">
+        <span class="ruler-title">Three-Reference Adaptation Model</span>
+        <span class="text-faint" style="font-size: 0.78rem;">Source: ${ind.sourceId}</span>
+      </div>
+
+      <!-- 1. Earth 1g Normal Range -->
+      <div class="ruler-row">
+        <span class="ruler-label">Earth 1g</span>
+        <div class="ruler-track-container" title="Earth Normal: ${earthMin}–${earthMax} ${unit}">
+          <div class="ruler-range-bar ruler-range-bar--earth" style="left: ${earthLeft.toFixed(1)}%; width: ${earthWidth.toFixed(1)}%;"></div>
+          <span class="text-faint num-tabular" style="position: absolute; right: 8px; font-size: 0.72rem;">${earthMin}–${earthMax} ${unit}</span>
+        </div>
+      </div>
+
+      <!-- 2. In-Flight Microgravity Expected Envelope -->
+      <div class="ruler-row">
+        <span class="ruler-label">In-Flight 0g</span>
+        <div class="ruler-track-container" title="Expected In-Flight: ${flightMin}–${flightMax} ${unit}">
+          <div class="ruler-range-bar ruler-range-bar--flight" style="left: ${flightLeft.toFixed(1)}%; width: ${flightWidth.toFixed(1)}%;"></div>
+          <span class="text-faint num-tabular" style="position: absolute; right: 8px; font-size: 0.72rem;">${flightMin}–${flightMax} ${unit}</span>
+        </div>
+      </div>
+
+      <!-- 3. Personal Baseline & Current Value -->
+      <div class="ruler-row">
+        <span class="ruler-label">Personal & Cur</span>
+        <div class="ruler-track-container" title="Baseline: ${baseline} ${unit} (±${sd}). Current: ${currentVal} ${unit}">
+          <!-- Baseline confidence band -->
+          <div class="ruler-baseline-band" style="left: ${baseBandLeft.toFixed(1)}%; width: ${baseBandWidth.toFixed(1)}%;" title="Personal rolling band: ${(baseline - sd).toFixed(1)}–${(baseline + sd).toFixed(1)}"></div>
+          <!-- Baseline marker line -->
+          <div class="ruler-baseline-pip" style="left: ${basePipLeft.toFixed(1)}%;" title="Personal baseline: ${baseline} ${unit}"></div>
+          <!-- Current reading marker -->
+          <div class="ruler-val-dot" style="left: ${curPipLeft.toFixed(1)}%; background-color: ${statusColor};" title="Current Reading: ${currentVal} ${unit}"></div>
+          <span class="text-faint num-tabular" style="position: absolute; right: 8px; font-size: 0.72rem;">Cur: ${currentVal} ${unit}</span>
+        </div>
+      </div>
+
+      <!-- Synthesis Sentence -->
+      <div class="ruler-synthesis-box status--${status}">
+        ${synthesisHtml}
+      </div>
+    `;
+  }
 
   // ================= DYNAMIC SVG TREND CHART GENERATOR (REQUIREMENT 2 & PHASE 2) =================
   function renderTrendChart(trendData, systemStatus, yUnit, baselineMin, baselineMax) {
@@ -580,10 +708,16 @@ document.addEventListener('DOMContentLoaded', () => {
     const drawerWhy = document.getElementById('drawer-why-measurement');
     if (drawerWhy && sys.whyMeasurement) drawerWhy.textContent = sys.whyMeasurement;
 
-    // 8. Update Tiered Guidance Preview for this status
+    // 8. Update Three-Reference Status Model & Rulers (Phase 4)
+    const indKey = sys.primaryIndicator || (systemId === 'ocular' ? 'opticDisc' : systemId === 'cardio' ? 'systolic' : systemId === 'cranial' ? 'vorGain' : systemId === 'spine' ? 'spineElongation' : systemId === 'pulmonary' ? 'pco2' : 'calfCircumference');
+    const currentValNum = (sys.trendData && sys.trendData[sys.trendData.length - 1].observed) || parseFloat(sys.metric1Val) || 100;
+    renderThreeRuler('inspect-three-ruler', indKey, currentValNum, sys.status);
+    renderThreeRuler('drawer-three-ruler', indKey, currentValNum, sys.status);
+
+    // 9. Update Tiered Guidance Preview for this status
     updateActiveGuidancePreview(sys.status);
 
-    // 9. Update Body Map active hover tag
+    // 10. Update Body Map active hover tag
     updateHoverLabel(systemId);
   }
 

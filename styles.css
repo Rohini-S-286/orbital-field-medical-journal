@@ -1044,6 +1044,138 @@ input:focus-visible,
   letter-spacing: 0.05em;
 }
 
+/* ================= THREE-RULER COMPONENT (PHASE 4) ================= */
+.three-ruler-card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: 14px 16px;
+  margin: 14px 0 16px;
+  box-shadow: var(--shadow-sm);
+}
+
+.ruler-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 12px;
+}
+
+.ruler-title {
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--color-ink-muted);
+}
+
+.ruler-row {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+  gap: 12px;
+  font-size: 0.8rem;
+}
+
+.ruler-label {
+  width: 96px;
+  flex-shrink: 0;
+  font-weight: 600;
+  color: var(--color-ink-muted);
+}
+
+.ruler-track-container {
+  flex: 1;
+  position: relative;
+  height: 22px;
+  background: var(--color-surface-hover);
+  border-radius: var(--radius-full);
+  border: 1px solid var(--color-border);
+  overflow: visible;
+  display: flex;
+  align-items: center;
+}
+
+.ruler-range-bar {
+  position: absolute;
+  top: 3px;
+  bottom: 3px;
+  border-radius: var(--radius-full);
+}
+
+.ruler-range-bar--earth {
+  background: #D8CEB8;
+  border: 1px solid #B8AC94;
+}
+
+[data-theme="dark"] .ruler-range-bar--earth {
+  background: #2E3E34;
+  border: 1px solid #435A4B;
+}
+
+.ruler-range-bar--flight {
+  background: var(--color-emerald-tint);
+  border: 1px solid var(--color-emerald-border);
+}
+
+.ruler-baseline-band {
+  position: absolute;
+  top: 2px;
+  bottom: 2px;
+  background: rgba(11, 122, 86, 0.2);
+  border-left: 1.5px dashed var(--color-emerald);
+  border-right: 1.5px dashed var(--color-emerald);
+  border-radius: 2px;
+}
+
+.ruler-baseline-pip {
+  position: absolute;
+  top: -2px;
+  bottom: -2px;
+  width: 2px;
+  background: var(--color-emerald);
+  transform: translateX(-50%);
+  z-index: 2;
+}
+
+.ruler-val-dot {
+  position: absolute;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  border: 2px solid #FFFDF7;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.3);
+  z-index: 5;
+  transition: left 0.3s ease;
+}
+
+[data-theme="dark"] .ruler-val-dot {
+  border-color: #16241D;
+}
+
+.ruler-synthesis-box {
+  margin-top: 12px;
+  padding: 10px 12px;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  font-size: 0.83rem;
+  line-height: 1.45;
+  color: var(--color-ink);
+  border-left: 3px solid var(--color-emerald);
+}
+
+.ruler-synthesis-box.status--attention {
+  border-left-color: var(--color-ochre);
+}
+
+.ruler-synthesis-box.status--flight-surgeon,
+.ruler-synthesis-box.status--emergency {
+  border-left-color: var(--color-vermillion);
+}
+
 /* ================= 5. CHARTS WITH DISTINCT MARKERS & LINE STYLES ================= */
 .chart-container {
   width: 100%;

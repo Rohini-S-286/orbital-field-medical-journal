@@ -110,9 +110,34 @@ const CLINICAL_INDICATORS = {
     earthNominal: { min: 270, max: 300 },
     expectedInFlight: { min: 280, max: 325 },
     personalBaseline: 298,
+    personalSd: 5.0,
     sourceId: 'NASA-HRP-SANS',
     confidence: 'Moderate (Longitudinal OCT fundus scans from 40+ long-duration flyers)',
     physiologicNote: 'Persistent cephalad venous pressure elevates optic nerve sheath diameter (ONSD) and can induce disc edema.'
+  },
+  visualAcuity: {
+    id: 'visualAcuity',
+    label: 'Visual Acuity (LogMAR)',
+    unit: 'LogMAR',
+    earthNominal: { min: -0.10, max: 0.10 },
+    expectedInFlight: { min: -0.05, max: 0.15 },
+    personalBaseline: 0.00,
+    personalSd: 0.04,
+    sourceId: 'NASA-HRP-SANS',
+    confidence: 'High (Standardized electronic visual acuity tests)',
+    physiologicNote: 'Posterior globe flattening causes a hyperopic shift (+0.50 to +1.50 diopters) in long-duration crew.'
+  },
+  vorGain: {
+    id: 'vorGain',
+    label: 'Vestibular Ocular Reflex (VOR)',
+    unit: 'Gain',
+    earthNominal: { min: 0.95, max: 1.05 },
+    expectedInFlight: { min: 0.90, max: 1.10 },
+    personalBaseline: 1.00,
+    personalSd: 0.03,
+    sourceId: 'ESA-HPS',
+    confidence: 'High (Dynamic visual acuity and eye-tracking helmets)',
+    physiologicNote: 'Otolith-canal discordance dampens gaze stabilization during head turns until cerebellar reweighting occurs.'
   },
   pco2: {
     id: 'pco2',

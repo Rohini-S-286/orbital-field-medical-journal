@@ -1,0 +1,80 @@
+{
+  "ocular": {
+    "id": "ocular",
+    "name": "Ocular & SANS Monitoring",
+    "subtitle": "Spaceflight-Associated Neuro-ocular Syndrome",
+    "svgId": "sys-ocular",
+    "primaryIndicator": "opticDisc",
+    "secondaryIndicator": "visualAcuity",
+    "yUnit": "µm",
+    "baselineMin": 270,
+    "baselineMax": 300,
+    "whyMeasurement": "Microgravity shifts ~2L of fluid toward the head, increasing pressure behind the eyes. Daily optical tracking detects early optic nerve swelling before it causes permanent visual changes.",
+    "mechanism": "Spaceflight-Associated Neuro-ocular Syndrome (SANS) results from loss of hydrostatic pressure gradient in microgravity, generating a persistent ~1.5–2.0 L cephalad fluid shift. Intraocular venous engorgement increases optic nerve sheath diameter (ONSD) and optic disc thickness."
+  },
+  "cardio": {
+    "id": "cardio",
+    "name": "Cardiovascular & Hemodynamics",
+    "subtitle": "Arterial Baroreflex & Central Venous Equilibrium",
+    "svgId": "sys-cardio",
+    "primaryIndicator": "systolic",
+    "secondaryIndicator": "heartRate",
+    "yUnit": "mmHg",
+    "baselineMin": 95,
+    "baselineMax": 130,
+    "whyMeasurement": "In weightlessness, blood volume redistributes and the heart works against less resistance. Tracking blood pressure and heart rate ensures the heart muscle and arterial reflexes maintain healthy tone.",
+    "mechanism": "Cephalic fluid redistribution initially expands central blood volume, leading to neuro-humoral down-regulation of plasma volume (~12%). Countermeasure exercise preserves ventricular compliance and orthostatic tolerance for atmospheric re-entry."
+  },
+  "cranial": {
+    "id": "cranial",
+    "name": "Neuro-Vestibular Adaptation",
+    "subtitle": "Otolith Asymmetry & Spatial Orientation",
+    "svgId": "sys-cranial",
+    "primaryIndicator": "vorGain",
+    "secondaryIndicator": null,
+    "yUnit": "Gain",
+    "baselineMin": 0.95,
+    "baselineMax": 1.05,
+    "whyMeasurement": "The inner ear vestibular organs lose gravity cues in space, confusing balance and gaze stabilization. Tracking the reflex verifies that the brain balance centers are adapting safely.",
+    "mechanism": "In 0g, gravity cues from otolith organs (utricle and saccule) dissociate from semicircular canal signals. Sensory conflict resolves after 72–96 hours through cerebellar plastic reweighting."
+  },
+  "spine": {
+    "id": "spine",
+    "name": "Axial Spine & Musculoskeletal",
+    "subtitle": "Intervertebral Disc Hydration & Height Elongation",
+    "svgId": "sys-spine",
+    "primaryIndicator": "spineElongation",
+    "secondaryIndicator": null,
+    "yUnit": "cm",
+    "baselineMin": 1.5,
+    "baselineMax": 4.5,
+    "whyMeasurement": "Without gravity compressing spinal discs, astronauts spines can elongate up to 5 cm, risking back strain and disc herniation during vigorous work or landing.",
+    "mechanism": "Lack of gravitational axial compression allows intervertebral discs to imbibe fluid and expand, causing 2–5 cm stature elongation and paraspinal flattening."
+  },
+  "pulmonary": {
+    "id": "pulmonary",
+    "name": "Pulmonary Gas Exchange & Atmosphere",
+    "subtitle": "Alveolar Ventilation & Ambient pCO2 Matching",
+    "svgId": "sys-pulmonary",
+    "primaryIndicator": "pco2",
+    "secondaryIndicator": "spo2",
+    "yUnit": "mmHg",
+    "baselineMin": 1.5,
+    "baselineMax": 3.0,
+    "whyMeasurement": "Without gravity-driven convection, exhaled carbon dioxide can form pockets around sleeping or working crew. Monitoring SpO2 and ambient CO2 ensures clean oxygenation.",
+    "mechanism": "Absence of natural thermal air convection causes localized exhaled CO2 pooling if ventilation is impaired. Ventilation-perfusion matching remains homogeneous in 0g."
+  },
+  "limbs": {
+    "id": "limbs",
+    "name": "Lower Limbs & Venous Return",
+    "subtitle": "Soleus & Gastrocnemius Density Countermeasures",
+    "svgId": "sys-limbs",
+    "primaryIndicator": "calfCircumference",
+    "secondaryIndicator": null,
+    "yUnit": "cm",
+    "baselineMin": 36.5,
+    "baselineMax": 38.5,
+    "whyMeasurement": "Weight-bearing leg muscles quickly lose mass and tone when not walking under 1g. Regular measurements verify that daily treadmill and resistive exercises are preventing muscle atrophy.",
+    "mechanism": "Anti-gravity postural muscles (slow-twitch soleus) undergo rapid deconditioning if not actively loaded against microgravity. Resistive deadlifts maintain bone and muscle mass."
+  }
+}
