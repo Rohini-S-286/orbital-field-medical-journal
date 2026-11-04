@@ -76,5 +76,57 @@
     "baselineMax": 38.5,
     "whyMeasurement": "Weight-bearing leg muscles quickly lose mass and tone when not walking under 1g. Regular measurements verify that daily treadmill and resistive exercises are preventing muscle atrophy.",
     "mechanism": "Anti-gravity postural muscles (slow-twitch soleus) undergo rapid deconditioning if not actively loaded against microgravity. Resistive deadlifts maintain bone and muscle mass."
+  },
+  "neuro": {
+    "id": "neuro",
+    "name": "Brain & Behavioral Health",
+    "subtitle": "Psychomotor Vigilance & Cognitive Latency",
+    "svgId": "sys-neuro",
+    "primaryIndicator": "reactionTime",
+    "secondaryIndicator": null,
+    "yUnit": "ms",
+    "baselineMin": 190,
+    "baselineMax": 260,
+    "whyMeasurement": "Cognitive alertness and motor speed can degrade under microgravity fluid shifts, circadian fatigue, and high workload. Daily PVT tracks neuro-behavioral readiness.",
+    "mechanism": "Sleep debt, circadian desynchrony, and microgravity cephalic venous engorgement increase neural reaction latency and attention lapses > 500 ms."
+  },
+  "sleep": {
+    "id": "sleep",
+    "name": "Sleep Architecture & Circadian",
+    "subtitle": "Polysomnography & Melatonin Phase Alignment",
+    "svgId": "sys-sleep",
+    "primaryIndicator": "sleepDuration",
+    "secondaryIndicator": null,
+    "yUnit": "hrs",
+    "baselineMin": 6.5,
+    "baselineMax": 8.5,
+    "whyMeasurement": "90-minute orbital light cycles and spacecraft ambient noise disrupt deep slow-wave sleep. Tracking daily sleep duration guards against cumulative sleep debt.",
+    "mechanism": "Loss of 24h natural solar zeitgeber and circadian temperature rhythms dampens endogenous melatonin secretion, shortening total sleep time by 1–1.5 hours/night."
+  },
+  "immune": {
+    "id": "immune",
+    "name": "Immune & Cosmic Radiation",
+    "subtitle": "Ionizing Particle Dose & Cellular Immunity",
+    "svgId": "sys-immune",
+    "primaryIndicator": "radiationDose",
+    "secondaryIndicator": null,
+    "yUnit": "µGy/d",
+    "baselineMin": 200,
+    "baselineMax": 400,
+    "whyMeasurement": "Deep space galactic cosmic radiation and solar particle events damage DNA and suppress T-cell function. Daily dosimetric tracking safeguards biological thresholds.",
+    "mechanism": "Ionizing radiation creates double-strand DNA breaks and reactive oxygen species, coupled with microgravity-induced down-regulation of T-cell activation markers."
+  },
+  "metabolic": {
+    "id": "metabolic",
+    "name": "Metabolic Core & Thermoregulation",
+    "subtitle": "Microgravity Space Fever & Endocrine Homeostasis",
+    "svgId": "sys-metabolic",
+    "primaryIndicator": "coreTemp",
+    "secondaryIndicator": null,
+    "yUnit": "°C",
+    "baselineMin": 36.8,
+    "baselineMax": 37.6,
+    "whyMeasurement": "Without thermal air convection, sweat does not evaporate efficiently, causing core body temperatures to elevate by ~1°C (spaceflight hyperthermia).",
+    "mechanism": "Lack of gravitational air convection impairs radiant and evaporative heat loss from the skin, raising resting setpoint core temperature during flight."
   }
 }

@@ -118,6 +118,87 @@
     <span><strong>Clinical Decision Support Note:</strong> Prototype for spaceflight human-system research and operational training. Not a certified medical diagnostic device. All metrics are simulated.</span>
   </aside>
 
+  <!-- ================= NASA CHALLENGE: MISSION ENVIRONMENT & HAZARDS CONTROL BAR ================= -->
+  <section class="mission-control-bar" aria-label="Mission Operations and Hazard Controls">
+    <div class="control-bar-inner">
+      
+      <!-- 1. Environment & Gravity Selector -->
+      <div class="control-group">
+        <span class="control-label">Environment:</span>
+        <div class="segmented-control" id="env-selector" role="radiogroup" aria-label="Mission Environment">
+          <button class="seg-btn active" data-env="iss" role="radio" aria-checked="true">ISS (0g)</button>
+          <button class="seg-btn" data-env="lunar" role="radio" aria-checked="false">Lunar (0.16g)</button>
+          <button class="seg-btn" data-env="mars" role="radio" aria-checked="false">Mars (0.38g)</button>
+          <button class="seg-btn" data-env="rover" role="radio" aria-checked="false">Rover EVA</button>
+        </div>
+      </div>
+
+      <!-- 2. Comm Latency & Adherence Streak -->
+      <div class="control-badges">
+        <div class="mission-pill" id="comm-latency-pill" title="Simulated round-trip signal delay to Earth Ground Control">
+          <span class="pulse-dot" aria-hidden="true"></span>
+          <span id="comm-latency-text">Comm: Real-time (0.5s)</span>
+        </div>
+        <div class="mission-pill streak-pill" title="Adherence Streak: Rewarding consistent daily check-in habits, never physiological numbers.">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
+          </svg>
+          <span id="streak-counter-text">14-Day Check-in Streak</span>
+        </div>
+        <!-- Psychomotor Vigilance Task (PVT) quick trigger -->
+        <button class="btn-secondary" id="open-pvt-btn" style="min-height: 32px; padding: 4px 12px; font-size: 0.8rem;" title="Start 60-second Psychomotor Vigilance Task for cognitive alertness">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"/>
+            <polyline points="12 6 12 12 14 14"/>
+          </svg>
+          <span>PVT Vigilance Test</span>
+        </button>
+      </div>
+
+    </div>
+
+    <!-- NASA 5 Hazards Lens Selector -->
+    <div class="hazard-lens-bar" role="toolbar" aria-label="NASA Five Hazards of Human Spaceflight Lens">
+      <span class="hazard-lens-label">NASA Hazards Lens:</span>
+      <div class="hazard-chips" role="radiogroup" aria-label="Hazard Filter">
+        <button class="hazard-chip active" data-hazard="all" role="radio" aria-checked="true">All Systems</button>
+        <button class="hazard-chip" data-hazard="radiation" role="radio" aria-checked="false" title="Space Radiation (RE): Galactic cosmic rays and solar particle events">Radiation (R)</button>
+        <button class="hazard-chip" data-hazard="isolation" role="radio" aria-checked="false" title="Isolation & Confinement (I): Circadian disruptions, mood and cognitive fatigue">Isolation (I)</button>
+        <button class="hazard-chip" data-hazard="distance" role="radio" aria-checked="false" title="Distance from Earth (D): Autonomous medical triage and comm delays">Distance (D)</button>
+        <button class="hazard-chip" data-hazard="gravity" role="radio" aria-checked="false" title="Gravity Fields (G): Cephalad fluid shifts (SANS), bone loss, muscle atrophy">Gravity (G)</button>
+        <button class="hazard-chip" data-hazard="environment" role="radio" aria-checked="false" title="Hostile Closed Environment (E): Cabin pCO2, micro-biome, toxic contaminants">Environment (E)</button>
+      </div>
+    </div>
+
+    <!-- 30-Day Simulated Mission Playback Scrubber (Judge Presentation Demo Mode) -->
+    <div class="demo-playback-bar" aria-label="30-Day Mission Simulation Playback">
+      <div class="demo-playback-header">
+        <div style="display: flex; align-items: center; gap: 8px;">
+          <span class="simulated-tag" style="background: var(--color-emerald); color: #fff;">NASA Demo Mode</span>
+          <span style="font-weight: 600; font-size: 0.82rem; color: var(--color-ink);">30-Day Mission Flight Telemetry Simulation</span>
+        </div>
+        <div style="display: flex; gap: 8px;">
+          <button class="btn-secondary" id="demo-play-btn" style="min-height: 32px; padding: 2px 10px; font-size: 0.78rem;">
+            <span>▶ Auto-Play (30d)</span>
+          </button>
+          <button class="btn-secondary" id="demo-jump-incident-btn" style="min-height: 32px; padding: 2px 10px; font-size: 0.78rem; border-color: var(--color-ochre); color: var(--color-ochre-text);" title="Simulate Day 19 EVA exhaustion, CO2 elevation, and SANS disc shift">
+            <span>⚡ Jump to Day 19 Incident</span>
+          </button>
+          <button class="btn-secondary" id="demo-reset-btn" style="min-height: 32px; padding: 2px 10px; font-size: 0.78rem;">
+            <span>Reset</span>
+          </button>
+        </div>
+      </div>
+      <div class="demo-scrubber-row">
+        <label for="mission-day-slider" style="font-size: 0.8rem; font-weight: 600; color: var(--color-ink); white-space: nowrap;">
+          Mission Day: <span id="mission-day-num" class="num-tabular">14</span> / 30
+        </label>
+        <input type="range" id="mission-day-slider" min="1" max="30" value="14" step="1" class="demo-slider" aria-label="Simulated Mission Day Slider" />
+        <span class="text-faint" id="demo-day-annotation" style="font-size: 0.76rem; min-width: 220px; text-align: right;">Day 14: Nominal steady-state routine</span>
+      </div>
+    </div>
+  </section>
+
   <!-- ================= MAIN THREE-COLUMN WORKSPACE ================= -->
   <main class="dashboard-container" id="main-content">
 
@@ -241,6 +322,34 @@
             <ellipse cx="140" cy="385" rx="8" ry="24" />
             <ellipse cx="180" cy="385" rx="8" ry="24" />
           </g>
+
+          <!-- SYSTEM 7: Brain & Behavior (Neuro-Cognitive) -->
+          <g id="sys-neuro" class="body-system-region system--in-range" tabindex="0" role="button" aria-label="Neuro-cognitive vigilance and reaction time. Status: In range." data-system="neuro">
+            <title>Brain & Behavior: In range</title>
+            <circle class="map-hit-target" cx="160" cy="22" r="16" fill="rgba(0,0,0,0.001)" />
+            <path d="M152 18 Q160 14 168 18" stroke="var(--color-emerald)" stroke-width="2" fill="none" />
+          </g>
+
+          <!-- SYSTEM 8: Sleep & Circadian Architecture -->
+          <g id="sys-sleep" class="body-system-region system--in-range" tabindex="0" role="button" aria-label="Sleep architecture and circadian rhythm. Status: In range." data-system="sleep">
+            <title>Sleep & Circadian: In range</title>
+            <circle class="map-hit-target" cx="160" cy="52" r="14" fill="rgba(0,0,0,0.001)" />
+            <path d="M154 50 Q160 46 166 50" stroke="var(--color-emerald)" stroke-width="1.5" fill="none" />
+          </g>
+
+          <!-- SYSTEM 9: Immune & Radiation Dosimetry -->
+          <g id="sys-immune" class="body-system-region system--in-range" tabindex="0" role="button" aria-label="Immune biomarkers and cosmic radiation dose. Status: In range." data-system="immune">
+            <title>Immune & Radiation: In range</title>
+            <circle class="map-hit-target" cx="140" cy="180" r="16" fill="rgba(0,0,0,0.001)" />
+            <circle cx="140" cy="180" r="6" stroke="var(--color-emerald)" stroke-width="1.5" fill="none" />
+          </g>
+
+          <!-- SYSTEM 10: Metabolic & Nutrition -->
+          <g id="sys-metabolic" class="body-system-region system--in-range" tabindex="0" role="button" aria-label="Core body temperature, hydration and metabolic balance. Status: In range." data-system="metabolic">
+            <title>Metabolic & Nutrition: In range</title>
+            <circle class="map-hit-target" cx="160" cy="205" r="18" fill="rgba(0,0,0,0.001)" />
+            <circle cx="160" cy="205" r="8" stroke="var(--color-emerald)" stroke-width="1.5" fill="none" />
+          </g>
         </svg>
       </div>
 
@@ -269,6 +378,22 @@
         <button class="legend-chip" data-target="limbs">
           <span style="display:inline-block; width:8px; height:8px; border-radius:50%; background:var(--color-emerald);"></span>
           <span>Lower Limbs</span>
+        </button>
+        <button class="legend-chip" data-target="neuro">
+          <span style="display:inline-block; width:8px; height:8px; border-radius:50%; background:var(--color-emerald);"></span>
+          <span>Brain & Behavior</span>
+        </button>
+        <button class="legend-chip" data-target="sleep">
+          <span style="display:inline-block; width:8px; height:8px; border-radius:50%; background:var(--color-emerald);"></span>
+          <span>Sleep & Circadian</span>
+        </button>
+        <button class="legend-chip" data-target="immune">
+          <span style="display:inline-block; width:8px; height:8px; border-radius:50%; background:var(--color-emerald);"></span>
+          <span>Immune & Radiation</span>
+        </button>
+        <button class="legend-chip" data-target="metabolic">
+          <span style="display:inline-block; width:8px; height:8px; border-radius:50%; background:var(--color-emerald);"></span>
+          <span>Metabolic Core</span>
         </button>
       </nav>
     </section>
@@ -903,6 +1028,57 @@
           </svg>
           <span>Simulate Emergency State (Level 4 System Test)</span>
         </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= PSYCHOMOTOR VIGILANCE TASK (PVT) MODAL ================= -->
+  <div class="drawer-backdrop" id="pvt-backdrop" aria-hidden="true">
+    <div class="modal-dialog" id="pvt-dialog" role="dialog" aria-modal="true" aria-labelledby="pvt-modal-title">
+      <div class="drawer-header">
+        <div>
+          <span class="card-meta">NASA Standard Neuro-Cognitive Metric</span>
+          <h2 id="pvt-modal-title">Psychomotor Vigilance Task (PVT)</h2>
+        </div>
+        <button class="drawer-close-btn" id="close-pvt-modal" aria-label="Close PVT test">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="18" y1="6" x2="6" y2="18"/>
+            <line x1="6" y1="6" x2="18" y2="18"/>
+          </svg>
+        </button>
+      </div>
+
+      <div style="padding: 10px 0;">
+        <p class="text-muted" style="font-size: 0.88rem; line-height: 1.5; margin-bottom: 12px;">
+          Measures behavioral alertness, central nervous system fatigue, and microgravity sleep debt. Tap or click the response zone immediately when it flashes <strong>EMERALD GREEN</strong>.
+        </p>
+
+        <!-- PVT Interactive Test Box -->
+        <div id="pvt-box" class="pvt-test-box" role="button" tabindex="0" aria-label="PVT Stimulus Zone. Click or tap immediately when color changes.">
+          <div id="pvt-status-text" style="font-size: 1.1rem; font-weight: 600;">Click "Start Test Session" to Begin</div>
+          <div id="pvt-timer-text" class="num-tabular" style="font-size: 2.2rem; font-weight: 700; margin-top: 8px; display: none;">0 ms</div>
+          <div id="pvt-sub-text" class="text-faint" style="font-size: 0.8rem; margin-top: 6px;">3 random stimulus repetitions</div>
+        </div>
+
+        <div id="pvt-results-panel" style="margin-top: 14px; display: none; background: var(--color-surface-hover); border-radius: var(--radius-md); padding: 12px 16px; border: 1px solid var(--color-border);">
+          <div style="font-weight: 600; font-size: 0.9rem; margin-bottom: 4px; color: var(--color-ink);">Test Completed</div>
+          <div style="display: flex; justify-content: space-between; font-size: 0.85rem; color: var(--color-ink-muted);">
+            <span>Mean Response Latency: <strong id="pvt-mean-score" class="num-tabular" style="color: var(--color-emerald);">214 ms</strong></span>
+            <span>Attention Lapses (&gt;500ms): <strong id="pvt-lapses-count" class="num-tabular">0</strong></span>
+          </div>
+          <p class="text-muted" style="font-size: 0.78rem; margin-top: 6px; line-height: 1.4;">
+            Within nominal alertness envelope (&lt; 250 ms). Score integrated into Neuro-Cognitive Readiness index.
+          </p>
+        </div>
+
+        <div style="display: flex; gap: 10px; margin-top: 16px;">
+          <button class="btn-primary" id="pvt-start-btn" style="flex: 2;">
+            <span>Start Test Session</span>
+          </button>
+          <button class="btn-secondary" id="pvt-dismiss-btn" style="flex: 1;">
+            <span>Done</span>
+          </button>
+        </div>
       </div>
     </div>
   </div>

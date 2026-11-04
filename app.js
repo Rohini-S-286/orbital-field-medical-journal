@@ -253,8 +253,120 @@ document.addEventListener('DOMContentLoaded', () => {
           { day: 'MET-1', baseline: 38.2, observed: 37.8 },
           { day: 'Today', baseline: 38.2, observed: 37.8 },
         ]
+      },
+      neuro: {
+        id: 'neuro',
+        name: 'Brain & Behavioral Health',
+        subtitle: 'Psychomotor Vigilance & Cognitive Latency',
+        status: 'in-range',
+        primaryIndicator: 'reactionTime',
+        yUnit: 'ms',
+        baselineMin: 190,
+        baselineMax: 260,
+        metric1Label: 'PVT Response Latency',
+        metric1Val: '214 ms',
+        metric1Sub: 'Baseline: 214 ms [Simulated]',
+        metric2Label: 'Attention Lapses (>500ms)',
+        metric2Val: '0 lapses',
+        metric2Sub: 'High operational vigilance [Simulated]',
+        whyMeasurement: 'Cognitive alertness and motor speed can degrade under microgravity fluid shifts, circadian fatigue, and high workload. Daily PVT tracks neuro-behavioral readiness.',
+        mechanism: 'Sleep debt, circadian desynchrony, and microgravity cephalic venous engorgement increase neural reaction latency and attention lapses > 500 ms.',
+        trendData: [
+          { day: 'MET-6', baseline: 214, observed: 210 },
+          { day: 'MET-5', baseline: 214, observed: 212 },
+          { day: 'MET-4', baseline: 214, observed: 215 },
+          { day: 'MET-3', baseline: 214, observed: 218 },
+          { day: 'MET-2', baseline: 214, observed: 214 },
+          { day: 'MET-1', baseline: 214, observed: 216 },
+          { day: 'Today', baseline: 214, observed: 214 }
+        ]
+      },
+      sleep: {
+        id: 'sleep',
+        name: 'Sleep Architecture & Circadian',
+        subtitle: 'Polysomnography & Melatonin Phase Alignment',
+        status: 'in-range',
+        primaryIndicator: 'sleepDuration',
+        yUnit: 'hrs',
+        baselineMin: 6.5,
+        baselineMax: 8.5,
+        metric1Label: 'Sleep Duration & Score',
+        metric1Val: '7.4 hrs',
+        metric1Sub: '88% sleep efficiency [Simulated]',
+        metric2Label: 'REM Proportion',
+        metric2Val: '21%',
+        metric2Sub: 'Nominal restorative stages [Simulated]',
+        whyMeasurement: '90-minute orbital light cycles and spacecraft ambient noise disrupt deep slow-wave sleep. Tracking daily sleep duration guards against cumulative sleep debt.',
+        mechanism: 'Loss of 24h natural solar zeitgeber and circadian temperature rhythms dampens endogenous melatonin secretion, shortening total sleep time by 1–1.5 hours/night.',
+        trendData: [
+          { day: 'MET-6', baseline: 7.2, observed: 7.1 },
+          { day: 'MET-5', baseline: 7.2, observed: 6.9 },
+          { day: 'MET-4', baseline: 7.2, observed: 7.5 },
+          { day: 'MET-3', baseline: 7.2, observed: 7.0 },
+          { day: 'MET-2', baseline: 7.2, observed: 7.3 },
+          { day: 'MET-1', baseline: 7.2, observed: 7.2 },
+          { day: 'Today', baseline: 7.2, observed: 7.4 }
+        ]
+      },
+      immune: {
+        id: 'immune',
+        name: 'Immune & Cosmic Radiation',
+        subtitle: 'Ionizing Particle Dose & Cellular Immunity',
+        status: 'in-range',
+        primaryIndicator: 'radiationDose',
+        yUnit: 'µGy/d',
+        baselineMin: 200,
+        baselineMax: 400,
+        metric1Label: 'Daily Ionizing Radiation',
+        metric1Val: '268 µGy/d',
+        metric1Sub: 'Accumulated: 38.1 mGy [Simulated]',
+        metric2Label: 'Salivary Cortisol',
+        metric2Val: '0.34 µg/dL',
+        metric2Sub: 'Nominal neuroendocrine marker [Simulated]',
+        whyMeasurement: 'Deep space galactic cosmic radiation and solar particle events damage DNA and suppress T-cell function. Daily dosimetric tracking safeguards biological thresholds.',
+        mechanism: 'Ionizing radiation creates double-strand DNA breaks and reactive oxygen species, coupled with microgravity-induced down-regulation of T-cell activation markers.',
+        trendData: [
+          { day: 'MET-6', baseline: 270, observed: 255 },
+          { day: 'MET-5', baseline: 270, observed: 260 },
+          { day: 'MET-4', baseline: 270, observed: 280 },
+          { day: 'MET-3', baseline: 270, observed: 274 },
+          { day: 'MET-2', baseline: 270, observed: 265 },
+          { day: 'MET-1', baseline: 270, observed: 269 },
+          { day: 'Today', baseline: 270, observed: 268 }
+        ]
+      },
+      metabolic: {
+        id: 'metabolic',
+        name: 'Metabolic Core & Thermoregulation',
+        subtitle: 'Microgravity Space Fever & Endocrine Homeostasis',
+        status: 'in-range',
+        primaryIndicator: 'coreTemp',
+        yUnit: '°C',
+        baselineMin: 36.8,
+        baselineMax: 37.6,
+        metric1Label: 'Core Body Temperature',
+        metric1Val: '37.1 °C',
+        metric1Sub: '+0.1 °C baseline elevation [Simulated]',
+        metric2Label: '24h Hydration Balance',
+        metric2Val: '2.4 L / day',
+        metric2Sub: 'Urine specific gravity 1.012 [Simulated]',
+        whyMeasurement: 'Without thermal air convection, sweat does not evaporate efficiently, causing core body temperatures to elevate by ~1°C (spaceflight hyperthermia).',
+        mechanism: 'Lack of gravitational air convection impairs radiant and evaporative heat loss from the skin, raising resting setpoint core temperature during flight.',
+        trendData: [
+          { day: 'MET-6', baseline: 37.0, observed: 37.0 },
+          { day: 'MET-5', baseline: 37.0, observed: 37.2 },
+          { day: 'MET-4', baseline: 37.0, observed: 37.1 },
+          { day: 'MET-3', baseline: 37.0, observed: 36.9 },
+          { day: 'MET-2', baseline: 37.0, observed: 37.0 },
+          { day: 'MET-1', baseline: 37.0, observed: 37.1 },
+          { day: 'Today', baseline: 37.0, observed: 37.1 }
+        ]
       }
     },
+    environment: 'iss',
+    activeHazard: 'all',
+    demoDay: 14,
+    demoPlaying: false,
     measurementVitals: {
       sysBP: 118,
       diaBP: 76,
@@ -263,6 +375,7 @@ document.addEventListener('DOMContentLoaded', () => {
     },
     countdownSeconds: 38 * 60 + 14
   };
+  window.state = state;
 
   // ================= ACCESSIBLE TOAST NOTIFICATION (NO ALERT POPUPS) =================
   function showToast(message, type = 'success') {
@@ -720,6 +833,8 @@ document.addEventListener('DOMContentLoaded', () => {
     // 10. Update Body Map active hover tag
     updateHoverLabel(systemId);
   }
+  window.selectSystem = selectSystem;
+  window.setBadge = setBadge;
 
   const bodyMapActiveLabel = document.getElementById('body-map-active-label');
   function updateHoverLabel(sysId) {
@@ -768,13 +883,23 @@ document.addEventListener('DOMContentLoaded', () => {
   function calculateOverallReadiness() {
     const weights = {
       'in-range': 100,
-      'attention': 75,
-      'flight-surgeon': 45,
-      'emergency': 15
+      'attention': 70,
+      'flight-surgeon': 35,
+      'emergency': 10
     };
     const systems = Object.values(state.systems);
+    const anyEmergency = systems.some(s => s.status === 'emergency');
+    const anySurgeon = systems.some(s => s.status === 'flight-surgeon');
     const total = systems.reduce((acc, sys) => acc + (weights[sys.status] || 100), 0);
-    return Math.round(total / systems.length);
+    let score = Math.round(total / systems.length);
+
+    // Clinical safety limits: flight surgeon flag caps readiness to 74% (Operational alert threshold)
+    if (anyEmergency) {
+      score = Math.min(score, 35);
+    } else if (anySurgeon) {
+      score = Math.min(score, 74);
+    }
+    return score;
   }
 
   function updateOverallGauge() {
@@ -1429,8 +1554,463 @@ document.addEventListener('DOMContentLoaded', () => {
     showToast('SIMULATED: Level 4 Emergency Protocol Initiated. Check Tiered Guidance.', 'alert');
   });
 
+  // ================= ENVIRONMENT SELECTOR & COMM LATENCY (PHASE 5) =================
+  const envButtons = document.querySelectorAll('#env-selector .seg-btn');
+  const commLatencyText = document.getElementById('comm-latency-text');
+
+  const ENV_CONFIG = {
+    iss: {
+      name: 'ISS (Low Earth Orbit)',
+      latency: '0.5s',
+      gravity: '0.00g (Microgravity)',
+      desc: 'LEO station operations with real-time ground tracking and resupply.'
+    },
+    lunar: {
+      name: 'Lunar Gateway / Surface',
+      latency: '1.3s',
+      gravity: '0.16g (Lunar Gravity)',
+      desc: 'Cislunar operational envelope. Autonomous crew health triage active.'
+    },
+    mars: {
+      name: 'Mars Transit / Deep Space',
+      latency: '12 min',
+      gravity: '0.38g (Mars Gravity)',
+      desc: 'High-latency autonomous operations. Earth medical advisory delayed 24 min round-trip.'
+    },
+    rover: {
+      name: 'Surface Hab / Rover Sortie',
+      latency: '1.0s',
+      gravity: '0.16g–0.38g (Partial Gravity)',
+      desc: 'Planetary surface exploration EVA sorties. High metabolic and musculoskeletal exertion.'
+    }
+  };
+
+  function setEnvironment(envKey) {
+    if (!ENV_CONFIG[envKey]) return;
+    state.environment = envKey;
+    const cfg = ENV_CONFIG[envKey];
+    envButtons.forEach(btn => {
+      const match = btn.dataset.env === envKey;
+      btn.classList.toggle('active', match);
+      btn.setAttribute('aria-checked', match ? 'true' : 'false');
+    });
+    if (commLatencyText) commLatencyText.textContent = `Comm: ${cfg.latency} (${cfg.name.split(' ')[0]})`;
+    showToast(`Operational Environment: ${cfg.name}. Telemetry latency: ${cfg.latency}.`, 'success');
+  }
+
+  envButtons.forEach(btn => {
+    btn.addEventListener('click', () => {
+      setEnvironment(btn.dataset.env);
+    });
+  });
+
+  // ================= NASA 5 HAZARDS LENS (RIDGE - PHASE 5) =================
+  const hazardChips = document.querySelectorAll('.hazard-chip');
+  const HAZARD_MAP = {
+    all: ['ocular', 'cardio', 'cranial', 'spine', 'pulmonary', 'limbs', 'neuro', 'sleep', 'immune', 'metabolic'],
+    radiation: ['immune', 'metabolic'],
+    isolation: ['neuro', 'sleep'],
+    distance: ['cardio', 'ocular', 'neuro'],
+    gravity: ['ocular', 'cardio', 'cranial', 'spine', 'limbs'],
+    environment: ['pulmonary', 'metabolic']
+  };
+
+  function applyHazardFilter(hazardKey) {
+    state.activeHazard = hazardKey;
+    const allowed = HAZARD_MAP[hazardKey] || HAZARD_MAP.all;
+    hazardChips.forEach(chip => {
+      const match = chip.dataset.hazard === hazardKey;
+      chip.classList.toggle('active', match);
+      chip.setAttribute('aria-checked', match ? 'true' : 'false');
+    });
+
+    // Dim or highlight SVG body systems & legend chips
+    bodyRegions.forEach(region => {
+      const sysId = region.dataset.system;
+      const isVisible = allowed.includes(sysId);
+      region.classList.toggle('hazard--dimmed', !isVisible);
+    });
+
+    legendChips.forEach(chip => {
+      const sysId = chip.dataset.target;
+      const isVisible = allowed.includes(sysId);
+      chip.classList.toggle('hazard--dimmed', !isVisible);
+    });
+
+    // If currently selected system is dimmed, switch focus to first active system
+    if (!allowed.includes(state.selectedSystem)) {
+      selectSystem(allowed[0]);
+    }
+  }
+
+  hazardChips.forEach(chip => {
+    chip.addEventListener('click', () => {
+      applyHazardFilter(chip.dataset.hazard);
+    });
+  });
+
+  // ================= 30-DAY MISSION SIMULATION PLAYBACK (PHASE 5) =================
+  const missionDaySlider = document.getElementById('mission-day-slider');
+  const missionDayNum = document.getElementById('mission-day-num');
+  const demoDayAnnotation = document.getElementById('demo-day-annotation');
+  const demoPlayBtn = document.getElementById('demo-play-btn');
+  const demoJumpIncidentBtn = document.getElementById('demo-jump-incident-btn');
+  const demoResetBtn = document.getElementById('demo-reset-btn');
+  const missionElapsedDays = document.getElementById('mission-elapsed-days');
+
+  let playbackTimer = null;
+
+  const MISSION_TIMELINE = {
+    1: { name: 'Day 1: Launch & Orbital Insertion', note: 'Neuro-vestibular adaptation onset; slight ataxia', ocular: 298, ocularStatus: 'in-range' },
+    2: { name: 'Day 2: Microgravity Acclimation', note: 'Cephalad fluid redistribution begins (~1.5L shift)', ocular: 300, ocularStatus: 'in-range' },
+    3: { name: 'Day 3: Vestibular Equilibrium', note: 'Cerebellar reweighting active; motion discomfort subsiding', ocular: 302, ocularStatus: 'in-range' },
+    7: { name: 'Day 7: First Week Routine', note: 'Nominal baseline vitals and treadmill exercise compliance', ocular: 304, ocularStatus: 'in-range' },
+    14: { name: 'Day 14: Mid-Mission Routine', note: 'Nominal steady-state routine; slight SANS shift (312 µm)', ocular: 312, ocularStatus: 'attention' },
+    18: { name: 'Day 18: Pre-EVA Preparation', note: 'Pre-breathe oxygenation & suit checkout', ocular: 315, ocularStatus: 'attention' },
+    19: { name: 'Day 19: INCIDENT: Post-EVA SANS Peak', note: 'Prolonged 7h EVA + elevated CO2: Retinal thickness 328 µm! Surgeon contact recommended.', ocular: 328, ocularStatus: 'flight-surgeon' },
+    20: { name: 'Day 20: Countermeasure Recovery', note: 'Enhanced lower-body negative pressure & rest protocol applied', ocular: 322, ocularStatus: 'attention' },
+    24: { name: 'Day 24: Stabilization', note: 'Retinal thickness resolves toward 314 µm; fatigue clearing', ocular: 314, ocularStatus: 'attention' },
+    30: { name: 'Day 30: Mission Completion', note: 'Pre-landing fluid loading completed; ready for atmospheric re-entry', ocular: 308, ocularStatus: 'in-range' }
+  };
+
+  function getTimelineProfile(day) {
+    if (MISSION_TIMELINE[day]) return MISSION_TIMELINE[day];
+    if (day < 14) {
+      const oc = Math.round(298 + ((day - 1) / 13) * 14);
+      return {
+        name: `Day ${day}: Mission Steady Phase`,
+        note: 'Nominal adaptation telemetry',
+        ocular: oc,
+        ocularStatus: oc > 300 ? 'attention' : 'in-range'
+      };
+    } else if (day < 19) {
+      const oc = Math.round(312 + ((day - 14) / 5) * 10);
+      return {
+        name: `Day ${day}: High Workload Phase`,
+        note: 'Elevated workload & mild CO2 transient',
+        ocular: oc,
+        ocularStatus: 'attention'
+      };
+    } else if (day === 19) {
+      return MISSION_TIMELINE[19];
+    } else {
+      const oc = Math.round(328 - ((day - 19) / 11) * 20);
+      return {
+        name: `Day ${day}: Post-Incident Recovery`,
+        note: 'Countermeasures stabilizing ocular hemodynamics',
+        ocular: oc,
+        ocularStatus: oc > 325 ? 'flight-surgeon' : oc > 300 ? 'attention' : 'in-range'
+      };
+    }
+  }
+
+  function applyMissionDay(day) {
+    day = parseInt(day, 10);
+    state.demoDay = day;
+    if (missionDaySlider) missionDaySlider.value = day;
+    if (missionDayNum) missionDayNum.textContent = day;
+    if (missionElapsedDays) missionElapsedDays.textContent = `MET Day ${day}`;
+
+    const profile = getTimelineProfile(day);
+    if (demoDayAnnotation) demoDayAnnotation.textContent = `${profile.name}: ${profile.note}`;
+
+    // Apply physiological state changes
+    state.systems.ocular.metric1Val = `${profile.ocular} µm`;
+    state.systems.ocular.status = profile.ocularStatus;
+    const diff = profile.ocular - 298;
+    state.systems.ocular.metric1Sub = `${diff >= 0 ? '+' : ''}${diff} µm baseline shift [Simulated]`;
+    const td = state.systems.ocular.trendData;
+    if (td && td.length > 0) {
+      td[td.length - 1].observed = profile.ocular;
+    }
+
+    // Day 19 specific triggers
+    if (day === 19) {
+      state.systems.cardio.status = 'attention';
+      state.systems.cardio.metric1Val = '132 / 86 mmHg';
+      state.systems.neuro.status = 'attention';
+      state.systems.neuro.metric1Val = '278 ms';
+    } else {
+      state.systems.cardio.status = 'in-range';
+      state.systems.cardio.metric1Val = '118 / 76 mmHg';
+      state.systems.neuro.status = 'in-range';
+      state.systems.neuro.metric1Val = '214 ms';
+    }
+
+    // Refresh UI
+    updateOverallGauge();
+    selectSystem(state.selectedSystem);
+  }
+
+  if (missionDaySlider) {
+    missionDaySlider.addEventListener('input', (e) => {
+      applyMissionDay(e.target.value);
+    });
+  }
+
+  if (demoJumpIncidentBtn) {
+    demoJumpIncidentBtn.addEventListener('click', () => {
+      stopPlayback();
+      applyMissionDay(19);
+      selectSystem('ocular');
+      showToast('Simulating Day 19 Incident: Optic disc swelling (328 µm) exceeds in-flight envelope.', 'warning');
+    });
+  }
+
+  if (demoResetBtn) {
+    demoResetBtn.addEventListener('click', () => {
+      stopPlayback();
+      applyMissionDay(14);
+      selectSystem('ocular');
+      showToast('Mission simulation reset to Day 14 baseline.', 'success');
+    });
+  }
+
+  function startPlayback() {
+    state.demoPlaying = true;
+    if (demoPlayBtn) {
+      demoPlayBtn.innerHTML = `
+        <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor" aria-hidden="true"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg>
+        <span>Pause</span>
+      `;
+    }
+    playbackTimer = setInterval(() => {
+      let nextDay = state.demoDay + 1;
+      if (nextDay > 30) {
+        nextDay = 1;
+      }
+      applyMissionDay(nextDay);
+    }, 1200);
+  }
+
+  function stopPlayback() {
+    state.demoPlaying = false;
+    if (playbackTimer) {
+      clearInterval(playbackTimer);
+      playbackTimer = null;
+    }
+    if (demoPlayBtn) {
+      demoPlayBtn.innerHTML = `
+        <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor" aria-hidden="true"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+        <span>Play</span>
+      `;
+    }
+  }
+
+  if (demoPlayBtn) {
+    demoPlayBtn.addEventListener('click', () => {
+      if (state.demoPlaying) {
+        stopPlayback();
+      } else {
+        startPlayback();
+      }
+    });
+  }
+
+  // ================= PSYCHOMOTOR VIGILANCE TASK (PVT) ENGINE (PHASE 5) =================
+  const openPvtBtn = document.getElementById('open-pvt-btn');
+  const closePvtModal = document.getElementById('close-pvt-modal');
+  const pvtDismissBtn = document.getElementById('pvt-dismiss-btn');
+  const pvtBackdrop = document.getElementById('pvt-backdrop');
+  const pvtStartBtn = document.getElementById('pvt-start-btn');
+  const pvtBox = document.getElementById('pvt-box');
+  const pvtStatusText = document.getElementById('pvt-status-text');
+  const pvtTimerText = document.getElementById('pvt-timer-text');
+  const pvtSubText = document.getElementById('pvt-sub-text');
+  const pvtResultsPanel = document.getElementById('pvt-results-panel');
+  const pvtMeanScore = document.getElementById('pvt-mean-score');
+  const pvtLapsesCount = document.getElementById('pvt-lapses-count');
+
+  const pvtState = {
+    active: false,
+    trial: 0,
+    maxTrials: 3,
+    results: [],
+    lapses: 0,
+    waitingStimulus: false,
+    stimulusActive: false,
+    stimulusStartTime: 0,
+    timerId: null,
+    animFrameId: null
+  };
+
+  if (openPvtBtn) {
+    openPvtBtn.addEventListener('click', () => {
+      resetPvtSession();
+      openModal(pvtBackdrop, '#pvt-start-btn');
+    });
+  }
+
+  if (closePvtModal) {
+    closePvtModal.addEventListener('click', () => {
+      cancelPvt();
+      closeModal(pvtBackdrop);
+    });
+  }
+
+  if (pvtDismissBtn) {
+    pvtDismissBtn.addEventListener('click', () => {
+      cancelPvt();
+      closeModal(pvtBackdrop);
+    });
+  }
+
+  function resetPvtSession() {
+    cancelPvt();
+    pvtState.trial = 0;
+    pvtState.results = [];
+    pvtState.lapses = 0;
+    if (pvtBox) pvtBox.className = 'pvt-test-box';
+    if (pvtStatusText) pvtStatusText.textContent = 'Click "Start Test Session" to Begin';
+    if (pvtTimerText) {
+      pvtTimerText.style.display = 'none';
+      pvtTimerText.textContent = '0 ms';
+    }
+    if (pvtSubText) pvtSubText.textContent = '3 random stimulus repetitions';
+    if (pvtResultsPanel) pvtResultsPanel.style.display = 'none';
+    if (pvtStartBtn) pvtStartBtn.disabled = false;
+  }
+
+  function cancelPvt() {
+    pvtState.active = false;
+    pvtState.waitingStimulus = false;
+    pvtState.stimulusActive = false;
+    if (pvtState.timerId) clearTimeout(pvtState.timerId);
+    if (pvtState.animFrameId) cancelAnimationFrame(pvtState.animFrameId);
+  }
+
+  function startNextPvtTrial() {
+    pvtState.trial++;
+    pvtState.waitingStimulus = true;
+    pvtState.stimulusActive = false;
+    if (pvtBox) pvtBox.className = 'pvt-test-box waiting';
+    if (pvtStatusText) pvtStatusText.textContent = `Trial ${pvtState.trial} of ${pvtState.maxTrials}: Wait for Emerald stimulus...`;
+    if (pvtTimerText) {
+      pvtTimerText.style.display = 'block';
+      pvtTimerText.textContent = 'Ready...';
+    }
+    if (pvtSubText) pvtSubText.textContent = 'Do not click prematurely (false starts receive penalty)';
+
+    // Random stimulus delay between 1.8s and 3.5s
+    const delay = 1800 + Math.random() * 1700;
+    pvtState.timerId = setTimeout(() => {
+      triggerPvtStimulus();
+    }, delay);
+  }
+
+  function triggerPvtStimulus() {
+    pvtState.waitingStimulus = false;
+    pvtState.stimulusActive = true;
+    pvtState.stimulusStartTime = performance.now();
+    if (pvtBox) pvtBox.className = 'pvt-test-box active';
+    if (pvtStatusText) pvtStatusText.textContent = 'CLICK OR TAP NOW!';
+
+    function tick() {
+      if (!pvtState.stimulusActive) return;
+      const elapsed = Math.round(performance.now() - pvtState.stimulusStartTime);
+      if (pvtTimerText) pvtTimerText.textContent = `${elapsed} ms`;
+      pvtState.animFrameId = requestAnimationFrame(tick);
+    }
+    tick();
+  }
+
+  function handlePvtClick() {
+    if (!pvtState.active) return;
+
+    if (pvtState.waitingStimulus) {
+      clearTimeout(pvtState.timerId);
+      pvtState.waitingStimulus = false;
+      if (pvtBox) pvtBox.className = 'pvt-test-box penalty';
+      if (pvtStatusText) pvtStatusText.textContent = 'FALSE START! Clicked before stimulus.';
+      if (pvtTimerText) pvtTimerText.textContent = '+150 ms Penalty';
+      pvtState.results.push(360);
+      pvtState.lapses++;
+      setTimeout(() => {
+        if (pvtState.trial < pvtState.maxTrials) {
+          startNextPvtTrial();
+        } else {
+          finishPvtSession();
+        }
+      }, 1200);
+      return;
+    }
+
+    if (pvtState.stimulusActive) {
+      pvtState.stimulusActive = false;
+      cancelAnimationFrame(pvtState.animFrameId);
+      const latency = Math.round(performance.now() - pvtState.stimulusStartTime);
+      pvtState.results.push(latency);
+      if (latency > 500) pvtState.lapses++;
+
+      if (pvtBox) pvtBox.className = 'pvt-test-box';
+      if (pvtStatusText) pvtStatusText.textContent = `Trial ${pvtState.trial} Recorded: ${latency} ms`;
+      if (pvtTimerText) pvtTimerText.textContent = `${latency} ms`;
+
+      setTimeout(() => {
+        if (pvtState.trial < pvtState.maxTrials) {
+          startNextPvtTrial();
+        } else {
+          finishPvtSession();
+        }
+      }, 900);
+    }
+  }
+
+  function finishPvtSession() {
+    pvtState.active = false;
+    const sum = pvtState.results.reduce((a, b) => a + b, 0);
+    const mean = Math.round(sum / pvtState.results.length);
+
+    if (pvtBox) pvtBox.className = 'pvt-test-box';
+    if (pvtStatusText) pvtStatusText.textContent = 'Session Complete! Results Calculated';
+    if (pvtTimerText) pvtTimerText.style.display = 'none';
+    if (pvtSubText) pvtSubText.textContent = `Average of ${pvtState.maxTrials} trials: ${mean} ms`;
+    if (pvtResultsPanel) pvtResultsPanel.style.display = 'block';
+    if (pvtMeanScore) pvtMeanScore.textContent = `${mean} ms`;
+    if (pvtLapsesCount) pvtLapsesCount.textContent = `${pvtState.lapses}`;
+    if (pvtStartBtn) pvtStartBtn.disabled = false;
+
+    state.systems.neuro.metric1Val = `${mean} ms`;
+    state.systems.neuro.metric2Val = `${pvtState.lapses} lapse${pvtState.lapses === 1 ? '' : 's'}`;
+    const neuroStatus = mean > 260 ? 'attention' : 'in-range';
+    state.systems.neuro.status = neuroStatus;
+    const td = state.systems.neuro.trendData;
+    if (td && td.length > 0) {
+      td[td.length - 1].observed = mean;
+    }
+
+    updateOverallGauge();
+    if (state.selectedSystem === 'neuro') {
+      selectSystem('neuro');
+    }
+
+    showToast(`PVT Test Completed: Mean latency ${mean} ms (${neuroStatus === 'in-range' ? 'Nominal' : 'Watch'}).`, 'success');
+  }
+
+  if (pvtStartBtn) {
+    pvtStartBtn.addEventListener('click', () => {
+      pvtState.active = true;
+      pvtState.trial = 0;
+      pvtState.results = [];
+      pvtState.lapses = 0;
+      pvtStartBtn.disabled = true;
+      if (pvtResultsPanel) pvtResultsPanel.style.display = 'none';
+      startNextPvtTrial();
+    });
+  }
+
+  if (pvtBox) {
+    pvtBox.addEventListener('click', handlePvtClick);
+    pvtBox.addEventListener('keydown', (e) => {
+      if (e.key === ' ' || e.key === 'Enter') {
+        e.preventDefault();
+        handlePvtClick();
+      }
+    });
+  }
+
   // Backdrop click closes modal
-  [measurementBackdrop, systemDrawerBackdrop, surgeonLedgerBackdrop, evidenceBackdrop, guidanceBackdrop, glossaryBackdrop].forEach(backdrop => {
+  [measurementBackdrop, systemDrawerBackdrop, surgeonLedgerBackdrop, evidenceBackdrop, guidanceBackdrop, glossaryBackdrop, pvtBackdrop].forEach(backdrop => {
     if (!backdrop) return;
     backdrop.addEventListener('click', (e) => {
       if (e.target === backdrop) {
@@ -1443,7 +2023,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // Keyboard accessibility: ESC key to close, focus trapping, and D for theme WITHOUT modifier hijack (Requirement 7)
   document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape') {
-      [measurementBackdrop, systemDrawerBackdrop, surgeonLedgerBackdrop, evidenceBackdrop, guidanceBackdrop, glossaryBackdrop].forEach(b => {
+      [measurementBackdrop, systemDrawerBackdrop, surgeonLedgerBackdrop, evidenceBackdrop, guidanceBackdrop, glossaryBackdrop, pvtBackdrop].forEach(b => {
         if (b && b.classList.contains('open')) closeModal(b);
       });
       const popover = document.getElementById('readiness-popover');

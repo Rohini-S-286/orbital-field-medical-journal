@@ -128,5 +128,57 @@
     "sourceId": "NASA-HRP-CARDIO",
     "confidence": "High (Pre/post-flight MRI & in-flight circumferential tape telemetry)",
     "physiologicNote": "Fluid shift produces immediate bird-leg phenomenon (-1 to -2 cm), followed by slow slow-twitch soleus atrophy if unexercised."
+  },
+  "reactionTime": {
+    "id": "reactionTime",
+    "label": "PVT Response Latency",
+    "systemId": "neuro",
+    "unit": "ms",
+    "earthNominal": { "min": 180, "max": 240 },
+    "expectedInFlight": { "min": 190, "max": 260 },
+    "personalBaseline": 214,
+    "personalSd": 12.0,
+    "sourceId": "NASA-STD-3001",
+    "confidence": "High (Standardized Psychomotor Vigilance Task)",
+    "physiologicNote": "Behavioral alertness measure. Reaction times > 300 ms or lapses > 500 ms indicate operational fatigue and circadian sleep debt."
+  },
+  "sleepDuration": {
+    "id": "sleepDuration",
+    "label": "Sleep Duration & Architecture",
+    "systemId": "sleep",
+    "unit": "hrs",
+    "earthNominal": { "min": 7.0, "max": 9.0 },
+    "expectedInFlight": { "min": 6.5, "max": 8.5 },
+    "personalBaseline": 7.2,
+    "personalSd": 0.5,
+    "sourceId": "NASA-STD-3001",
+    "confidence": "High (Actigraphy & polysomnography headband)",
+    "physiologicNote": "Orbital dawn/dusk cycle (90-minute revolutions) suppresses natural melatonin. Sleep < 6.0 hrs elevates cognitive error rates."
+  },
+  "radiationDose": {
+    "id": "radiationDose",
+    "label": "Cosmic Radiation Exposure",
+    "systemId": "immune",
+    "unit": "µGy/d",
+    "earthNominal": { "min": 5, "max": 15 },
+    "expectedInFlight": { "min": 200, "max": 400 },
+    "personalBaseline": 270,
+    "personalSd": 25.0,
+    "sourceId": "NASA-STD-3001",
+    "confidence": "High (Continuous passive and active semiconductor radiation dosimeters)",
+    "physiologicNote": "Galactic cosmic radiation and South Atlantic Anomaly crossings increase daily ionizing exposure ~20-30x terrestrial background."
+  },
+  "coreTemp": {
+    "id": "coreTemp",
+    "label": "Core Body Temperature",
+    "systemId": "metabolic",
+    "unit": "°C",
+    "earthNominal": { "min": 36.5, "max": 37.3 },
+    "expectedInFlight": { "min": 36.8, "max": 37.6 },
+    "personalBaseline": 37.0,
+    "personalSd": 0.2,
+    "sourceId": "ESA-HPS",
+    "confidence": "High (Circadian ingestible pill & double sensor forehead telemetry)",
+    "physiologicNote": "Spaceflight core body temperature runs ~0.5–1.0 °C higher (space fever) due to impaired convective skin heat dissipation."
   }
 }
