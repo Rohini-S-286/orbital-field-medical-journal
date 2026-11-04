@@ -7,8 +7,26 @@
   <meta name="theme-color" content="#FBF6EA">
   <title>Orbital Field Medical Journal — Crew Health Telemetry</title>
   
-  <link rel="manifest" href="manifest.json">
-  <link rel="stylesheet" href="styles.css">
+  <!-- Favicon and PWA icons -->
+  <link rel="icon" type="image/png" sizes="32x32" href="./icons/favicon-32x32.png">
+  <link rel="apple-touch-icon" href="./icons/apple-touch-icon.png">
+  <link rel="manifest" href="./manifest.json">
+
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://rohini-s-286.github.io/orbital-field-medical-journal/">
+  <meta property="og:title" content="Orbital Field Medical Journal — Astronaut Health Telemetry">
+  <meta property="og:description" content="Offline-first spaceflight crew physiological monitoring and clinical telemetry logging PWA for NASA Space Apps 2026.">
+  <meta property="og:image" content="./og-image.png">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:url" content="https://rohini-s-286.github.io/orbital-field-medical-journal/">
+  <meta name="twitter:title" content="Orbital Field Medical Journal — Astronaut Health Telemetry">
+  <meta name="twitter:description" content="Offline-first spaceflight crew physiological monitoring and clinical telemetry logging PWA for NASA Space Apps 2026.">
+  <meta name="twitter:image" content="./og-image.png">
+
+  <link rel="stylesheet" href="./styles.css">
 </head>
 <body class="paper-glow">
 
@@ -807,8 +825,8 @@
   <div id="toast-container" class="toast-container" aria-live="polite" aria-atomic="true"></div>
 
   <!-- Clinical Knowledge Base Data Script -->
-  <script src="clinical-ranges.js"></script>
+  <script src="./clinical-ranges.js"></script>
   <!-- Application Core Script -->
-  <script src="app.js"></script>
+  <script src="./app.js"></script>
 </body>
 </html>

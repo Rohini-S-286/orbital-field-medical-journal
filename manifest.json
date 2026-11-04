@@ -1,23 +1,32 @@
 {
   "name": "Orbital Field Medical Journal",
   "short_name": "AstroHealth",
-  "description": "Spaceflight crew physiological monitoring and field medical journal for long-duration orbital missions.",
-  "start_url": "./index.html",
+  "description": "Spaceflight crew physiological monitoring and clinical telemetry logging PWA for long-duration orbital missions.",
+  "start_url": "./",
+  "scope": "./",
   "display": "standalone",
+  "orientation": "any",
   "background_color": "#FBF6EA",
-  "theme_color": "#0B7A56",
+  "theme_color": "#FBF6EA",
+  "categories": ["medical", "health", "utilities"],
   "icons": [
     {
-      "src": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192' fill='none'%3E%3Crect width='192' height='192' rx='40' fill='%230B7A56'/%3E%3Cpath d='M96 36v120M36 96h120' stroke='%23FFFDF7' stroke-width='20' stroke-linecap='round'/%3E%3Ccircle cx='96' cy='96' r='24' fill='%23FBF6EA' stroke='%230B7A56' stroke-width='6'/%3E%3C/svg%3E",
+      "src": "./icons/icon-192.png",
       "sizes": "192x192",
-      "type": "image/svg+xml",
-      "purpose": "any maskable"
+      "type": "image/png",
+      "purpose": "any"
     },
     {
-      "src": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512' fill='none'%3E%3Crect width='512' height='512' rx='100' fill='%230B7A56'/%3E%3Cpath d='M256 96v320M96 256h320' stroke='%23FFFDF7' stroke-width='48' stroke-linecap='round'/%3E%3Ccircle cx='256' cy='256' r='64' fill='%23FBF6EA' stroke='%230B7A56' stroke-width='16'/%3E%3C/svg%3E",
+      "src": "./icons/icon-512.png",
       "sizes": "512x512",
-      "type": "image/svg+xml",
-      "purpose": "any maskable"
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "./icons/icon-maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
     }
   ]
 }

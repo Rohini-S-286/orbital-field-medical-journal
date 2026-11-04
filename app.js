@@ -1148,10 +1148,11 @@ document.addEventListener('DOMContentLoaded', () => {
   updateOverallGauge();
   selectSystem('ocular');
 
-  // Service Worker for real offline use (Requirement 7)
-  if ('serviceWorker' in navigator) {
+  // Service Worker for real offline use (HTTPS or localhost only, relative scope)
+  const isSecureOrLocal = window.location.protocol === 'https:' || window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+  if ('serviceWorker' in navigator && isSecureOrLocal) {
     window.addEventListener('load', () => {
-      navigator.serviceWorker.register('./sw.js')
+      navigator.serviceWorker.register('./sw.js', { scope: './' })
         .then(reg => console.log('Orbital Medical Journal SW active:', reg.scope))
         .catch(err => console.log('SW registration note:', err));
     });

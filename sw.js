@@ -1,12 +1,21 @@
 // Orbital Field Medical Journal - Offline-First Service Worker
-const CACHE_NAME = 'astro-medical-journal-v2';
+// Versioned cache name
+const CACHE_NAME = 'ofmj-v1';
+
 const STATIC_ASSETS = [
   './',
   './index.html',
   './styles.css',
   './clinical-ranges.js',
   './app.js',
-  './manifest.json'
+  './manifest.json',
+  './icons/icon-192.png',
+  './icons/icon-512.png',
+  './icons/icon-maskable.png',
+  './icons/favicon-32x32.png',
+  './icons/apple-touch-icon.png',
+  './fonts/fraunces.woff2',
+  './fonts/inter.woff2'
 ];
 
 self.addEventListener('install', (event) => {
@@ -32,21 +41,16 @@ self.addEventListener('activate', (event) => {
 });
 
 self.addEventListener('fetch', (event) => {
-  const url = new URL(event.request.url);
+  // Only handle GET requests
+  if (event.request.method !== 'GET') return;
 
-  // Cache-first strategy for local assets and Google Fonts
   event.respondWith(
-    caches.match(event.request).then((cachedResponse) => {
+    caches.match(event.request, { ignoreSearch: true }).then((cachedResponse) => {
       if (cachedResponse) {
         return cachedResponse;
       }
       return fetch(event.request).then((networkResponse) => {
-        // Cache valid static responses or fonts
-        if (
-          networkResponse &&
-          networkResponse.status === 200 &&
-          (networkResponse.type === 'basic' || url.origin.includes('googleapis') || url.origin.includes('gstatic'))
-        ) {
+        if (networkResponse && networkResponse.status === 200 && networkResponse.type === 'basic') {
           const responseToCache = networkResponse.clone();
           caches.open(CACHE_NAME).then((cache) => {
             cache.put(event.request, responseToCache);
@@ -54,7 +58,8 @@ self.addEventListener('fetch', (event) => {
         }
         return networkResponse;
       }).catch(() => {
-        if (event.request.mode === 'navigate') {
+        // Fallback to index.html when offline
+        if (event.request.mode === 'navigate' || (event.request.headers.get('accept') && event.request.headers.get('accept').includes('text/html'))) {
           return caches.match('./index.html');
         }
       });
