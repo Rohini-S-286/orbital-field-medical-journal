@@ -1,21 +1,26 @@
 // Orbital Field Medical Journal - Offline-First Service Worker
 // Versioned cache name
-const CACHE_NAME = 'ofmj-v1';
+const CACHE_NAME = 'ofmj-v2';
 
 const STATIC_ASSETS = [
   './',
   './index.html',
+  './tests.html',
   './styles.css',
   './clinical-ranges.js',
   './app.js',
   './manifest.json',
+  './og-image.png',
   './icons/icon-192.png',
   './icons/icon-512.png',
   './icons/icon-maskable.png',
   './icons/favicon-32x32.png',
   './icons/apple-touch-icon.png',
   './fonts/fraunces.woff2',
-  './fonts/inter.woff2'
+  './fonts/inter.woff2',
+  './data/indicators.json',
+  './data/systems.json',
+  './data/sources.json'
 ];
 
 self.addEventListener('install', (event) => {
