@@ -23,7 +23,7 @@ const CLINICAL_SOURCES = {
     publisher: 'NASA Human Research Program',
     year: '2020',
     url: 'https://humanresearchroadmap.nasa.gov/evidence/reports/SANS.pdf',
-    verification: 'verified',
+    verification: 'needs_verification',
     scope: 'Longitudinal optical coherence tomography (OCT) metrics, retinal thickening thresholds.'
   },
   'NASA-HRP-CARDIO': {
@@ -64,8 +64,9 @@ const CLINICAL_INDICATORS = {
     label: 'Systolic Arterial Pressure',
     unit: 'mmHg',
     earthNominal: { min: 90, max: 120 },
-    expectedInFlight: { min: 95, max: 130 },
+    expectedInFlight: { min: 95, max: 140 },
     personalBaseline: 115,
+    personalSd: 4.0,
     sourceId: 'NASA-STD-3001',
     confidence: 'High (ISS Expeditions 1–70 normative telemetry)',
     physiologicNote: 'Initial cephalad fluid shift elevates stroke volume; subsequent hypovolemia (~12% plasma reduction) stabilizes resting pressures.'
@@ -75,8 +76,9 @@ const CLINICAL_INDICATORS = {
     label: 'Diastolic Arterial Pressure',
     unit: 'mmHg',
     earthNominal: { min: 60, max: 80 },
-    expectedInFlight: { min: 65, max: 85 },
+    expectedInFlight: { min: 65, max: 90 },
     personalBaseline: 75,
+    personalSd: 3.5,
     sourceId: 'NASA-STD-3001',
     confidence: 'High (ISS Expeditions 1–70 normative telemetry)',
     physiologicNote: 'Systemic vascular resistance generally maintained or slightly decreased in microgravity.'
@@ -86,8 +88,9 @@ const CLINICAL_INDICATORS = {
     label: 'Resting Heart Rate',
     unit: 'bpm',
     earthNominal: { min: 60, max: 100 },
-    expectedInFlight: { min: 55, max: 90 },
+    expectedInFlight: { min: 55, max: 95 },
     personalBaseline: 62,
+    personalSd: 4.0,
     sourceId: 'NASA-HRP-CARDIO',
     confidence: 'High (Continuous Holter & resting vitals telemetry)',
     physiologicNote: 'Resting heart rate in conditioned astronauts often stays lower in-flight unless hypovolemic stress or thermal load is present.'
@@ -99,6 +102,7 @@ const CLINICAL_INDICATORS = {
     earthNominal: { min: 95, max: 100 },
     expectedInFlight: { min: 96, max: 100 },
     personalBaseline: 99,
+    personalSd: 1.0,
     sourceId: 'NASA-STD-3001',
     confidence: 'High (Continuous cabin life support matching)',
     physiologicNote: 'Homogeneous alveolar ventilation in 0g preserves high hemoglobin saturation.'
@@ -110,7 +114,7 @@ const CLINICAL_INDICATORS = {
     earthNominal: { min: 270, max: 300 },
     expectedInFlight: { min: 280, max: 325 },
     personalBaseline: 298,
-    personalSd: 5.0,
+    personalSd: 5.5,
     sourceId: 'NASA-HRP-SANS',
     confidence: 'Moderate (Longitudinal OCT fundus scans from 40+ long-duration flyers)',
     physiologicNote: 'Persistent cephalad venous pressure elevates optic nerve sheath diameter (ONSD) and can induce disc edema.'
@@ -249,10 +253,11 @@ const TIERED_GUIDANCE = {
     actions: [
       'Report new or worsening vision changes to the flight surgeon and continue your assigned countermeasures.',
       'Recalibrate cabin workstation viewing distance to minimize digital visual fatigue.',
-      'Verify cabin local air diffuser velocity (> 0.1 m/s) to ensure zero localized CO2 bubble accumulation near face.',
+      'Verify cabin local air diffuser function to ensure adequate atmospheric circulation and prevent localized CO2 accumulation.',
       'Schedule follow-up optical coherence tomography (OCT) within 48 hours.'
     ],
-    source: 'NASA Human Research Program SANS Evidence Report (2020 Rev)'
+    source: 'NASA Human Research Program SANS Evidence Report (2020 Rev)',
+    sourceVerification: 'needs_verification'
   },
   flightSurgeon: {
     level: 'Contact Flight Surgeon (Flagged Deviation)',
@@ -261,84 +266,171 @@ const TIERED_GUIDANCE = {
     summary: 'Clinically significant shift requiring ground medical officer evaluation and customized telemetry review.',
     actions: [
       'Transmit high-resolution 12-lead Holter ECG and ocular fundus images on next Ku-band downlink.',
-      'Request real-time private telemedicine consultation over TDRS East/West communication window.',
+      'Request real-time private telemedicine consultation over TDRS communication window.',
       'Suspend high-impact maximal resistive lifting until baroreceptor and cardiovascular stability confirmed by surgeon.',
       'Review continuous cabin atmospheric logs (pCO2, pO2, total cabin pressure, trace contaminants).'
     ],
-    source: 'ISS Medical Operations Protocol MedB-7.1'
+    source: 'ISS Medical Operations Protocol MedB-7.1',
+    sourceVerification: 'needs_verification'
   },
   emergency: {
     level: 'Emergency Response (Immediate Action)',
     tag: 'Tier 4 Emergency Protocol',
     statusKey: 'emergency',
-    summary: 'Critical anomaly detected. Initiate station emergency medical procedures immediately.',
+    summary: 'Critical anomaly detected. Contact the flight surgeon and crew immediately.',
     actions: [
-      'Notify Crew Commander and onboard Medical Officer immediately via intra-cabin voice intercom.',
+      'Contact the flight surgeon and crew immediately via intra-cabin voice intercom and emergency medical loop.',
       'Don Portable Breathing Apparatus (PBA) / Emergency Oxygen Mask if atmospheric toxicity or hypoxia suspected.',
-      'Deploy Crew Medical Restraint System (CMRS) and Automated External Defibrillator (AED) to Columbus / Destiny module.',
-      'Open direct emergency medical voice loop to MCC-Houston Surgeon (Surgeon-1) or EAC-Cologne.',
-      'Begin stabilizing primary airway, breathing, and systemic circulation (ABCs) according to ISS Emergency Medical Checklist.'
+      'Deploy Crew Medical Restraint System (CMRS) and Automated External Defibrillator (AED) to Destiny / Columbus module.',
+      'Open direct emergency medical voice loop to Flight Surgeon (Surgeon-1).',
+      'Begin stabilizing primary airway, breathing, and systemic circulation (ABCs) according to station emergency checklist.'
     ],
-    source: 'ISS Emergency Medical Procedures, Flight Rule B13-102'
+    source: 'ISS Emergency Medical Procedures, Flight Rule B13-102',
+    sourceVerification: 'needs_verification'
   }
 };
 
+CLINICAL_INDICATORS.restingHr = CLINICAL_INDICATORS.heartRate;
+
+const INDICATORS = CLINICAL_INDICATORS;
+
 /**
- * Standard Indicator Classifier against earth nominal, expected in-flight, and emergency thresholds.
+ * Three-Reference Indicator Classifier comparing:
+ * 1. Terrestrial Earth 1g normal range
+ * 2. In-flight microgravity expected adaptation envelope
+ * 3. Individual astronaut personal baseline and variance
  */
-function classifyIndicator(indicatorKey, val) {
-  const ind = CLINICAL_INDICATORS[indicatorKey];
-  if (!ind) return { status: 'in-range', label: 'In range' };
-
-  if (indicatorKey === 'systolic') {
-    if (val >= 170 || val <= 85) return { status: 'emergency', label: 'Emergency' };
-    if (val >= 145 || val < 95) return { status: 'flight-surgeon', label: 'Contact flight surgeon' };
-    if (val >= 131 || val < 100) return { status: 'attention', label: 'Watch' };
-    return { status: 'in-range', label: 'In range' };
-  }
-  if (indicatorKey === 'opticDisc') {
-    if (val >= 340) return { status: 'emergency', label: 'Emergency' };
-    if (val >= 326) return { status: 'flight-surgeon', label: 'Contact flight surgeon' };
-    if (val >= 301) return { status: 'attention', label: 'Watch' };
-    return { status: 'in-range', label: 'In range' };
+function classifyIndicator(indicatorId, value, customBaseline = null) {
+  const ind = (typeof CLINICAL_INDICATORS !== 'undefined' && CLINICAL_INDICATORS[indicatorId]) ||
+              (typeof INDICATORS !== 'undefined' && INDICATORS[indicatorId]);
+  if (!ind) {
+    return { status: 'in-range', label: 'In range', reason: 'Indicator reference profile not registered.' };
   }
 
-  // Generic bounds
-  if (val < ind.expectedInFlight.min * 0.85 || val > ind.expectedInFlight.max * 1.25) {
-    return { status: 'emergency', label: 'Emergency' };
+  const earthMin = ind.earthNominal.min;
+  const earthMax = ind.earthNominal.max;
+  const flightMin = ind.expectedInFlight.min;
+  const flightMax = ind.expectedInFlight.max;
+  const baseline = typeof customBaseline === 'number' ? customBaseline : ind.personalBaseline;
+  const sd = ind.personalSd || 1.0;
+
+  // 1. Critical Emergency Thresholds
+  if (indicatorId === 'systolic' && (value >= 170 || value <= 85)) {
+    return {
+      status: 'emergency',
+      label: 'Emergency',
+      reason: 'Critical hemodynamic deviation outside acute flight survival envelope. Immediate crew medical stabilization required.'
+    };
   }
-  if (val < ind.expectedInFlight.min || val > ind.expectedInFlight.max) {
-    return { status: 'flight-surgeon', label: 'Contact flight surgeon' };
+  if (indicatorId === 'diastolic' && (value >= 110 || value <= 45)) {
+    return {
+      status: 'emergency',
+      label: 'Emergency',
+      reason: 'Critical diastolic pressure excursion outside viable operational tolerance.'
+    };
   }
-  if (val < ind.earthNominal.min || val > ind.earthNominal.max) {
-    return { status: 'attention', label: 'Watch' };
+  if (indicatorId === 'heartRate' && (value >= 135 || value <= 40)) {
+    return {
+      status: 'emergency',
+      label: 'Emergency',
+      reason: 'Severe tachyarrhythmia or profound bradycardia detected in microgravity.'
+    };
   }
-  return { status: 'in-range', label: 'In range' };
+  if (indicatorId === 'spo2' && value < 90) {
+    return {
+      status: 'emergency',
+      label: 'Emergency',
+      reason: 'Severe arterial hypoxemia (<90% SpO2). Immediate emergency supplemental oxygenation required.'
+    };
+  }
+  if (indicatorId === 'opticDisc' && value >= 340) {
+    return {
+      status: 'emergency',
+      label: 'Emergency',
+      reason: 'Grade 4 papilledema / acute intracranial hypertension suspected.'
+    };
+  }
+
+  // 2. Flight Surgeon Escalation Thresholds (exceeds expected in-flight adaptation envelope)
+  if (value < flightMin || value > flightMax) {
+    return {
+      status: 'flight-surgeon',
+      label: 'Contact flight surgeon',
+      reason: `Exceeds expected in-flight microgravity envelope (${flightMin}–${flightMax} ${ind.unit}). Telemedicine consultation recommended.`
+    };
+  }
+
+  // 3. Attention / Watch (inside expected in-flight envelope, but drifting significantly from personal baseline)
+  const diffFromBaseline = Math.abs(value - baseline);
+  const isDrifting = diffFromBaseline >= (2.0 * sd);
+
+  if (isDrifting) {
+    return {
+      status: 'attention',
+      label: 'Watch',
+      reason: 'Within the expected in-flight range, but trending up from your own baseline, so Watch.'
+    };
+  }
+
+  // 4. In Range (Nominal across In-Flight envelope and consistent with personal baseline)
+  return {
+    status: 'in-range',
+    label: 'In range',
+    reason: `Within expected in-flight adaptation envelope (${flightMin}–${flightMax} ${ind.unit}) and consistent with personal baseline.`
+  };
 }
 
 /**
  * Validates vital set against human physiological viability boundaries.
  */
-function validateVitalInputs(vitals) {
-  const sys = vitals.sysBP;
-  const dia = vitals.diaBP;
-  const hr = vitals.hr;
-  const spo2 = vitals.spo2;
+function validateVitalInputs(values) {
+  let sys, dia, hr, spo2;
+  if (typeof values === 'object' && values !== null) {
+    sys = values.sysBP;
+    dia = values.diaBP;
+    hr = values.hr;
+    spo2 = values.spo2;
+  } else {
+    sys = arguments[0];
+    dia = arguments[1];
+    hr = arguments[2];
+    spo2 = arguments[3];
+  }
 
-  if (isNaN(sys) || sys < 50 || sys > 260) return { valid: false, error: 'Systolic BP must be between 50 and 260 mmHg.' };
-  if (isNaN(dia) || dia < 30 || dia > 160) return { valid: false, error: 'Diastolic BP must be between 30 and 160 mmHg.' };
-  if (sys <= dia) return { valid: false, error: 'Systolic BP must be strictly greater than Diastolic BP.' };
-  if (isNaN(hr) || hr < 30 || hr > 240) return { valid: false, error: 'Heart Rate must be between 30 and 240 bpm.' };
-  if (isNaN(spo2) || spo2 < 50 || spo2 > 100) return { valid: false, error: 'SpO2 must be between 50% and 100%.' };
-
+  if (isNaN(sys) || sys < 50 || sys > 260) {
+    return { valid: false, error: 'Systolic BP must be between 50 and 260 mmHg.' };
+  }
+  if (isNaN(dia) || dia < 30 || dia > 160) {
+    return { valid: false, error: 'Diastolic BP must be between 30 and 160 mmHg.' };
+  }
+  if (sys <= dia) {
+    return { valid: false, error: 'Systolic BP must be strictly greater than Diastolic BP.' };
+  }
+  if (isNaN(hr) || hr < 30 || hr > 240) {
+    return { valid: false, error: 'Heart Rate must be between 30 and 240 bpm.' };
+  }
+  if (isNaN(spo2) || spo2 < 50 || spo2 > 100) {
+    return { valid: false, error: 'SpO2 must be between 50% and 100%.' };
+  }
   return { valid: true };
 }
 
-// Attach to window
+// Attach to window and modules
 if (typeof window !== 'undefined') {
+  window.INDICATORS = INDICATORS;
   window.CLINICAL_INDICATORS = CLINICAL_INDICATORS;
   window.CLINICAL_SOURCES = CLINICAL_SOURCES;
   window.TIERED_GUIDANCE = TIERED_GUIDANCE;
   window.classifyIndicator = classifyIndicator;
   window.validateVitalInputs = validateVitalInputs;
+}
+if (typeof module !== 'undefined' && module.exports) {
+  module.exports = {
+    INDICATORS,
+    CLINICAL_INDICATORS,
+    CLINICAL_SOURCES,
+    TIERED_GUIDANCE,
+    classifyIndicator,
+    validateVitalInputs
+  };
 }

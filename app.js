@@ -96,14 +96,14 @@ document.addEventListener('DOMContentLoaded', () => {
         id: 'ocular',
         name: 'Ocular & SANS Monitoring',
         subtitle: 'Spaceflight-Associated Neuro-ocular Syndrome',
-        status: 'attention',
+        status: 'in-range',
         primaryIndicator: 'opticDisc',
         yUnit: 'µm',
         baselineMin: 270,
         baselineMax: 300,
         metric1Label: 'Peripapillary retinal thickness (simulated)',
-        metric1Val: '312 µm',
-        metric1Sub: '+14 µm baseline shift [Simulated]',
+        metric1Val: '302 µm',
+        metric1Sub: '+4 µm baseline shift [Simulated]',
         metric2Label: 'Visual Acuity (LogMAR)',
         metric2Val: '0.08',
         metric2Sub: 'In nominal range [Simulated]',
@@ -111,12 +111,12 @@ document.addEventListener('DOMContentLoaded', () => {
         mechanism: 'Spaceflight-Associated Neuro-ocular Syndrome (SANS) results from loss of hydrostatic pressure gradient in microgravity, generating a persistent ~1.5–2.0 L cephalad fluid shift. Intraocular venous engorgement increases optic nerve sheath diameter (ONSD) and optic disc thickness.',
         trendData: [
           { day: 'MET-6', baseline: 298, observed: 298 },
-          { day: 'MET-5', baseline: 298, observed: 301 },
-          { day: 'MET-4', baseline: 298, observed: 304 },
-          { day: 'MET-3', baseline: 298, observed: 308 },
-          { day: 'MET-2', baseline: 298, observed: 310 },
-          { day: 'MET-1', baseline: 298, observed: 311 },
-          { day: 'Today', baseline: 298, observed: 312 },
+          { day: 'MET-5', baseline: 298, observed: 299 },
+          { day: 'MET-4', baseline: 298, observed: 300 },
+          { day: 'MET-3', baseline: 298, observed: 301 },
+          { day: 'MET-2', baseline: 298, observed: 301 },
+          { day: 'MET-1', baseline: 298, observed: 302 },
+          { day: 'Today', baseline: 298, observed: 302 },
         ]
       },
       cardio: {
@@ -471,6 +471,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const flightMin = indicator.expectedInFlight.min;
     const flightMax = indicator.expectedInFlight.max;
     const baseline = indicator.personalBaseline;
+    const sd = indicator.personalSd || 1.0;
     const unit = indicator.unit;
     const label = indicator.label;
 
@@ -481,10 +482,15 @@ document.addEventListener('DOMContentLoaded', () => {
     const diffSign = diffFromBaseline > 0 ? '+' : '';
     const diffText = `${diffSign}${diffFromBaseline.toFixed(1)} ${unit} (${diffSign}${pctDiff}%)`;
 
+    // For attention status or when within in-flight range but drifting from personal baseline
+    if (status === 'attention' || (inFlight && Math.abs(diffFromBaseline) >= 2.0 * sd)) {
+      return `<strong>${label} is ${currentVal} ${unit}:</strong> Within the expected in-flight range, but trending up from your own baseline, so Watch.`;
+    }
+
     let sentence = `<strong>${label} is ${currentVal} ${unit}:</strong> `;
     if (inEarth && inFlight) {
       sentence += `within standard Earth clinical range (${earthMin}–${earthMax} ${unit}) and expected in-flight adaptation range (${flightMin}–${flightMax} ${unit}). Aligns with personal baseline (${baseline} ${unit}, ${diffText}). Status: <strong>In range</strong>.`;
-    } else if (!inEarth && inFlight) {
+    } else if (inFlight) {
       sentence += `shifted relative to 1g Earth normal (${earthMin}–${earthMax} ${unit}), but within expected in-flight adaptation range (${flightMin}–${flightMax} ${unit}). Baseline variance is ${diffText} from personal baseline (${baseline} ${unit}). Status: <strong>Within expected range</strong>.`;
     } else {
       sentence += `exceeds expected in-flight envelope (${flightMin}–${flightMax} ${unit}) and Earth reference (${earthMin}–${earthMax} ${unit}). Observed variance of ${diffText} from personal baseline (${baseline} ${unit}). Status: <strong>${STATUS_CONFIG[status]?.label || 'Attention'}</strong>.`;
@@ -567,7 +573,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
       <!-- 3. Personal Baseline & Current Value -->
       <div class="ruler-row">
-        <span class="ruler-label">Personal & Cur</span>
+        <span class="ruler-label" title="Personal Baseline and Current Telemetry">Baseline / Cur</span>
         <div class="ruler-track-container" title="Baseline: ${baseline} ${unit} (±${sd}). Current: ${currentVal} ${unit}">
           <!-- Baseline confidence band -->
           <div class="ruler-baseline-band" style="left: ${baseBandLeft.toFixed(1)}%; width: ${baseBandWidth.toFixed(1)}%;" title="Personal rolling band: ${(baseline - sd).toFixed(1)}–${(baseline + sd).toFixed(1)}"></div>
@@ -1028,7 +1034,7 @@ document.addEventListener('DOMContentLoaded', () => {
     setBadge(crewReadinessBadge, overallStatus, statusLabel);
     const activeFlagEl = document.getElementById('summary-active-flag');
     if (activeFlagEl) {
-      activeFlagEl.textContent = `${statusLabel}`;
+      activeFlagEl.textContent = overallStatus === 'in-range' ? 'Station: All systems in range' : statusLabel;
       activeFlagEl.style.color = overallStatus === 'attention' ? 'var(--color-ochre-text)' : overallStatus === 'in-range' ? 'var(--color-emerald)' : 'var(--color-vermillion-text)';
     }
     document.getElementById('summary-readiness').textContent = `${state.overallReadiness}%`;
@@ -1109,6 +1115,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // ================= CLINICAL STATUS ENGINE (REQUIREMENT 3) =================
   function validateVitals(sysBP, diaBP, hr, spo2) {
+    const valFn = (typeof validateVitalInputs === 'function') ? validateVitalInputs : (window.validateVitalInputs || null);
+    if (valFn) {
+      const res = valFn({ sysBP, diaBP, hr, spo2 });
+      return res.valid ? null : res.error;
+    }
     if (isNaN(sysBP) || sysBP < 50 || sysBP > 260) {
       return 'Systolic BP must be between 50 and 260 mmHg.';
     }
@@ -1128,6 +1139,27 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   function classifyVitals(sysBP, diaBP, hr, spo2) {
+    const classFn = (typeof classifyIndicator === 'function') ? classifyIndicator : (window.classifyIndicator || null);
+    if (classFn) {
+      const cSys = classFn('systolic', sysBP);
+      const cDia = classFn('diastolic', diaBP);
+      const cHr = classFn('heartRate', hr);
+      const cSpo2 = classFn('spo2', spo2);
+
+      const all = [cSys, cDia, cHr, cSpo2];
+      const emerg = all.find(c => c.status === 'emergency');
+      if (emerg) return emerg;
+      const surgeon = all.find(c => c.status === 'flight-surgeon');
+      if (surgeon) return surgeon;
+      const att = all.find(c => c.status === 'attention');
+      if (att) return att;
+      return {
+        status: 'in-range',
+        label: 'In range',
+        reason: 'Parameters within expected in-flight adaptation envelope.'
+      };
+    }
+
     // 1. Emergency Criteria
     if (sysBP >= 170 || sysBP <= 85 || diaBP >= 110 || diaBP <= 45 || spo2 < 90 || hr >= 135 || hr <= 40) {
       return {
@@ -1137,7 +1169,7 @@ document.addEventListener('DOMContentLoaded', () => {
       };
     }
     // 2. Flight Surgeon Consultation Criteria
-    if (sysBP >= 145 || sysBP < 95 || diaBP >= 95 || diaBP < 60 || spo2 <= 93 || hr >= 110 || hr <= 48) {
+    if (sysBP >= 140 || sysBP < 95 || diaBP >= 90 || diaBP < 60 || spo2 <= 93 || hr >= 95 || hr <= 48) {
       return {
         status: 'flight-surgeon',
         label: 'Contact flight surgeon',
@@ -1145,7 +1177,7 @@ document.addEventListener('DOMContentLoaded', () => {
       };
     }
     // 3. Attention / Watch Criteria
-    if (sysBP >= 131 || sysBP < 100 || diaBP >= 86 || diaBP < 65 || spo2 <= 95 || hr >= 91 || hr <= 54) {
+    if (sysBP >= 125 || sysBP < 100 || diaBP >= 82 || diaBP < 65 || spo2 <= 95 || hr >= 74 || hr <= 54) {
       return {
         status: 'attention',
         label: 'Watch',
@@ -1168,10 +1200,11 @@ document.addEventListener('DOMContentLoaded', () => {
         return JSON.parse(data);
       } catch (e) {}
     }
+    const day = (state && (state.demoDay || state.missionDay)) || 14;
     // Initial simulated seed data if empty
     return [
       {
-        timestamp: 'Day 142, 06:40 UTC',
+        timestamp: `Day ${day}, 06:40 UTC`,
         sysBP: 116,
         diaBP: 74,
         hr: 58,
@@ -1180,7 +1213,7 @@ document.addEventListener('DOMContentLoaded', () => {
         note: 'Post-sleep baseline resting vitals nominal.'
       },
       {
-        timestamp: 'Day 141, 18:20 UTC',
+        timestamp: `Day ${Math.max(1, day - 1)}, 18:20 UTC`,
         sysBP: 122,
         diaBP: 78,
         hr: 66,
@@ -1652,7 +1685,7 @@ document.addEventListener('DOMContentLoaded', () => {
     },
     mars: {
       name: 'Mars Transit / Deep Space',
-      latency: '12 min',
+      latency: '12 min (illustrative: orbital geometry delay varies ~3 to 22 min)',
       gravity: '0.38g (Mars Gravity)',
       desc: 'High-latency autonomous operations. Earth medical advisory delayed 24 min round-trip.'
     },
@@ -1740,45 +1773,51 @@ document.addEventListener('DOMContentLoaded', () => {
   let playbackTimer = null;
 
   const MISSION_TIMELINE = {
-    1: { name: 'Day 1: Launch & Orbital Insertion', note: 'Neuro-vestibular adaptation onset; slight ataxia', ocular: 298, ocularStatus: 'in-range' },
-    2: { name: 'Day 2: Microgravity Acclimation', note: 'Cephalad fluid redistribution begins (~1.5L shift)', ocular: 300, ocularStatus: 'in-range' },
-    3: { name: 'Day 3: Vestibular Equilibrium', note: 'Cerebellar reweighting active; motion discomfort subsiding', ocular: 302, ocularStatus: 'in-range' },
-    7: { name: 'Day 7: First Week Routine', note: 'Nominal baseline vitals and treadmill exercise compliance', ocular: 304, ocularStatus: 'in-range' },
-    14: { name: 'Day 14: Mid-Mission Routine', note: 'Nominal steady-state routine; slight SANS shift (312 µm)', ocular: 312, ocularStatus: 'attention' },
-    18: { name: 'Day 18: Pre-EVA Preparation', note: 'Pre-breathe oxygenation & suit checkout', ocular: 315, ocularStatus: 'attention' },
-    19: { name: 'Day 19: INCIDENT: Post-EVA SANS Peak', note: 'Prolonged 7h EVA + elevated CO2: Retinal thickness 328 µm! Surgeon contact recommended.', ocular: 328, ocularStatus: 'flight-surgeon' },
-    20: { name: 'Day 20: Countermeasure Recovery', note: 'Enhanced lower-body negative pressure & rest protocol applied', ocular: 322, ocularStatus: 'attention' },
-    24: { name: 'Day 24: Stabilization', note: 'Retinal thickness resolves toward 314 µm; fatigue clearing', ocular: 314, ocularStatus: 'attention' },
-    30: { name: 'Day 30: Mission Completion', note: 'Pre-landing fluid loading completed; ready for atmospheric re-entry', ocular: 308, ocularStatus: 'in-range' }
+    1: { name: 'Day 1: Launch & Orbital Insertion', note: 'Neuro-vestibular adaptation onset; slight ataxia', ocular: 298, ocularStatus: 'in-range', caption: 'Day 1: Launch & orbital insertion. All systems nominal, initial neuro-vestibular adaptation onset.' },
+    2: { name: 'Day 2: Microgravity Acclimation', note: 'Cephalad fluid redistribution begins (~1.5L shift)', ocular: 299, ocularStatus: 'in-range', caption: 'Day 2: Early microgravity acclimation. Cephalad fluid shift commencing.' },
+    3: { name: 'Day 3: Vestibular Equilibrium', note: 'Cerebellar reweighting active; motion discomfort subsiding', ocular: 300, ocularStatus: 'in-range', caption: 'Day 3: Vestibular equilibrium stabilizing.' },
+    7: { name: 'Day 7: First Week Routine', note: 'Nominal baseline vitals and treadmill exercise compliance', ocular: 301, ocularStatus: 'in-range', caption: 'Day 7: First week complete. Cardiovascular adaptation and ARED training nominal.' },
+    10: { name: 'Day 10: Steady-State Acclimation', note: 'Physiological vitals stable within flight envelope', ocular: 302, ocularStatus: 'in-range', caption: 'Day 10: Steady-state microgravity equilibrium. Cardiovascular and ocular adaptation within expected in-flight ranges.' },
+    14: { name: 'Day 14: Mid-Mission Routine', note: 'Nominal steady-state routine; all systems in range (302 µm)', ocular: 302, ocularStatus: 'in-range', caption: 'Day 14: Mid-mission steady state. All systems in range, baseline adaptation stable.' },
+    18: { name: 'Day 18: Pre-EVA Preparation', note: 'Pre-breathe oxygenation & suit checkout (308 µm, in-range)', ocular: 308, ocularStatus: 'in-range', caption: 'Day 18: Pre-EVA preparation. Workload elevated; vitals and ocular baseline remain in-range.' },
+    19: { name: 'Day 19: INCIDENT: Post-EVA SANS Peak', note: 'Prolonged 7h EVA + elevated CO2: Retinal thickness 328 µm! Surgeon contact recommended.', ocular: 328, ocularStatus: 'flight-surgeon', caption: 'Day 19: EVA Incident. Post-EVA SANS peak (328 µm). Contact flight surgeon flagged; readiness adjusted to 74%.' },
+    20: { name: 'Day 20: Countermeasure Recovery', note: 'Enhanced lower-body negative pressure & rest protocol applied', ocular: 316, ocularStatus: 'attention', caption: 'Day 20: Countermeasure recovery initiated under close Watch protocol (316 µm).' },
+    24: { name: 'Day 24: Stabilization Under Watch', note: 'Retinal thickness resolves toward 316 µm; fatigue clearing', ocular: 316, ocularStatus: 'attention', caption: 'Day 24: Countermeasure recovery ongoing. Ocular swelling resolving under assigned protocol.' },
+    25: { name: 'Day 25: Post-Incident Stabilization', note: 'Retinal thickness restored to nominal envelope (306 µm)', ocular: 306, ocularStatus: 'in-range', caption: 'Day 25: Post-incident stabilization. Target countermeasures successful, returning toward baseline envelope (306 µm).' },
+    30: { name: 'Day 30: Mission Completion', note: 'Pre-landing fluid loading completed; ready for atmospheric re-entry', ocular: 306, ocularStatus: 'in-range', caption: 'Day 30: Mission completion & return prep. All systems stable within flight envelope, ready for re-entry protocols.' }
   };
 
   function getTimelineProfile(day) {
     if (MISSION_TIMELINE[day]) return MISSION_TIMELINE[day];
-    if (day < 14) {
-      const oc = Math.round(298 + ((day - 1) / 13) * 14);
+    if (day <= 17) {
+      const oc = Math.round(298 + ((day - 1) / 16) * 4); // 298 to 302 µm
       return {
-        name: `Day ${day}: Mission Steady Phase`,
-        note: 'Nominal adaptation telemetry',
+        name: `Day ${day}: Nominal Flight Operations`,
+        note: 'All physiological systems within expected in-flight envelope',
         ocular: oc,
-        ocularStatus: oc > 300 ? 'attention' : 'in-range'
+        ocularStatus: 'in-range',
+        caption: `Day ${day}: Nominal mission operations. All systems within expected adaptation ranges.`
       };
-    } else if (day < 19) {
-      const oc = Math.round(312 + ((day - 14) / 5) * 10);
-      return {
-        name: `Day ${day}: High Workload Phase`,
-        note: 'Elevated workload & mild CO2 transient',
-        ocular: oc,
-        ocularStatus: 'attention'
-      };
+    } else if (day === 18) {
+      return MISSION_TIMELINE[18];
     } else if (day === 19) {
       return MISSION_TIMELINE[19];
-    } else {
-      const oc = Math.round(328 - ((day - 19) / 11) * 20);
+    } else if (day >= 20 && day <= 24) {
       return {
-        name: `Day ${day}: Post-Incident Recovery`,
-        note: 'Countermeasures stabilizing ocular hemodynamics',
-        ocular: oc,
-        ocularStatus: oc > 325 ? 'flight-surgeon' : oc > 300 ? 'attention' : 'in-range'
+        name: `Day ${day}: Post-Incident Recovery Phase`,
+        note: 'Countermeasures stabilizing ocular hemodynamics (Watch protocol)',
+        ocular: 316,
+        ocularStatus: 'attention',
+        caption: `Day ${day}: Post-incident recovery phase. Ocular system on Watch under assigned countermeasures.`
+      };
+    } else {
+      const oc = Math.round(306 - ((30 - day) / 5) * 0); // 306 µm
+      return {
+        name: `Day ${day}: Return Preparation Phase`,
+        note: 'Physiological parameters stable within flight envelope',
+        ocular: 306,
+        ocularStatus: 'in-range',
+        caption: `Day ${day}: Return preparation. Physiology stable within expected in-flight envelope.`
       };
     }
   }
@@ -1786,12 +1825,26 @@ document.addEventListener('DOMContentLoaded', () => {
   function applyMissionDay(day) {
     day = parseInt(day, 10);
     state.demoDay = day;
+    state.missionDay = day;
     if (missionDaySlider) missionDaySlider.value = day;
     if (missionDayNum) missionDayNum.textContent = day;
     if (missionElapsedDays) missionElapsedDays.textContent = `MET Day ${day}`;
 
+    // Header Station MET sync
+    const headerMet = document.getElementById('header-station-met');
+    if (headerMet) headerMet.textContent = `Station MET: Day ${day}`;
+
+    // Synchronize MET clock
+    updateTimes();
+
     const profile = getTimelineProfile(day);
     if (demoDayAnnotation) demoDayAnnotation.textContent = `${profile.name}: ${profile.note}`;
+
+    // Update Story Caption for judges & presentation
+    const storyCaptionEl = document.getElementById('demo-story-caption');
+    if (storyCaptionEl) {
+      storyCaptionEl.textContent = profile.caption || `${profile.name}: ${profile.note}`;
+    }
 
     // Apply physiological state changes
     state.systems.ocular.metric1Val = `${profile.ocular} µm`;
@@ -1803,7 +1856,7 @@ document.addEventListener('DOMContentLoaded', () => {
       td[td.length - 1].observed = profile.ocular;
     }
 
-    // Day 19 specific triggers
+    // Day 19 specific triggers (Incident day)
     if (day === 19) {
       state.systems.cardio.status = 'attention';
       state.systems.cardio.metric1Val = '132 / 86 mmHg';
@@ -1816,7 +1869,38 @@ document.addEventListener('DOMContentLoaded', () => {
       state.systems.neuro.metric1Val = '214 ms';
     }
 
-    // Refresh UI
+    // Synchronize seed journal timestamps to current demo day
+    const persistedRaw = storage.getItem('astro_clinical_log');
+    let logs = null;
+    if (persistedRaw) {
+      try { logs = JSON.parse(persistedRaw); } catch (e) {}
+    }
+    if (!logs || (logs.length <= 2 && logs.every(l => !l.note || l.note.includes('nominal') || l.note.includes('stabilized')))) {
+      const updatedSeeds = [
+        {
+          timestamp: `Day ${day}, 06:40 UTC`,
+          sysBP: 116,
+          diaBP: 74,
+          hr: 58,
+          spo2: 99,
+          status: 'in-range',
+          note: 'Post-sleep baseline resting vitals nominal.'
+        },
+        {
+          timestamp: `Day ${Math.max(1, day - 1)}, 18:20 UTC`,
+          sysBP: 122,
+          diaBP: 78,
+          hr: 66,
+          spo2: 99,
+          status: 'in-range',
+          note: 'Post-workout cooldown vitals stabilized.'
+        }
+      ];
+      storage.setItem('astro_clinical_log', JSON.stringify(updatedSeeds));
+      renderClinicalLogTable();
+    }
+
+    // Refresh UI & Gauge
     updateOverallGauge();
     selectSystem(state.selectedSystem);
   }
@@ -2151,7 +2235,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const utcHours = String(now.getUTCHours()).padStart(2, '0');
     const utcMinutes = String(now.getUTCMinutes()).padStart(2, '0');
     const utcSeconds = String(now.getUTCSeconds()).padStart(2, '0');
-    if (cabinTimeDisplay) cabinTimeDisplay.textContent = `${utcHours}:${utcMinutes}:${utcSeconds} UTC`;
+    const curDay = state && state.demoDay ? state.demoDay : 14;
+    if (cabinTimeDisplay) cabinTimeDisplay.textContent = `${utcHours}:${utcMinutes}:${utcSeconds} UTC • MET Day ${curDay}`;
 
     if (state.countdownSeconds > 0) {
       state.countdownSeconds--;
@@ -2165,6 +2250,16 @@ document.addEventListener('DOMContentLoaded', () => {
   setInterval(updateTimes, 1000);
   updateTimes();
 
+  function updateServiceWorkerStatus() {
+    const syncText = document.getElementById('sync-status-text');
+    if (!syncText) return;
+    if (navigator.serviceWorker && navigator.serviceWorker.controller) {
+      syncText.textContent = 'Field Cache Active';
+    } else {
+      syncText.textContent = 'Offline Cache Ready';
+    }
+  }
+
   // ================= INITIALIZATION =================
   populateEvidenceDrawer();
   populateTieredGuidance();
@@ -2177,8 +2272,13 @@ document.addEventListener('DOMContentLoaded', () => {
   if ('serviceWorker' in navigator && isSecureOrLocal) {
     window.addEventListener('load', () => {
       navigator.serviceWorker.register('./sw.js', { scope: './' })
-        .then(reg => console.log('Orbital Medical Journal SW active:', reg.scope))
+        .then(reg => {
+          console.log('Orbital Medical Journal SW active:', reg.scope);
+          updateServiceWorkerStatus();
+        })
         .catch(err => console.log('SW registration note:', err));
     });
+    navigator.serviceWorker.addEventListener('controllerchange', updateServiceWorkerStatus);
+    updateServiceWorkerStatus();
   }
 });

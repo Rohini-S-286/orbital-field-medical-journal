@@ -3,10 +3,12 @@
 > **A warm, calm, editorial-clinical self-assessment and physiological telemetry journal designed for long-duration astronaut spaceflight missions.**
 
 [![NASA Space Apps 2026](https://img.shields.io/badge/NASA%20Space%20Apps-2026%20Submission-0B7A56.svg)](https://www.spaceappschallenge.org/)
-[![Automated Test Suite](https://img.shields.io/badge/Automated%20Tests-34%2F34%20Passing-0B7A56.svg)](./tests.html)
+[![Automated Test Suite](https://img.shields.io/badge/Automated%20Tests-61%2F61%20Passing-0B7A56.svg)](./tests.html)
 [![PWA Ready](https://img.shields.io/badge/PWA-Offline--First-0B7A56.svg)](#offline-pwa--service-worker)
 [![WCAG AA](https://img.shields.io/badge/WCAG%202.1-AA%20Compliant-0B7A56.svg)](#accessibility--space-ergonomics)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+
+*Note: Research prototype developed for the NASA Space Apps Challenge 2026. Not affiliated with or endorsed by NASA.*
 
 ---
 
@@ -21,7 +23,7 @@ During long-duration human space exploration (Artemis lunar surface missions, Lu
 - **Live Public URL (GitHub Pages):** [https://rohini-s-286.github.io/orbital-field-medical-journal/](https://rohini-s-286.github.io/orbital-field-medical-journal/)
 - **Automated Verification Test Suite:** [https://rohini-s-286.github.io/orbital-field-medical-journal/tests.html](https://rohini-s-286.github.io/orbital-field-medical-journal/tests.html)
 - **Repository:** [https://github.com/Rohini-S-286/orbital-field-medical-journal](https://github.com/Rohini-S-286/orbital-field-medical-journal)
-- **Presentation Script & Usability Protocol:** [DEMO_SCRIPT.md](DEMO_SCRIPT.md)
+- **Presentation Script & Usability Protocol:** [DEMO_SCRIPT.md](DEMO_SCRIPT.md) • [USABILITY_TEST.md](USABILITY_TEST.md)
 - **Clinical Evidence & Sourcing Audit:** [EVIDENCE.md](EVIDENCE.md)
 
 ---
@@ -33,8 +35,8 @@ During long-duration human space exploration (Artemis lunar surface missions, Lu
 | **Impact** | Solves the primary biomedical threat to deep space crews: autonomous health assessment during high-latency Mars transit and Lunar missions where Earth telemedicine is delayed by up to 24 minutes. |
 | **Creativity** | Replaces cold, high-glare sci-fi HUDs with a warm, editorial-clinical "field journal" visual identity inspired by classic medical journals, reducing visual fatigue on 6+ month deployments. |
 | **Validity** | Implements the **Three-Reference Adaptation Model** comparing 1g Earth norms, expected in-flight 0g adaptation envelopes, and individual baselines using NASA-STD-3001 and NASA HRP evidence books. |
-| **Relevance** | Directly answers the challenge with 10 anatomical systems, the NASA 5 Hazards lens, standard Psychomotor Vigilance Task (PVT), and non-pharmacologic tiered guidance with **zero drug dosing**. |
-| **Presentation** | Includes an interactive 30-Day Mission Simulation (featuring a MET Day 19 SANS incident), a standalone 34-assertion in-browser test suite (`tests.html`), and Night Cabin dark mode. |
+| **Relevance** | Directly answers the challenge with 10 anatomical systems, the Spaceflight 5 Hazards lens, standard Psychomotor Vigilance Task (PVT), and non-pharmacologic tiered guidance with **zero drug dosing**. |
+| **Presentation** | Includes an interactive 30-Day Mission Simulation (featuring a MET Day 19 SANS incident), a standalone 61-assertion in-browser test suite (`tests.html`), and Night Cabin dark mode. |
 
 ---
 

@@ -30,14 +30,14 @@
 > 2. *The expected microgravity adaptation envelope,*
 > 3. *And the astronaut's personal rolling baseline with statistical confidence bands.*
 > 
-> *Our plain-language synthesis explains immediately: 'Peripapillary retinal thickness is 312 µm: shifted relative to Earth 1g normal, but within expected in-flight adaptation range. Status: Within expected range.' Zero alarmism."*
+> *Our plain-language synthesis explains immediately: 'Peripapillary retinal thickness is 302 µm: within standard Earth clinical range and expected in-flight adaptation range. Status: In range.' Zero alarmism."*
 
 ### [1:15 – 2:05] Live Challenge Features: Hazards, Environments & Day 19 Incident
 > *(Presenter points to Mission Control Bar)*
 > 
 > *"At the top of the interface, we provide direct operational controls:*
-> - ***Environment Selector:*** *Astronauts can switch between Low Earth Orbit, Lunar Gateway, Mars Transit, and Surface Rover missions. Notice how switching to Mars automatically updates comm latency to 12 minutes and activates autonomous triage protocols.*
-> - ***NASA 5 Hazards Lens (RIDGE):*** *Tapping 'Radiation' or 'Isolation' instantly filters and spotlights only the vulnerable physiological systems on the body map—dimming non-relevant channels.*
+> - ***Environment Selector:*** *Astronauts can switch between Low Earth Orbit, Lunar Gateway, Mars Transit, and Surface Rover missions. Notice how switching to Mars automatically updates comm latency to 12 minutes (illustrative) and activates autonomous triage protocols.*
+> - ***Spaceflight 5 Hazards Lens (RIDGE):*** *Tapping 'Radiation' or 'Isolation' instantly filters and spotlights only the vulnerable physiological systems on the body map—dimming non-relevant channels.*
 > 
 > *(Presenter clicks 'Jump to Day 19 Incident')*
 > 

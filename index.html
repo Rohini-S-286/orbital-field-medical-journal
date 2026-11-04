@@ -45,7 +45,7 @@
           <div class="mission-meta">
             <span>Expedition 73</span>
             <span aria-hidden="true">•</span>
-            <span>Station MET: Day 142</span>
+            <span id="header-station-met">Station MET: Day 14</span>
             <span aria-hidden="true">•</span>
             <span class="num-tabular" id="cabin-time-display">12:29:00 UTC</span>
             <span aria-hidden="true">•</span>
@@ -58,7 +58,7 @@
         <!-- PWA / Offline Sync Pill -->
         <div class="offline-pill" id="sync-status" role="status" aria-label="System status: Offline-ready telemetry cache active">
           <span class="offline-dot" aria-hidden="true"></span>
-          <span>Field Cache Active</span>
+          <span id="sync-status-text">Field Cache Active</span>
         </div>
 
         <!-- Evidence & Sources Button -->
@@ -167,9 +167,9 @@
 
     </div>
 
-    <!-- NASA 5 Hazards Lens Selector -->
-    <div class="hazard-lens-bar" role="toolbar" aria-label="NASA Five Hazards of Human Spaceflight Lens">
-      <span class="hazard-lens-label">NASA Hazards Lens:</span>
+    <!-- Spaceflight 5 Hazards Lens Selector -->
+    <div class="hazard-lens-bar" role="toolbar" aria-label="Spaceflight Five Hazards Lens">
+      <span class="hazard-lens-label">Spaceflight Hazards Lens:</span>
       <div class="hazard-chips" role="radiogroup" aria-label="Hazard Filter">
         <button class="hazard-chip active" data-hazard="all" role="radio" aria-checked="true">All Systems</button>
         <button class="hazard-chip" data-hazard="radiation" role="radio" aria-checked="false" title="Space Radiation (RE): Galactic cosmic rays and solar particle events">Radiation (R)</button>
@@ -184,7 +184,7 @@
     <div class="demo-playback-bar" aria-label="30-Day Mission Simulation Playback">
       <div class="demo-playback-header">
         <div style="display: flex; align-items: center; gap: 8px;">
-          <span class="simulated-tag" style="background: var(--color-emerald); color: #fff;">NASA Demo Mode</span>
+          <span class="simulated-tag" style="background: var(--color-emerald); color: #fff;">Demo Mode</span>
           <span style="font-weight: 600; font-size: 0.82rem; color: var(--color-ink);">30-Day Mission Flight Telemetry Simulation</span>
         </div>
         <div style="display: flex; gap: 8px;">
@@ -205,6 +205,10 @@
         </label>
         <input type="range" id="mission-day-slider" min="1" max="30" value="14" step="1" class="demo-slider" aria-label="Simulated Mission Day Slider" />
         <span class="text-faint" id="demo-day-annotation" style="font-size: 0.76rem; min-width: 220px; text-align: right;">Day 14: Nominal steady-state routine</span>
+      </div>
+      <!-- Story Caption for Presenter & Judges -->
+      <div id="demo-story-caption" class="demo-story-caption text-faint" style="font-size:0.78rem; padding: 5px 8px; background: var(--color-surface-hover); border-radius: var(--radius-sm); border-left: 3px solid var(--color-emerald); margin-top: 4px;">
+        Day 14: Mid-mission steady state. All systems in range, baseline adaptation stable.
       </div>
     </div>
   </section>
@@ -289,12 +293,12 @@
           </g>
 
           <!-- SYSTEM 2: Ocular / SANS (Eyes & Optic Disc) -->
-          <g id="sys-ocular" class="body-system-region system--attention" tabindex="0" role="button" aria-label="Ocular and SANS visual acuity. Status: Attention / Watch." data-system="ocular">
-            <title>Ocular & SANS Monitoring: Watch</title>
+          <g id="sys-ocular" class="body-system-region system--in-range" tabindex="0" role="button" aria-label="Ocular and SANS visual acuity. Status: Within expected range." data-system="ocular">
+            <title>Ocular & SANS Monitoring: In range</title>
             <circle class="map-hit-target" cx="160" cy="40" r="24" fill="rgba(0,0,0,0.001)" />
             <circle cx="153" cy="38" r="4.5" />
             <circle cx="167" cy="38" r="4.5" />
-            <circle class="pulse-ring-marker" cx="160" cy="38" r="14" fill="none" stroke="var(--color-ochre)" />
+            <circle class="pulse-ring-marker" cx="160" cy="38" r="14" fill="none" stroke="var(--color-emerald)" />
           </g>
 
           <!-- SYSTEM 3: Cardiovascular (Heart & Thoracic Vessels) -->
@@ -440,12 +444,17 @@
         </div>
       </div>
 
-      <div class="readiness-calculation-info" style="margin-top: 6px; margin-bottom: 12px; font-size: 0.85rem; color: var(--color-ink-muted); display: flex; align-items: center; justify-content: center; gap: 8px;">
+      <div class="readiness-calculation-info" style="margin-top: 6px; margin-bottom: 8px; font-size: 0.85rem; color: var(--color-ink-muted); display: flex; align-items: center; justify-content: center; gap: 8px;">
         <span>Multi-system weighted index</span>
         <span>•</span>
         <button id="readiness-popover-trigger" class="text-link-btn" aria-haspopup="dialog" aria-expanded="false" style="background:none; border:none; color:var(--color-emerald); text-decoration:underline; font-size:0.85rem; font-weight:600; cursor:pointer; padding:4px 6px; min-height:36px; display:inline-flex; align-items:center;">
           How this is calculated
         </button>
+      </div>
+
+      <!-- Single honest line under the readiness ring -->
+      <div class="readiness-caveat-line text-faint" style="font-size:0.75rem; text-align:center; max-width:320px; margin:0 auto 12px auto; line-height:1.35;">
+        Readiness reflects multi-system integration: individual systems on Watch do not ground the crew if other vital systems are stable.
       </div>
 
       <!-- Readiness Calculation Info Popover (Requirement 4) -->
@@ -559,7 +568,7 @@
         <div class="next-due-card">
           <h3 style="font-size: 1.15rem; margin-top: 4px;">Resting Cardiovascular Vitals & SpO2</h3>
           <p class="text-muted" style="font-size: 0.88rem; margin-top: 4px;">
-            Cephalad fluid equilibrium check: BP, resting HR, and pulse oximetry with 4-4-4 breathing stabilization.
+            Resting check of heart rate, blood pressure and oxygen with 4-4-4 breathing stabilization.
           </p>
 
           <div class="timer-display">
@@ -939,7 +948,7 @@
         <aside class="journal-card" style="padding: 16px; background: var(--color-surface-hover);" role="note">
           <h4 style="font-size: 0.95rem; margin-bottom: 4px;">Regulatory Notice</h4>
           <p class="text-muted" style="font-size: 0.85rem;">
-            Decision support research prototype, not a medical device. All reference ranges are grounded in open aerospace medicine literature.
+            Decision support research prototype, not a medical device. Not affiliated with or endorsed by NASA. All reference ranges are grounded in open aerospace medicine literature.
           </p>
         </aside>
 
@@ -1187,6 +1196,16 @@
       </div>
     </div>
   </div>
+
+  <!-- Editorial Clinical Journal Footer -->
+  <footer class="journal-footer" style="max-width: 1600px; margin: 40px auto 20px auto; padding: 20px 24px; border-top: 1px solid var(--color-border); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; font-size: 0.82rem; color: var(--color-ink-muted);">
+    <div>
+      <strong>Orbital Field Medical Journal</strong> • Spaceflight Physiological Decision Support System (Simulated Research Prototype)
+    </div>
+    <div style="font-weight: 500;">
+      Not affiliated with or endorsed by NASA.
+    </div>
+  </footer>
 
   <!-- Toast Notification Container (Accessible live region) -->
   <div id="toast-container" class="toast-container" aria-live="polite" aria-atomic="true"></div>
