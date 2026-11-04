@@ -89,6 +89,16 @@
           <span>Glossary</span>
         </button>
 
+        <!-- In-Browser Automated Test Suite -->
+        <a href="./tests.html" class="btn-secondary" aria-label="Open In-Browser Clinical Test Suite" title="Run 34 automated clinical validation tests" style="text-decoration: none;">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+            <polyline points="14 2 14 8 20 8"/>
+            <path d="m9 15 2 2 4-4"/>
+          </svg>
+          <span>Tests</span>
+        </a>
+
         <!-- Night Cabin Lighting / Dark Mode Toggle -->
         <button class="btn-secondary theme-toggle-btn" id="theme-toggle" aria-label="Toggle Night Cabin Lighting theme" title="Switch between Warm Ivory and Night Cabin Dark Theme (Shortcut: D)">
           <svg id="theme-icon-moon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
@@ -426,6 +436,7 @@
         <div class="ring-center-content">
           <div class="ring-score num-tabular" id="readiness-score-text">87%</div>
           <span class="ring-score-label">Readiness</span>
+          <span id="readiness-ci-text" class="text-faint num-tabular" style="font-size: 0.72rem; margin-top: 2px;">95% CI: 84%–90%</span>
         </div>
       </div>
 

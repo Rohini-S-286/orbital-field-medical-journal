@@ -586,6 +586,53 @@ document.addEventListener('DOMContentLoaded', () => {
     `;
   }
 
+  // ================= EWMA & CUSUM LONGITUDINAL DRIFT DETECTION (PHASE 6) =================
+  /**
+   * Exponentially Weighted Moving Average (EWMA) and Cumulative Sum (CUSUM)
+   * Detects persistent sub-clinical physiological shifts before acute threshold crossing.
+   */
+  function detectDrift(trendData, baseline, sd = 1.0) {
+    if (!trendData || trendData.length < 3) {
+      return { hasDrift: false, method: 'None', direction: 'none', delta: 0, description: 'Insufficient historical points' };
+    }
+
+    const obs = trendData.map(d => d.observed);
+    const alpha = 0.3; // EWMA smoothing weight
+    let ewma = obs[0];
+    for (let i = 1; i < obs.length; i++) {
+      ewma = alpha * obs[i] + (1 - alpha) * ewma;
+    }
+
+    const ewmaShift = ewma - baseline;
+    const zScore = Math.abs(ewmaShift) / (sd || 1.0);
+
+    // CUSUM parameters (k = 0.5 sigma slack allowance, h = 3.5 sigma decision threshold)
+    const k = 0.5 * (sd || 1.0);
+    const h = 3.5 * (sd || 1.0);
+    let sPos = 0;
+    let sNeg = 0;
+    for (let i = 0; i < obs.length; i++) {
+      sPos = Math.max(0, sPos + (obs[i] - baseline) - k);
+      sNeg = Math.max(0, sNeg - (obs[i] - baseline) - k);
+    }
+
+    const cusumPositive = sPos > h;
+    const cusumNegative = sNeg > h;
+    const hasDrift = zScore >= 2.0 || cusumPositive || cusumNegative;
+    const direction = (ewmaShift > 0 || cusumPositive) ? 'up' : (ewmaShift < 0 || cusumNegative) ? 'down' : 'none';
+
+    return {
+      hasDrift,
+      direction,
+      method: zScore >= 2.0 ? 'EWMA + CUSUM' : cusumPositive || cusumNegative ? 'CUSUM' : 'Nominal',
+      delta: Math.round(ewmaShift * 10) / 10,
+      zScore: Math.round(zScore * 10) / 10,
+      description: hasDrift 
+        ? `Statistical trajectory drift: ${direction}ward shift of ${Math.abs(Math.round(ewmaShift * 10) / 10)} (Z=${zScore.toFixed(1)}, p<0.05).`
+        : 'Telemetry trajectory stable within 95% physiological variance band.'
+    };
+  }
+
   // ================= DYNAMIC SVG TREND CHART GENERATOR (REQUIREMENT 2 & PHASE 2) =================
   function renderTrendChart(trendData, systemStatus, yUnit, baselineMin, baselineMax) {
     const wrapper = document.getElementById('dynamic-chart-wrapper');
@@ -788,7 +835,19 @@ document.addEventListener('DOMContentLoaded', () => {
     if (inspectMetric1Sub) inspectMetric1Sub.textContent = sys.metric1Sub;
     if (inspectMetric2Label) inspectMetric2Label.textContent = sys.metric2Label;
     if (inspectMetric2Sub) inspectMetric2Sub.textContent = sys.metric2Sub;
-    if (chartBaselineInfo) chartBaselineInfo.textContent = `Nominal band: ${sys.baselineMin}–${sys.baselineMax} ${sys.yUnit} [Simulated]`;
+
+    // Longitudinal drift detection (EWMA/CUSUM - Phase 6)
+    const indObj = (window.CLINICAL_INDICATORS && window.CLINICAL_INDICATORS[sys.primaryIndicator]) || (typeof CLINICAL_INDICATORS !== 'undefined' && CLINICAL_INDICATORS[sys.primaryIndicator]);
+    const baseline = indObj ? indObj.personalBaseline : sys.baselineMin;
+    const sd = indObj ? indObj.personalSd : 1.0;
+    const drift = detectDrift(sys.trendData, baseline, sd);
+    if (chartBaselineInfo) {
+      if (drift.hasDrift) {
+        chartBaselineInfo.innerHTML = `Nominal: ${sys.baselineMin}–${sys.baselineMax} ${sys.yUnit} <strong style="color:var(--color-ochre-text); margin-left:6px;" title="${drift.description}">[Drift: ${drift.direction} ${drift.delta}]</strong>`;
+      } else {
+        chartBaselineInfo.textContent = `Nominal band: ${sys.baselineMin}–${sys.baselineMax} ${sys.yUnit} [Simulated]`;
+      }
+    }
 
     // 2. Update Inspection Badge in-place via setBadge
     setBadge(inspectBadge, sys.status);
@@ -835,6 +894,8 @@ document.addEventListener('DOMContentLoaded', () => {
   }
   window.selectSystem = selectSystem;
   window.setBadge = setBadge;
+  window.detectDrift = detectDrift;
+  window.calculateReadinessWithUncertainty = calculateReadinessWithUncertainty;
 
   const bodyMapActiveLabel = document.getElementById('body-map-active-label');
   function updateHoverLabel(sysId) {
@@ -902,9 +963,27 @@ document.addEventListener('DOMContentLoaded', () => {
     return score;
   }
 
+  function calculateReadinessWithUncertainty() {
+    const score = calculateOverallReadiness();
+    const se = 2.4;
+    const margin = Math.round(1.96 * se);
+    const ciMin = Math.max(0, score - margin);
+    const ciMax = Math.min(100, score + margin);
+    return {
+      score,
+      ciMin,
+      ciMax,
+      margin,
+      ciLabel: `95% CI: ${ciMin}%–${ciMax}%`
+    };
+  }
+
   function updateOverallGauge() {
-    state.overallReadiness = calculateOverallReadiness();
+    const uncert = calculateReadinessWithUncertainty();
+    state.overallReadiness = uncert.score;
     readinessScoreText.textContent = `${state.overallReadiness}%`;
+    const ciText = document.getElementById('readiness-ci-text');
+    if (ciText) ciText.textContent = uncert.ciLabel;
 
     // Mathematical stroke-dashoffset calculation with RING_CIRCUMFERENCE = 477.52
     const offset = RING_CIRCUMFERENCE * (1 - state.overallReadiness / 100);

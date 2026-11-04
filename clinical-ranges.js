@@ -282,3 +282,63 @@ const TIERED_GUIDANCE = {
     source: 'ISS Emergency Medical Procedures, Flight Rule B13-102'
   }
 };
+
+/**
+ * Standard Indicator Classifier against earth nominal, expected in-flight, and emergency thresholds.
+ */
+function classifyIndicator(indicatorKey, val) {
+  const ind = CLINICAL_INDICATORS[indicatorKey];
+  if (!ind) return { status: 'in-range', label: 'In range' };
+
+  if (indicatorKey === 'systolic') {
+    if (val >= 170 || val <= 85) return { status: 'emergency', label: 'Emergency' };
+    if (val >= 145 || val < 95) return { status: 'flight-surgeon', label: 'Contact flight surgeon' };
+    if (val >= 131 || val < 100) return { status: 'attention', label: 'Watch' };
+    return { status: 'in-range', label: 'In range' };
+  }
+  if (indicatorKey === 'opticDisc') {
+    if (val >= 340) return { status: 'emergency', label: 'Emergency' };
+    if (val >= 326) return { status: 'flight-surgeon', label: 'Contact flight surgeon' };
+    if (val >= 301) return { status: 'attention', label: 'Watch' };
+    return { status: 'in-range', label: 'In range' };
+  }
+
+  // Generic bounds
+  if (val < ind.expectedInFlight.min * 0.85 || val > ind.expectedInFlight.max * 1.25) {
+    return { status: 'emergency', label: 'Emergency' };
+  }
+  if (val < ind.expectedInFlight.min || val > ind.expectedInFlight.max) {
+    return { status: 'flight-surgeon', label: 'Contact flight surgeon' };
+  }
+  if (val < ind.earthNominal.min || val > ind.earthNominal.max) {
+    return { status: 'attention', label: 'Watch' };
+  }
+  return { status: 'in-range', label: 'In range' };
+}
+
+/**
+ * Validates vital set against human physiological viability boundaries.
+ */
+function validateVitalInputs(vitals) {
+  const sys = vitals.sysBP;
+  const dia = vitals.diaBP;
+  const hr = vitals.hr;
+  const spo2 = vitals.spo2;
+
+  if (isNaN(sys) || sys < 50 || sys > 260) return { valid: false, error: 'Systolic BP must be between 50 and 260 mmHg.' };
+  if (isNaN(dia) || dia < 30 || dia > 160) return { valid: false, error: 'Diastolic BP must be between 30 and 160 mmHg.' };
+  if (sys <= dia) return { valid: false, error: 'Systolic BP must be strictly greater than Diastolic BP.' };
+  if (isNaN(hr) || hr < 30 || hr > 240) return { valid: false, error: 'Heart Rate must be between 30 and 240 bpm.' };
+  if (isNaN(spo2) || spo2 < 50 || spo2 > 100) return { valid: false, error: 'SpO2 must be between 50% and 100%.' };
+
+  return { valid: true };
+}
+
+// Attach to window
+if (typeof window !== 'undefined') {
+  window.CLINICAL_INDICATORS = CLINICAL_INDICATORS;
+  window.CLINICAL_SOURCES = CLINICAL_SOURCES;
+  window.TIERED_GUIDANCE = TIERED_GUIDANCE;
+  window.classifyIndicator = classifyIndicator;
+  window.validateVitalInputs = validateVitalInputs;
+}
