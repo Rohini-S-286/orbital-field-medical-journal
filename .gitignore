@@ -1,0 +1,22 @@
+# System files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Python / Environment
+__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+env/
+
+# Editor / IDE
+.vscode/
+.idea/
+*.suo
+*.user
+
+# Temporary files & logs
+*.log
+*.tmp
+temp/
