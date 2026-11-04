@@ -106,6 +106,7 @@ document.addEventListener('DOMContentLoaded', () => {
         metric2Label: 'Visual Acuity (LogMAR)',
         metric2Val: '0.08',
         metric2Sub: 'In nominal range [Simulated]',
+        whyMeasurement: 'Microgravity shifts ~2L of fluid toward the head, increasing pressure behind the eyes. Daily optical tracking detects early optic nerve swelling before it causes permanent visual changes.',
         mechanism: 'Spaceflight-Associated Neuro-ocular Syndrome (SANS) results from loss of hydrostatic pressure gradient in microgravity, generating a persistent ~1.5–2.0 L cephalad fluid shift. Intraocular venous engorgement increases optic nerve sheath diameter (ONSD) and optic disc thickness.',
         trendData: [
           { day: 'MET-6', baseline: 298, observed: 298 },
@@ -131,6 +132,7 @@ document.addEventListener('DOMContentLoaded', () => {
         metric2Label: 'Resting Heart Rate',
         metric2Val: '62 bpm',
         metric2Sub: 'Sinus rhythm [Simulated]',
+        whyMeasurement: 'In weightlessness, blood volume redistributes and the heart works against less resistance. Tracking blood pressure and heart rate ensures the heart muscle and arterial reflexes maintain healthy tone.',
         mechanism: 'Cephalic fluid redistribution initially expands central blood volume, leading to neuro-humoral down-regulation of plasma volume (~12%). Countermeasure exercise preserves ventricular compliance and orthostatic tolerance for atmospheric re-entry.',
         trendData: [
           { day: 'MET-6', baseline: 115, observed: 115 },
@@ -156,6 +158,7 @@ document.addEventListener('DOMContentLoaded', () => {
         metric2Label: 'Saccadic Latency',
         metric2Val: '194 ms',
         metric2Sub: 'Nominal rapid tracking [Simulated]',
+        whyMeasurement: 'The inner ear vestibular organs lose gravity cues in space, confusing balance and gaze stabilization. Tracking the reflex verifies that the brain balance centers are adapting safely.',
         mechanism: 'In 0g, gravity cues from otolith organs (utricle and saccule) dissociate from semicircular canal signals. Sensory conflict resolves after 72–96 hours through cerebellar plastic reweighting.',
         trendData: [
           { day: 'MET-6', baseline: 1.00, observed: 0.88 },
@@ -181,6 +184,7 @@ document.addEventListener('DOMContentLoaded', () => {
         metric2Label: 'Back Discomfort Score',
         metric2Val: '0 / 10',
         metric2Sub: 'Zero lumbar strain reported [Simulated]',
+        whyMeasurement: 'Without gravity compressing spinal discs, astronauts spines can elongate up to 5 cm, risking back strain and disc herniation during vigorous work or landing.',
         mechanism: 'Lack of gravitational axial compression allows intervertebral discs to imbibe fluid and expand, causing 2–5 cm stature elongation and paraspinal flattening.',
         trendData: [
           { day: 'MET-6', baseline: 0.0, observed: 1.2 },
@@ -206,6 +210,7 @@ document.addEventListener('DOMContentLoaded', () => {
         metric2Label: 'Cabin Ambient pCO2',
         metric2Val: '2.4 mmHg',
         metric2Sub: 'Strict threshold < 3.0 mmHg [Simulated]',
+        whyMeasurement: 'Without gravity-driven convection, exhaled carbon dioxide can form pockets around sleeping or working crew. Monitoring SpO2 and ambient CO2 ensures clean oxygenation.',
         mechanism: 'Absence of natural thermal air convection causes localized exhaled CO2 pooling if ventilation is impaired. Ventilation-perfusion matching remains homogeneous in 0g.',
         trendData: [
           { day: 'MET-6', baseline: 2.4, observed: 2.2 },
@@ -231,6 +236,7 @@ document.addEventListener('DOMContentLoaded', () => {
         metric2Label: 'Isometric Peak Force',
         metric2Val: '96% Ref',
         metric2Sub: 'ARED countermeasure target [Simulated]',
+        whyMeasurement: 'Weight-bearing leg muscles quickly lose mass and tone when not walking under 1g. Regular measurements verify that daily treadmill and resistive exercises are preventing muscle atrophy.',
         mechanism: 'Anti-gravity postural muscles (slow-twitch soleus) undergo rapid deconditioning if not actively loaded against microgravity. Resistive deadlifts maintain bone and muscle mass.',
         trendData: [
           { day: 'MET-6', baseline: 38.2, observed: 38.2 },
@@ -339,7 +345,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  // ================= DYNAMIC SVG TREND CHART GENERATOR (REQUIREMENT 2) =================
+  // ================= DYNAMIC SVG TREND CHART GENERATOR (REQUIREMENT 2 & PHASE 2) =================
   function renderTrendChart(trendData, systemStatus, yUnit, baselineMin, baselineMax) {
     const wrapper = document.getElementById('dynamic-chart-wrapper');
     if (!wrapper) return;
@@ -349,13 +355,13 @@ document.addEventListener('DOMContentLoaded', () => {
       return;
     }
 
-    // Chart Dimensions
-    const svgWidth = 340;
-    const svgHeight = 140;
-    const padLeft = 44;
+    // Chart Dimensions (12px minimum labels per Phase 2)
+    const svgWidth = 360;
+    const svgHeight = 160;
+    const padLeft = 52;
     const padRight = 16;
-    const padTop = 18;
-    const padBottom = 28;
+    const padTop = 22;
+    const padBottom = 32;
     const plotWidth = svgWidth - padLeft - padRight;
     const plotHeight = svgHeight - padTop - padBottom;
 
@@ -370,7 +376,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const dataMin = Math.min(...allVals);
     const dataMax = Math.max(...allVals);
-    const margin = (dataMax - dataMin) * 0.15 || (dataMax * 0.1) || 1;
+    const margin = (dataMax - dataMin) * 0.18 || (dataMax * 0.1) || 1;
     const minVal = dataMin - margin;
     const maxVal = dataMax + margin;
     const valRange = maxVal - minVal || 1;
@@ -383,33 +389,49 @@ document.addEventListener('DOMContentLoaded', () => {
       return padTop + plotHeight * (1 - norm);
     }
 
+    function formatTick(val) {
+      if (Math.abs(val) >= 10) return Math.round(val).toString();
+      if (Math.abs(val) >= 1) return val.toFixed(1);
+      return val.toFixed(2);
+    }
+
     // Baseline nominal band coordinates
     let bandSvg = '';
+    let limitLineSvg = '';
     if (typeof baselineMin === 'number' && typeof baselineMax === 'number') {
       const yTop = Math.max(padTop, scaleY(baselineMax));
       const yBottom = Math.min(padTop + plotHeight, scaleY(baselineMin));
       const bandHeight = Math.max(2, yBottom - yTop);
-      bandSvg = `<rect x="${padLeft}" y="${yTop}" width="${plotWidth}" height="${bandHeight}" fill="var(--color-emerald-tint-soft)" opacity="0.75" />
+      bandSvg = `<rect x="${padLeft}" y="${yTop}" width="${plotWidth}" height="${bandHeight}" fill="var(--color-emerald-tint-soft)" opacity="0.8" />
                  <line x1="${padLeft}" y1="${yTop}" x2="${padLeft + plotWidth}" y2="${yTop}" stroke="var(--color-emerald-border)" stroke-dasharray="3 3" stroke-width="1" />
                  <line x1="${padLeft}" y1="${yBottom}" x2="${padLeft + plotWidth}" y2="${yBottom}" stroke="var(--color-emerald-border)" stroke-dasharray="3 3" stroke-width="1" />`;
+
+      limitLineSvg = `
+        <line x1="${padLeft}" y1="${yTop}" x2="${padLeft + plotWidth}" y2="${yTop}" stroke="var(--color-ochre-text)" stroke-dasharray="4 2" stroke-width="1.5" />
+        <text x="${padLeft + plotWidth}" y="${Math.max(14, yTop - 5)}" fill="var(--color-ochre-text)" font-size="12" font-weight="600" text-anchor="end">Nominal Limit: ${baselineMax} ${yUnit}</text>
+      `;
     }
 
-    // Grid lines & Y Axis labels
+    // Clean Round Grid Lines & 12px Y Axis labels (Requirement 3: no unrounded 315.2 ticks)
     const midVal = (maxVal + minVal) / 2;
-    const gridY1 = scaleY(maxVal - margin * 0.5);
-    const gridY2 = scaleY(midVal);
-    const gridY3 = scaleY(minVal + margin * 0.5);
+    const yTick1 = maxVal - margin * 0.4;
+    const yTick2 = midVal;
+    const yTick3 = minVal + margin * 0.4;
+
+    const gridY1 = scaleY(yTick1);
+    const gridY2 = scaleY(yTick2);
+    const gridY3 = scaleY(yTick3);
 
     const gridSvg = `
       <line x1="${padLeft}" y1="${gridY1}" x2="${padLeft + plotWidth}" y2="${gridY1}" stroke="var(--color-border)" stroke-width="1" />
       <line x1="${padLeft}" y1="${gridY2}" x2="${padLeft + plotWidth}" y2="${gridY2}" stroke="var(--color-border)" stroke-width="1" />
       <line x1="${padLeft}" y1="${gridY3}" x2="${padLeft + plotWidth}" y2="${gridY3}" stroke="var(--color-border)" stroke-width="1" />
-      <text x="${padLeft - 6}" y="${gridY1 + 3}" fill="var(--color-ink-muted)" font-size="9" text-anchor="end" class="num-tabular">${(maxVal - margin * 0.5).toFixed(1)}</text>
-      <text x="${padLeft - 6}" y="${gridY2 + 3}" fill="var(--color-ink-muted)" font-size="9" text-anchor="end" class="num-tabular">${midVal.toFixed(1)}</text>
-      <text x="${padLeft - 6}" y="${gridY3 + 3}" fill="var(--color-ink-muted)" font-size="9" text-anchor="end" class="num-tabular">${(minVal + margin * 0.5).toFixed(1)}</text>
+      <text x="${padLeft - 8}" y="${gridY1 + 4}" fill="var(--color-ink-muted)" font-size="12" text-anchor="end" class="num-tabular">${formatTick(yTick1)}</text>
+      <text x="${padLeft - 8}" y="${gridY2 + 4}" fill="var(--color-ink-muted)" font-size="12" text-anchor="end" class="num-tabular">${formatTick(yTick2)}</text>
+      <text x="${padLeft - 8}" y="${gridY3 + 4}" fill="var(--color-ink-muted)" font-size="12" text-anchor="end" class="num-tabular">${formatTick(yTick3)}</text>
     `;
 
-    // Baseline Line
+    // Baseline Line: Solid Emerald Line per Requirement 3
     const baselinePoints = trendData.map((d, i) => `${scaleX(i)},${scaleY(d.baseline)}`);
     const baselinePath = `M ${baselinePoints.join(' L ')}`;
 
@@ -417,7 +439,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const observedPoints = trendData.map((d, i) => `${scaleX(i)},${scaleY(d.observed)}`);
     const observedPath = `M ${observedPoints.join(' L ')}`;
 
-    // Observed line class and markers depending on status
     let observedPathClass = 'chart-path-in-range';
     let markerHtml = '';
 
@@ -426,56 +447,74 @@ document.addEventListener('DOMContentLoaded', () => {
       markerHtml = trendData.map((d, i) => {
         const cx = scaleX(i);
         const cy = scaleY(d.observed);
-        return `<polygon points="${cx},${cy - 4} ${cx + 4},${cy} ${cx},${cy + 4} ${cx - 4},${cy}" class="chart-marker-diamond"><title>${d.day}: ${d.observed} ${yUnit}</title></polygon>`;
+        return `<g tabindex="0" role="img" aria-label="${d.day}: ${d.observed} ${yUnit}">
+                  <polygon points="${cx},${cy - 5} ${cx + 5},${cy} ${cx},${cy + 5} ${cx - 5},${cy}" class="chart-marker-diamond">
+                    <title>${d.day}: ${d.observed} ${yUnit}</title>
+                  </polygon>
+                </g>`;
       }).join('');
     } else if (systemStatus === 'flight-surgeon' || systemStatus === 'emergency') {
       observedPathClass = 'chart-path-alert';
       markerHtml = trendData.map((d, i) => {
         const cx = scaleX(i);
         const cy = scaleY(d.observed);
-        return `<polygon points="${cx},${cy - 5} ${cx + 4},${cy + 3} ${cx - 4},${cy + 3}" class="chart-marker-triangle"><title>${d.day}: ${d.observed} ${yUnit}</title></polygon>`;
+        return `<g tabindex="0" role="img" aria-label="${d.day}: ${d.observed} ${yUnit}">
+                  <polygon points="${cx},${cy - 6} ${cx + 5},${cy + 4} ${cx - 5},${cy + 4}" class="chart-marker-triangle">
+                    <title>${d.day}: ${d.observed} ${yUnit}</title>
+                  </polygon>
+                </g>`;
       }).join('');
     } else {
       observedPathClass = 'chart-path-in-range';
       markerHtml = trendData.map((d, i) => {
         const cx = scaleX(i);
         const cy = scaleY(d.observed);
-        return `<circle cx="${cx}" cy="${cy}" r="3.5" class="chart-marker-circle"><title>${d.day}: ${d.observed} ${yUnit}</title></circle>`;
+        return `<g tabindex="0" role="img" aria-label="${d.day}: ${d.observed} ${yUnit}">
+                  <circle cx="${cx}" cy="${cy}" r="4" class="chart-marker-circle">
+                    <title>${d.day}: ${d.observed} ${yUnit}</title>
+                  </circle>
+                </g>`;
       }).join('');
     }
 
-    // X-Axis day labels
+    // X-Axis day labels (12px)
     const xLabelsSvg = trendData.map((d, i) => {
       const cx = scaleX(i);
-      return `<text x="${cx}" y="${svgHeight - 10}" fill="var(--color-ink-muted)" font-size="9" text-anchor="middle">${d.day}</text>`;
+      return `<text x="${cx}" y="${svgHeight - 10}" fill="var(--color-ink-muted)" font-size="12" text-anchor="middle">${d.day}</text>`;
     }).join('');
 
+    const latestPoint = trendData[trendData.length - 1];
+    const sysName = state.systems[state.selectedSystem] ? state.systems[state.selectedSystem].name : 'System';
+
     wrapper.innerHTML = `
-      <svg class="trend-svg" viewBox="0 0 ${svgWidth} ${svgHeight}" role="img" aria-label="7-day telemetry trend graph">
+      <svg class="trend-svg" viewBox="0 0 ${svgWidth} ${svgHeight}" role="img" aria-label="7-day telemetry trend graph for ${sysName}">
         ${bandSvg}
         ${gridSvg}
-        <!-- Baseline curve -->
-        <path d="${baselinePath}" fill="none" stroke="var(--color-border-strong)" stroke-width="1.5" stroke-dasharray="2 3" />
+        ${limitLineSvg}
+        <!-- Solid Emerald Baseline curve (Requirement 3) -->
+        <path d="${baselinePath}" fill="none" stroke="var(--color-emerald)" stroke-width="2" />
         <!-- Observed curve with animated stroke -->
         <path d="${observedPath}" class="${observedPathClass}" />
-        <!-- Data Markers -->
+        <!-- Data Markers with Accessible Tooltips -->
         ${markerHtml}
         <!-- X Axis labels -->
         ${xLabelsSvg}
       </svg>
       <div class="chart-legend">
         <div class="chart-legend-item">
-          <span style="display:inline-block; width:12px; height:2px; background:var(--color-border-strong); border-top:1px dashed var(--color-border-strong);"></span>
-          <span>Baseline (${yUnit})</span>
+          <span style="display:inline-block; width:14px; height:2.5px; background:var(--color-emerald);"></span>
+          <span>Solid Baseline (${yUnit})</span>
         </div>
         <div class="chart-legend-item">
-          <span style="display:inline-block; width:12px; height:3px; background:${systemStatus === 'attention' ? 'var(--color-ochre)' : systemStatus === 'in-range' ? 'var(--color-emerald)' : 'var(--color-vermillion)'};"></span>
+          <span style="display:inline-block; width:14px; height:2.5px; background:${systemStatus === 'attention' ? 'var(--color-ochre-text)' : systemStatus === 'in-range' ? 'var(--color-emerald)' : 'var(--color-vermillion)'};"></span>
           <span>Observed (${systemStatus === 'attention' ? 'Dashed ◆' : systemStatus === 'in-range' ? 'Solid •' : 'Dotted ▲'})</span>
         </div>
         <div class="chart-legend-item">
-          <span class="simulated-tag">Simulated Telemetry</span>
+          <span class="simulated-tag">[Simulated]</span>
         </div>
       </div>
+      <!-- Screen reader summary (Requirement 3) -->
+      <p class="sr-only" aria-live="polite">Longitudinal telemetry trend for ${sysName}: Baseline is ${baselineMin} to ${baselineMax} ${yUnit}. Current reading is ${latestPoint.observed} ${yUnit} recorded on ${latestPoint.day}. Diagnostic status: ${STATUS_CONFIG[systemStatus].label}.</p>
     `;
   }
 
@@ -535,14 +574,40 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('drawer-metric2-sub').textContent = sys.metric2Sub;
     setBadge('#drawer-status-badge', sys.status);
 
-    // 7. Update Tiered Guidance Preview for this status
+    // 7. Update Why This Measurement Rationale
+    const inspectWhy = document.getElementById('inspect-why-measurement');
+    if (inspectWhy && sys.whyMeasurement) inspectWhy.textContent = sys.whyMeasurement;
+    const drawerWhy = document.getElementById('drawer-why-measurement');
+    if (drawerWhy && sys.whyMeasurement) drawerWhy.textContent = sys.whyMeasurement;
+
+    // 8. Update Tiered Guidance Preview for this status
     updateActiveGuidancePreview(sys.status);
+
+    // 9. Update Body Map active hover tag
+    updateHoverLabel(systemId);
   }
 
-  // SVG Region Click & Keydown listeners
+  const bodyMapActiveLabel = document.getElementById('body-map-active-label');
+  function updateHoverLabel(sysId) {
+    if (!bodyMapActiveLabel) return;
+    const sys = state.systems[sysId];
+    if (sys) {
+      bodyMapActiveLabel.textContent = `${sys.name} (${STATUS_CONFIG[sys.status].label})`;
+      bodyMapActiveLabel.style.borderColor = sys.status === 'attention' ? 'var(--color-ochre)' : sys.status === 'in-range' ? 'var(--color-emerald)' : 'var(--color-vermillion)';
+    }
+  }
+
+  // SVG Region Click, Hover & Keydown listeners (Requirement 4)
   bodyRegions.forEach(region => {
     const sysId = region.dataset.system;
-    region.addEventListener('click', () => selectSystem(sysId));
+    region.addEventListener('click', () => {
+      selectSystem(sysId);
+      updateHoverLabel(sysId);
+    });
+    region.addEventListener('mouseenter', () => updateHoverLabel(sysId));
+    region.addEventListener('focus', () => updateHoverLabel(sysId));
+    region.addEventListener('mouseleave', () => updateHoverLabel(state.selectedSystem));
+    region.addEventListener('blur', () => updateHoverLabel(state.selectedSystem));
     region.addEventListener('keydown', (e) => {
       if (e.key === 'Enter' || e.key === ' ') {
         e.preventDefault();
@@ -556,6 +621,8 @@ document.addEventListener('DOMContentLoaded', () => {
     chip.addEventListener('click', () => {
       selectSystem(chip.dataset.target);
     });
+    chip.addEventListener('mouseenter', () => updateHoverLabel(chip.dataset.target));
+    chip.addEventListener('mouseleave', () => updateHoverLabel(state.selectedSystem));
   });
 
   // ================= READINESS SCORE ENGINE & RING GAUGE (REQUIREMENT 3 & 7) =================
@@ -766,7 +833,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Initial simulated seed data if empty
     return [
       {
-        timestamp: '142-06:40 UTC',
+        timestamp: 'Day 142, 06:40 UTC',
         sysBP: 116,
         diaBP: 74,
         hr: 58,
@@ -775,7 +842,7 @@ document.addEventListener('DOMContentLoaded', () => {
         note: 'Post-sleep baseline resting vitals nominal.'
       },
       {
-        timestamp: '141-18:20 UTC',
+        timestamp: 'Day 141, 18:20 UTC',
         sysBP: 122,
         diaBP: 78,
         hr: 66,
@@ -798,6 +865,10 @@ document.addEventListener('DOMContentLoaded', () => {
     if (!tbody) return;
     const logs = getPersistedLogs();
     tbody.innerHTML = '';
+    if (!logs || logs.length === 0) {
+      tbody.innerHTML = `<tr><td colspan="5" style="text-align: center; padding: 24px; color: var(--color-ink-muted);">No entries yet. Complete a measurement to log one.</td></tr>`;
+      return;
+    }
     logs.forEach(log => {
       const tr = document.createElement('tr');
       tr.innerHTML = `
@@ -1115,7 +1186,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // 7. Persist entry to visible local log table
     const now = new Date();
-    const utcTime = `${state.missionDay}-${String(now.getUTCHours()).padStart(2, '0')}:${String(now.getUTCMinutes()).padStart(2, '0')} UTC`;
+    const utcTime = `Day ${state.missionDay}, ${String(now.getUTCHours()).padStart(2, '0')}:${String(now.getUTCMinutes()).padStart(2, '0')} UTC`;
     savePersistedLog({
       timestamp: utcTime,
       sysBP: sys,
@@ -1161,6 +1232,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // ================= EVIDENCE & GUIDANCE DRAWERS =================
   const evidenceBackdrop = document.getElementById('evidence-drawer-backdrop');
   const guidanceBackdrop = document.getElementById('guidance-drawer-backdrop');
+  const glossaryBackdrop = document.getElementById('glossary-backdrop');
 
   document.getElementById('open-evidence-btn').addEventListener('click', () => {
     openModal(evidenceBackdrop, '#close-evidence-drawer');
@@ -1175,6 +1247,20 @@ document.addEventListener('DOMContentLoaded', () => {
   document.getElementById('close-guidance-drawer').addEventListener('click', () => {
     closeModal(guidanceBackdrop);
   });
+
+  // ================= MEDICAL TERMS GLOSSARY MODAL =================
+  const openGlossaryBtn = document.getElementById('open-glossary-btn');
+  const closeGlossaryBtn = document.getElementById('close-glossary-btn');
+  if (openGlossaryBtn && glossaryBackdrop) {
+    openGlossaryBtn.addEventListener('click', () => {
+      openModal(glossaryBackdrop, '#close-glossary-btn');
+    });
+  }
+  if (closeGlossaryBtn && glossaryBackdrop) {
+    closeGlossaryBtn.addEventListener('click', () => {
+      closeModal(glossaryBackdrop);
+    });
+  }
 
   // ================= FLIGHT SURGEON COMMS MODAL =================
   const flightSurgeonQuickBtn = document.getElementById('flight-surgeon-quick-btn');
@@ -1210,7 +1296,7 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   // Backdrop click closes modal
-  [measurementBackdrop, systemDrawerBackdrop, surgeonLedgerBackdrop, evidenceBackdrop, guidanceBackdrop].forEach(backdrop => {
+  [measurementBackdrop, systemDrawerBackdrop, surgeonLedgerBackdrop, evidenceBackdrop, guidanceBackdrop, glossaryBackdrop].forEach(backdrop => {
     if (!backdrop) return;
     backdrop.addEventListener('click', (e) => {
       if (e.target === backdrop) {
@@ -1223,7 +1309,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // Keyboard accessibility: ESC key to close, focus trapping, and D for theme WITHOUT modifier hijack (Requirement 7)
   document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape') {
-      [measurementBackdrop, systemDrawerBackdrop, surgeonLedgerBackdrop, evidenceBackdrop, guidanceBackdrop].forEach(b => {
+      [measurementBackdrop, systemDrawerBackdrop, surgeonLedgerBackdrop, evidenceBackdrop, guidanceBackdrop, glossaryBackdrop].forEach(b => {
         if (b && b.classList.contains('open')) closeModal(b);
       });
       const popover = document.getElementById('readiness-popover');

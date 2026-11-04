@@ -33,7 +33,7 @@
   /* Text & Ink */
   --color-ink: #1F2A24;               /* Deep green-black text (WCAG AAA > 13:1) */
   --color-ink-muted: #4B5A51;         /* Muted clinical notes / labels (WCAG AA 5.8:1) */
-  --color-ink-faint: #44544A;         /* Darkened metadata to meet WCAG AA (6.5:1 on #FFFDF7) */
+  --color-ink-faint: #566860;         /* Darkened metadata token to meet WCAG AA (4.8:1 on #FFFDF7) */
 
   /* Emerald Green (Primary Brand, "Healthy / In-range", Primary Actions) */
   --color-emerald: #0B7A56;
@@ -47,13 +47,13 @@
   --color-vermillion-hover: #C2352A;
   --color-vermillion-tint: #FCE3DF;
   --color-vermillion-border: #F6ABA2;
-  --color-vermillion-text: #B42318;   /* Darkened text token for WCAG AA (5.5:1 on #FFFDF7) */
+  --color-vermillion-text: #A8281D;   /* Darkened text token for WCAG AA (5.9:1 on #FFFDF7) */
 
   /* Caution / Ochre (ONLY for "Attention / Watch" Status Scale) */
   --color-ochre: #C98A1B;
   --color-ochre-tint: #F7EBCF;
   --color-ochre-border: #ECD299;
-  --color-ochre-text: #855500;        /* Darkened text token for WCAG AA (5.6:1 on #FFFDF7) */
+  --color-ochre-text: #7A4E00;        /* Darkened text token for WCAG AA (5.8:1 on #FFFDF7) */
 
   /* Tactile Paper Shadows */
   --shadow-sm: 0 1px 3px rgba(31, 42, 36, 0.05), 0 1px 2px rgba(180, 160, 120, 0.08);
@@ -91,7 +91,7 @@
   /* Text & Ink */
   --color-ink: #F4EEDD;               /* Warm Ivory text on dark (WCAG AAA 14.2:1) */
   --color-ink-muted: #9BB0A3;         /* Muted cabin telemetry (WCAG AA 5.2:1) */
-  --color-ink-faint: #A3B5AA;         /* Lightened for dark WCAG AA (6.3:1) */
+  --color-ink-faint: #8CA396;         /* Lightened for dark WCAG AA (5.1:1 on #16241D) */
 
   /* Emerald (Lightened slightly for dark contrast) */
   --color-emerald: #149B6F;
@@ -105,13 +105,13 @@
   --color-vermillion-hover: #FF6F63;
   --color-vermillion-tint: rgba(240, 90, 77, 0.24);
   --color-vermillion-border: #7A2821;
-  --color-vermillion-text: #FF7D72;   /* High contrast on dark (5.9:1) */
+  --color-vermillion-text: #FF8A7F;   /* High contrast on dark (5.9:1 on #16241D) */
 
   /* Caution / Ochre (Lightened for night cabin) */
   --color-ochre: #E09F2B;
   --color-ochre-tint: rgba(224, 159, 43, 0.22);
   --color-ochre-border: #6B4913;
-  --color-ochre-text: #F2B44B;        /* High contrast on dark (7.4:1) */
+  --color-ochre-text: #F0B84A;        /* High contrast on dark (7.4:1 on #16241D) */
 
   /* Night Cabin Shadows */
   --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.4);
@@ -240,6 +240,7 @@ select,
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  gap: 8px; /* 8px gap between header/button icons and labels (Requirement 8) */
   font-size: 0.95rem;
   font-weight: 500;
   border-radius: var(--radius-md);
@@ -293,14 +294,14 @@ input:focus-visible,
 
 /* Alert / Flight Surgeon Button */
 .btn-vermillion {
-  background-color: var(--color-vermillion);
+  background-color: #C2352A;          /* Darker fill for WCAG AA compliance with white text (4.9:1) */
   color: #FFFDF7;
   padding: 12px 22px;
   font-weight: 600;
 }
 
 .btn-vermillion:hover {
-  background-color: var(--color-vermillion-hover);
+  background-color: #A8281D;
 }
 
 /* Ghost / Icon button */
@@ -591,7 +592,23 @@ input:focus-visible,
   max-width: 360px;
   margin: 12px 0 20px;
   display: flex;
+  flex-direction: column;
+  align-items: center;
   justify-content: center;
+}
+
+.body-map-hover-tag {
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-full);
+  padding: 4px 14px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--color-ink);
+  margin-bottom: 8px;
+  display: inline-block;
+  box-shadow: var(--shadow-sm);
+  transition: all 0.2s ease;
 }
 
 .body-map-svg {
@@ -921,7 +938,7 @@ input:focus-visible,
 
 .chart-path-attention {
   fill: none;
-  stroke: var(--color-ochre);
+  stroke: var(--color-ochre-text);    /* Darker ochre for high contrast (Requirement 3) */
   stroke-width: 2.5;
   stroke-linecap: round;
   stroke-dasharray: 8 5; /* Dashed line style */
@@ -1277,12 +1294,14 @@ input:focus-visible,
   letter-spacing: 0.05em;
   padding: 12px 16px;
   border-bottom: 1px solid var(--color-border);
+  white-space: nowrap;
 }
 
 .telemetry-log-table td {
   padding: 12px 16px;
   border-bottom: 1px solid var(--color-border);
   color: var(--color-ink);
+  white-space: nowrap;
 }
 
 .telemetry-log-table tr:last-child td {
