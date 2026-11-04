@@ -99,8 +99,8 @@ document.addEventListener('DOMContentLoaded', () => {
         status: 'in-range',
         primaryIndicator: 'opticDisc',
         yUnit: 'µm',
-        baselineMin: 270,
-        baselineMax: 300,
+        baselineMin: 280,
+        baselineMax: 325,
         metric1Label: 'Peripapillary retinal thickness (simulated)',
         metric1Val: '302 µm',
         metric1Sub: '+4 µm baseline shift [Simulated]',
@@ -679,8 +679,19 @@ document.addEventListener('DOMContentLoaded', () => {
     const rawSpan = dataMax - dataMin || 10;
     const step = rawSpan > 100 ? 20 : rawSpan > 40 ? 10 : rawSpan > 10 ? 5 : 2;
 
-    const minVal = Math.floor((dataMin - rawSpan * 0.15) / step) * step;
-    const maxVal = Math.ceil((dataMax + rawSpan * 0.18) / step) * step;
+    let minVal, maxVal, ticks = [];
+    if (indKey === 'opticDisc' || (baselineMin >= 260 && baselineMax <= 340)) {
+      minVal = 250;
+      maxVal = 335;
+      ticks = [260, 280, 300, 320];
+    } else {
+      minVal = Math.floor((dataMin - rawSpan * 0.15) / step) * step;
+      maxVal = Math.ceil((dataMax + rawSpan * 0.18) / step) * step;
+      const tickCount = 3;
+      for (let t = 0; t <= tickCount; t++) {
+        ticks.push(minVal + t * ((maxVal - minVal) / tickCount));
+      }
+    }
     const valRange = maxVal - minVal || 1;
 
     function scaleX(index) {
@@ -712,10 +723,10 @@ document.addEventListener('DOMContentLoaded', () => {
         <line x1="${padLeft}" y1="${yBottom}" x2="${padLeft + plotWidth}" y2="${yBottom}" stroke="var(--color-emerald-border)" stroke-dasharray="3 3" stroke-width="1" />
       `;
 
-      // Limit line with label placed safely above the plot area to never overlap data
+      // Limit line with label placed safely above the plot area to never overlap data (outside plot)
       limitLineSvg = `
         <line x1="${padLeft}" y1="${yTop}" x2="${padLeft + plotWidth}" y2="${yTop}" stroke="var(--color-ochre-text)" stroke-dasharray="4 2" stroke-width="1.5" />
-        <text x="${padLeft + plotWidth}" y="${padTop - 6}" fill="var(--color-ochre-text)" font-size="12" font-weight="600" text-anchor="end">In-Flight Limit: ${baselineMax} ${yUnit}</text>
+        <text x="${padLeft + plotWidth}" y="${padTop - 8}" fill="var(--color-ochre-text)" font-size="12" font-weight="600" text-anchor="end">In-Flight Limit: ${baselineMax} ${yUnit}</text>
       `;
     }
 
@@ -730,17 +741,15 @@ document.addEventListener('DOMContentLoaded', () => {
       `;
     }
 
-    // Clean Round Grid Lines & 12px Y Axis labels
-    const tickCount = 3;
+    // Clean Round Grid Lines (260, 280, 300, 320) & 12px Y Axis labels
     let gridSvg = '';
-    for (let t = 0; t <= tickCount; t++) {
-      const tickVal = minVal + t * ((maxVal - minVal) / tickCount);
+    ticks.forEach(tickVal => {
       const gy = scaleY(tickVal);
       gridSvg += `
         <line x1="${padLeft}" y1="${gy}" x2="${padLeft + plotWidth}" y2="${gy}" stroke="var(--color-border)" stroke-width="1" />
         <text x="${padLeft - 8}" y="${gy + 4}" fill="var(--color-ink-muted)" font-size="12" text-anchor="end" class="num-tabular">${formatTick(tickVal)}</text>
       `;
-    }
+    });
 
     // Baseline Line: Solid Emerald Line per Requirement 3
     const baselinePoints = trendData.map((d, i) => `${scaleX(i)},${scaleY(d.baseline)}`);

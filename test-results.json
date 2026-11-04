@@ -1,11 +1,11 @@
 {
   "app": "Orbital Field Medical Journal",
   "suite": "Orbital Field Medical Journal: Verification Suite",
-  "timestamp": "2026-11-04T12:02:30.209866+00:00",
+  "timestamp": "2026-11-04T12:18:37.921619+00:00",
   "passed": 73,
   "failed": 0,
   "total": 73,
-  "durationMs": 22,
+  "durationMs": 80,
   "results": [
     {
       "title": "1. Clinical Indicators &amp; Tier Boundaries (14 Indicators)",

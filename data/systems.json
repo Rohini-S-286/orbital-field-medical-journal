@@ -7,8 +7,8 @@
     "primaryIndicator": "opticDisc",
     "secondaryIndicator": "visualAcuity",
     "yUnit": "µm",
-    "baselineMin": 270,
-    "baselineMax": 300,
+    "baselineMin": 280,
+    "baselineMax": 325,
     "whyMeasurement": "Microgravity shifts ~2L of fluid toward the head, increasing pressure behind the eyes. Daily optical tracking detects early optic nerve swelling before it causes permanent visual changes.",
     "mechanism": "Spaceflight-Associated Neuro-ocular Syndrome (SANS) results from loss of hydrostatic pressure gradient in microgravity, generating a persistent ~1.5–2.0 L cephalad fluid shift. Intraocular venous engorgement increases optic nerve sheath diameter (ONSD) and optic disc thickness."
   },
