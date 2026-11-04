@@ -1,0 +1,814 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Orbital Field Medical Journal - Human spaceflight physiological telemetry and crew clinical logging.">
+  <meta name="theme-color" content="#FBF6EA">
+  <title>Orbital Field Medical Journal — Crew Health Telemetry</title>
+  
+  <link rel="manifest" href="manifest.json">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body class="paper-glow">
+
+  <!-- ================= APP HEADER / SHELL ================= -->
+  <header class="app-header" role="banner">
+    <div class="header-inner">
+      <div class="brand-group">
+        <div class="journal-insignia" aria-hidden="true">
+          <!-- Medical Caduceus / Orbital Orbit Icon -->
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 2v20M8 5a4 4 0 0 1 8 0c0 3-8 3-8 6a4 4 0 0 0 8 0M8 15a4 4 0 0 1 8 0c0 3-8 3-8 6"/>
+          </svg>
+        </div>
+        <div class="brand-titles">
+          <h1>Orbital Field Medical Journal</h1>
+          <div class="mission-meta">
+            <span>Expedition 73</span>
+            <span aria-hidden="true">•</span>
+            <span>Station MET: Day 142</span>
+            <span aria-hidden="true">•</span>
+            <span class="num-tabular" id="cabin-time-display">12:29:00 UTC</span>
+            <span aria-hidden="true">•</span>
+            <span class="simulated-tag">Simulated Data</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="header-controls">
+        <!-- PWA / Offline Sync Pill -->
+        <div class="offline-pill" id="sync-status" role="status" aria-label="System status: Offline-ready telemetry cache active">
+          <span class="offline-dot" aria-hidden="true"></span>
+          <span>Field Cache Active</span>
+        </div>
+
+        <!-- Evidence & Sources Button -->
+        <button class="btn-secondary" id="open-evidence-btn" aria-label="Open Clinical Evidence and References Drawer" title="View NASA / ESA Clinical Evidence and Reference Ranges">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/>
+            <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>
+          </svg>
+          <span>Evidence</span>
+        </button>
+
+        <!-- Tiered Guidance Button -->
+        <button class="btn-secondary" id="open-guidance-btn" aria-label="Open Tiered Action Guidance Panel" title="View Routine, Self-care, Flight Surgeon, and Emergency Action Protocols">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="9 11 12 14 22 4"/>
+            <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/>
+          </svg>
+          <span>Guidance</span>
+        </button>
+
+        <!-- Night Cabin Lighting / Dark Mode Toggle -->
+        <button class="btn-secondary theme-toggle-btn" id="theme-toggle" aria-label="Toggle Night Cabin Lighting theme" title="Switch between Warm Ivory and Night Cabin Dark Theme (Shortcut: D)">
+          <svg id="theme-icon-moon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+          </svg>
+          <span id="theme-label-text">Night Cabin</span>
+        </button>
+
+        <!-- Flight Surgeon Emergency / Comms Quick Action -->
+        <button class="btn-secondary" id="flight-surgeon-quick-btn" aria-label="Open flight surgeon secure transmission ledger">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: var(--color-vermillion);" aria-hidden="true">
+            <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
+          </svg>
+          <span>Surgeon Ledger</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Clinical Decision Support & Non-Medical Device Notice Banner -->
+  <aside class="disclaimer-banner" role="note" aria-label="Regulatory and medical disclaimer">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <circle cx="12" cy="12" r="10"/>
+      <line x1="12" y1="8" x2="12" y2="12"/>
+      <line x1="12" y1="16" x2="12.01" y2="16"/>
+    </svg>
+    <span><strong>Clinical Decision Support Note:</strong> Prototype for spaceflight human-system research and operational training. Not a certified medical diagnostic device. All metrics are simulated.</span>
+  </aside>
+
+  <!-- ================= MAIN THREE-COLUMN WORKSPACE ================= -->
+  <main class="dashboard-container" id="main-content">
+
+    <!-- COLUMN 1: CENTERED THIN EMERALD LINE-ART BODY MAP -->
+    <section class="journal-card body-map-card" aria-labelledby="body-map-heading">
+      <div class="card-header" style="width: 100%;">
+        <div class="card-title-group" style="text-align: left;">
+          <span class="card-meta">Anatomical Topography</span>
+          <h2 id="body-map-heading">Crew Physiological Map</h2>
+        </div>
+        <!-- Status indicator for current flagged system (in-place setBadge target) -->
+        <div class="status-badge status--attention" id="current-overall-flag">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/>
+            <line x1="12" y1="9" x2="12" y2="13"/>
+            <line x1="12" y1="17" x2="12.01" y2="17"/>
+          </svg>
+          <span>Ocular: Watch</span>
+        </div>
+      </div>
+
+      <p class="text-muted" style="font-size: 0.9rem; margin-bottom: 8px;">
+        Tap any anatomical system to inspect microgravity physiological shifts and clinical telemetry.
+      </p>
+
+      <!-- SVG Body Map (Thin Emerald Line-art, stroked not filled, systems tinted by status) -->
+      <div class="body-map-wrapper">
+        <svg class="body-map-svg" viewBox="0 0 320 540" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Interactive anatomical outline of astronaut physiology">
+          <defs>
+            <pattern id="emergency-hatch" width="8" height="8" patternTransform="rotate(45 0 0)" patternUnits="userSpaceOnUse">
+              <line x1="0" y1="0" x2="0" y2="8" stroke="#E34234" stroke-width="2.5" />
+            </pattern>
+          </defs>
+
+          <!-- Human Silhouette Outline: Thin Emerald line-art (stroked, not filled) -->
+          <path class="body-silhouette" d="
+            M160 22
+            C148 22 138 32 138 46
+            C138 58 144 68 152 74
+            C138 78 122 86 112 102
+            C102 118 94 148 88 184
+            C82 220 76 254 70 278
+            C68 286 74 292 82 292
+            C90 292 94 284 100 258
+            C106 232 112 196 116 174
+            L116 260
+            C116 280 120 310 124 350
+            C128 390 130 440 130 490
+            C130 502 138 510 148 510
+            C158 510 160 498 160 480
+            L160 300
+            L160 480
+            C160 498 162 510 172 510
+            C182 510 190 502 190 490
+            C190 440 192 390 196 350
+            C200 310 204 280 204 260
+            L204 174
+            C208 196 214 232 220 258
+            C226 284 230 292 238 292
+            C246 292 252 286 250 278
+            C244 254 238 220 232 184
+            C226 148 218 118 208 102
+            C198 86 182 78 168 74
+            C176 68 182 58 182 46
+            C182 32 172 22 160 22
+            Z" />
+
+          <!-- SYSTEM 1: Neuro-Vestibular (Cranial / Inner Ear) -->
+          <g id="sys-cranial" class="body-system-region system--in-range" tabindex="0" role="button" aria-label="Neuro-vestibular system. Status: In range." data-system="cranial">
+            <path d="M142 36 C142 26 150 24 160 24 C170 24 178 26 178 36 C178 48 174 58 160 58 C146 58 142 48 142 36 Z" />
+            <circle cx="148" cy="42" r="2.5" fill="var(--color-emerald)" />
+            <circle cx="172" cy="42" r="2.5" fill="var(--color-emerald)" />
+          </g>
+
+          <!-- SYSTEM 2: Ocular / SANS (Eyes & Optic Disc) -->
+          <g id="sys-ocular" class="body-system-region system--attention" tabindex="0" role="button" aria-label="Ocular and SANS visual acuity. Status: Attention / Watch." data-system="ocular">
+            <circle cx="153" cy="38" r="4.5" />
+            <circle cx="167" cy="38" r="4.5" />
+            <circle class="pulse-ring-marker" cx="160" cy="38" r="14" fill="none" stroke="var(--color-ochre)" />
+          </g>
+
+          <!-- SYSTEM 3: Cardiovascular (Heart & Thoracic Vessels) -->
+          <g id="sys-cardio" class="body-system-region system--in-range" tabindex="0" role="button" aria-label="Cardiovascular and hemodynamic system. Status: In range." data-system="cardio">
+            <path d="M152 118 C144 118 140 126 142 138 C144 150 156 160 160 164 C164 160 176 150 178 138 C180 126 176 118 168 118 C162 118 160 123 160 123 C160 123 158 118 152 118 Z" />
+          </g>
+
+          <!-- SYSTEM 4: Pulmonary / Respiratory (Lungs & Gas Exchange) -->
+          <g id="sys-pulmonary" class="body-system-region system--in-range" tabindex="0" role="button" aria-label="Pulmonary and alveolar gas exchange system. Status: In range." data-system="pulmonary">
+            <path d="M136 114 C128 122 126 144 128 162 C134 168 146 164 146 150 L146 120 Z" />
+            <path d="M184 114 C192 122 194 144 192 162 C186 168 174 164 174 150 L174 120 Z" />
+          </g>
+
+          <!-- SYSTEM 5: Musculoskeletal & Spine (Vertebral Column Elongation) -->
+          <g id="sys-spine" class="body-system-region system--in-range" tabindex="0" role="button" aria-label="Spinal elongation and axial skeleton. Status: In range." data-system="spine">
+            <line x1="160" y1="74" x2="160" y2="248" stroke="var(--color-emerald)" stroke-width="3" stroke-dasharray="6 3" />
+            <rect x="156" y="90" width="8" height="3" rx="1.5" fill="var(--color-emerald)" />
+            <rect x="156" y="112" width="8" height="3" rx="1.5" fill="var(--color-emerald)" />
+            <rect x="156" y="140" width="8" height="3" rx="1.5" fill="var(--color-emerald)" />
+            <rect x="156" y="175" width="8" height="3" rx="1.5" fill="var(--color-emerald)" />
+            <rect x="156" y="210" width="8" height="3" rx="1.5" fill="var(--color-emerald)" />
+            <rect x="156" y="238" width="8" height="3" rx="1.5" fill="var(--color-emerald)" />
+          </g>
+
+          <!-- SYSTEM 6: Lower Limbs / Countermeasure Atrophy Monitoring -->
+          <g id="sys-limbs" class="body-system-region system--in-range" tabindex="0" role="button" aria-label="Musculoskeletal lower limbs and soleus muscle density. Status: In range." data-system="limbs">
+            <ellipse cx="140" cy="385" rx="8" ry="24" />
+            <ellipse cx="180" cy="385" rx="8" ry="24" />
+          </g>
+        </svg>
+      </div>
+
+      <!-- Quick interactive system selector pills (48px targets) -->
+      <nav class="body-map-legend" aria-label="Physiological system selector">
+        <button class="legend-chip active" data-target="ocular">
+          <span style="display:inline-block; width:8px; height:8px; border-radius:50%; background:var(--color-ochre);"></span>
+          <span>Ocular (SANS)</span>
+        </button>
+        <button class="legend-chip" data-target="cardio">
+          <span style="display:inline-block; width:8px; height:8px; border-radius:50%; background:var(--color-emerald);"></span>
+          <span>Cardiovascular</span>
+        </button>
+        <button class="legend-chip" data-target="cranial">
+          <span style="display:inline-block; width:8px; height:8px; border-radius:50%; background:var(--color-emerald);"></span>
+          <span>Neurovestibular</span>
+        </button>
+        <button class="legend-chip" data-target="spine">
+          <span style="display:inline-block; width:8px; height:8px; border-radius:50%; background:var(--color-emerald);"></span>
+          <span>Spine / Axial</span>
+        </button>
+        <button class="legend-chip" data-target="pulmonary">
+          <span style="display:inline-block; width:8px; height:8px; border-radius:50%; background:var(--color-emerald);"></span>
+          <span>Pulmonary</span>
+        </button>
+        <button class="legend-chip" data-target="limbs">
+          <span style="display:inline-block; width:8px; height:8px; border-radius:50%; background:var(--color-emerald);"></span>
+          <span>Lower Limbs</span>
+        </button>
+      </nav>
+    </section>
+
+
+    <!-- COLUMN 2: OVERALL STATUS RING & CLINICAL SYSTEM OVERVIEW -->
+    <section class="journal-card status-ring-card" aria-labelledby="status-overview-heading">
+      <div class="card-header" style="width: 100%;">
+        <div class="card-title-group" style="text-align: left;">
+          <span class="card-meta">Readiness Telemetry</span>
+          <h2 id="status-overview-heading">Mission Physiological Index</h2>
+        </div>
+
+        <!-- Requirement 4: Replaced 'Fit for Duty' with 'Within expected range' -->
+        <div class="status-badge status--in-range" id="crew-readiness-badge">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+            <polyline points="22 4 12 14.01 9 11.01"/>
+          </svg>
+          <span>Within expected range</span>
+        </div>
+      </div>
+
+      <!-- Circular Readiness Gauge Ring with mathematical circumference 477.52 -->
+      <div class="ring-visual-wrapper" role="meter" aria-valuenow="87" aria-valuemin="0" aria-valuemax="100" aria-label="Physiological readiness score: 87%">
+        <svg class="status-svg-ring" viewBox="0 0 180 180">
+          <circle class="ring-bg-track" cx="90" cy="90" r="76" />
+          <circle class="ring-progress-bar" id="ring-progress-indicator" cx="90" cy="90" r="76" />
+        </svg>
+        <div class="ring-center-content">
+          <div class="ring-score num-tabular" id="readiness-score-text">87%</div>
+          <span class="ring-score-label">Readiness</span>
+        </div>
+      </div>
+
+      <p class="text-muted" id="overall-status-summary" style="font-size: 0.95rem; max-width: 420px; margin-bottom: 20px;">
+        Vitals stable across 5/6 core systems. Ocular SANS shows mild bilateral disc hyper-reflectivity under routine tracking.
+      </p>
+
+      <!-- Active Inspection Card for Focused System (Fully Data-Driven!) -->
+      <div class="journal-card journal-card--elevated" id="system-inspector-card" style="width: 100%; text-align: left;">
+        <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px; gap: 8px;">
+          <div>
+            <span class="card-meta" id="inspect-sub">Focus System Telemetry</span>
+            <h3 id="inspect-title" style="margin-top: 2px;">Ocular & SANS Monitoring</h3>
+          </div>
+          <div class="status-badge status--attention" id="inspect-badge">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/>
+              <line x1="12" y1="9" x2="12" y2="13"/>
+              <line x1="12" y1="17" x2="12.01" y2="17"/>
+            </svg>
+            <span id="inspect-badge-text">Watch</span>
+          </div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 14px;">
+          <div style="background: var(--color-surface-hover); padding: 12px 14px; border-radius: var(--radius-md); border: 1px solid var(--color-border);">
+            <div class="text-faint" id="inspect-metric1-label">Optic Disc Thickness</div>
+            <div class="num-tabular" id="inspect-metric-1" style="font-size: 1.35rem; font-weight: 700; color: var(--color-ink);">312 µm</div>
+            <div class="text-faint" id="inspect-metric1-sub" style="color: var(--color-ochre-text);">+14 µm baseline shift [Simulated]</div>
+          </div>
+          <div style="background: var(--color-surface-hover); padding: 12px 14px; border-radius: var(--radius-md); border: 1px solid var(--color-border);">
+            <div class="text-faint" id="inspect-metric2-label">Visual Acuity (LogMAR)</div>
+            <div class="num-tabular" id="inspect-metric-2" style="font-size: 1.35rem; font-weight: 700; color: var(--color-ink);">0.08</div>
+            <div class="text-faint" id="inspect-metric2-sub" style="color: var(--color-emerald);">In nominal range [Simulated]</div>
+          </div>
+        </div>
+
+        <!-- Fully Data-Driven Dynamic SVG Trend Chart Container -->
+        <div class="chart-container">
+          <div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 8px;">
+            <span style="font-size: 0.8rem; font-weight: 600; text-transform: uppercase; color: var(--color-ink-muted);">7-Day Trend Telemetry</span>
+            <span class="text-faint" id="chart-baseline-info">Nominal Baseline Band [Simulated]</span>
+          </div>
+
+          <div id="dynamic-chart-wrapper">
+            <!-- Dynamic SVG injected by renderTrendChart() -->
+          </div>
+        </div>
+
+        <div style="display: flex; gap: 12px; margin-top: 14px;">
+          <button class="btn-primary" id="log-system-notes-btn" style="flex: 1;" aria-label="Log clinical field observation for this system">
+            <span>Log Field Note</span>
+          </button>
+          <button class="btn-secondary" id="open-full-telemetry-btn" aria-label="Open detailed telemetry drawer">
+            <span>Inspect System</span>
+          </button>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- COLUMN 3: TODAY'S CHECK-IN & NEXT DUE MEASUREMENT -->
+    <section class="journal-card" aria-labelledby="checkin-heading">
+      <div class="card-header">
+        <div class="card-title-group">
+          <span class="card-meta">Orbital Clinical Protocol</span>
+          <h2 id="checkin-heading">Today's Check-in</h2>
+        </div>
+        <span class="text-faint num-tabular" id="checkin-progress-counter">2 / 4 Complete</span>
+      </div>
+
+      <!-- NEXT DUE MEASUREMENT HERO CARD -->
+      <div class="next-due-card" style="margin-bottom: 24px;">
+        <div class="next-due-banner">
+          <span class="status-badge status--in-range">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <circle cx="12" cy="12" r="10"/>
+              <polyline points="12 6 12 12 16 14"/>
+            </svg>
+            <span>Next Scheduled</span>
+          </span>
+          <span class="text-faint">Window Open</span>
+        </div>
+
+        <h3 style="font-size: 1.15rem; margin-top: 4px;">Resting Cardiovascular Vitals & SpO2</h3>
+        <p class="text-muted" style="font-size: 0.88rem; margin-top: 4px;">
+          Cephalad fluid equilibrium check: BP, resting HR, and pulse oximetry with 4-4-4 breathing stabilization.
+        </p>
+
+        <div class="timer-display">
+          <span class="timer-digits num-tabular" id="due-countdown">38:14</span>
+          <span class="timer-unit">Remaining</span>
+        </div>
+
+        <button class="btn-primary" id="start-measurement-btn" style="width: 100%;" aria-label="Begin guided measurement procedure">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 8px;" aria-hidden="true">
+            <polygon points="5 3 19 12 5 21 5 3"/>
+          </svg>
+          <span>Begin Measurement</span>
+        </button>
+      </div>
+
+      <!-- CHECK-IN PROTOCOL CHECKLIST -->
+      <ul class="checkin-list" role="list">
+        <!-- 1. Completed -->
+        <li class="checkin-item completed" role="listitem">
+          <div class="checkin-content">
+            <div class="checkin-icon-box" aria-label="Completed">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="20 6 9 17 4 12"/>
+              </svg>
+            </div>
+            <div class="checkin-titles">
+              <span class="checkin-name">Sleep Architecture & Core Temp</span>
+              <span class="checkin-meta">Logged 06:40 UTC • 7h 18m nominal [Simulated]</span>
+            </div>
+          </div>
+          <span class="status-badge status--in-range" style="padding: 4px 10px; font-size: 0.75rem;">
+            In range
+          </span>
+        </li>
+
+        <!-- 2. Completed -->
+        <li class="checkin-item completed" role="listitem">
+          <div class="checkin-content">
+            <div class="checkin-icon-box" aria-label="Completed">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="20 6 9 17 4 12"/>
+              </svg>
+            </div>
+            <div class="checkin-titles">
+              <span class="checkin-name">Cabin Radiation Dosimetry</span>
+              <span class="checkin-meta">Logged 08:15 UTC • 285 µGy/d [Simulated]</span>
+            </div>
+          </div>
+          <span class="status-badge status--in-range" style="padding: 4px 10px; font-size: 0.75rem;">
+            In range
+          </span>
+        </li>
+
+        <!-- 3. Pending (Next Due) -->
+        <li class="checkin-item pending" id="checkin-item-cardio" role="listitem">
+          <div class="checkin-content">
+            <div class="checkin-icon-box" aria-label="Pending">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10"/>
+                <polyline points="12 6 12 12 16 14"/>
+              </svg>
+            </div>
+            <div class="checkin-titles">
+              <span class="checkin-name">Cardiovascular Vitals & SpO2</span>
+              <span class="checkin-meta" id="checkin-cardio-meta">Due in 38m • Cuff, pulse oximeter & HR</span>
+            </div>
+          </div>
+          <span class="status-badge status--attention" id="checkin-cardio-badge" style="padding: 4px 10px; font-size: 0.75rem;">
+            Due Next
+          </span>
+        </li>
+
+        <!-- 4. Evening Workout -->
+        <li class="checkin-item" role="listitem">
+          <div class="checkin-content">
+            <div class="checkin-icon-box" style="background: var(--color-surface-hover); color: var(--color-ink-muted);" aria-label="Scheduled">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M18 20V10M12 20V4M6 20v-6"/>
+              </svg>
+            </div>
+            <div class="checkin-titles">
+              <span class="checkin-name">ARED Resistive Countermeasure</span>
+              <span class="checkin-meta">Scheduled 16:30 UTC • 90 min session</span>
+            </div>
+          </div>
+          <span class="text-faint num-tabular">16:30</span>
+        </li>
+      </ul>
+
+      <!-- Surgeon Quick Call Protocol trigger -->
+      <div style="margin-top: 24px; padding-top: 16px; border-top: 1px solid var(--color-border); display: flex; justify-content: space-between; align-items: center; gap: 8px;">
+        <div>
+          <div style="font-size: 0.85rem; font-weight: 600; color: var(--color-ink);">Status State Machine Drill</div>
+          <div class="text-faint">Cycles 4 non-color redundant levels</div>
+        </div>
+        <button class="btn-secondary" id="trigger-emergency-drill-btn" style="min-height: 48px; padding: 8px 16px; font-size: 0.85rem;" title="Test and verify all 4 status states">
+          Status Drill
+        </button>
+      </div>
+    </section>
+
+    <!-- FULL WIDTH SECTION: VISIBLE LOCAL CLINICAL TELEMETRY LOG -->
+    <section class="journal-card dashboard-full-width" style="grid-column: 1 / -1;" aria-labelledby="telemetry-log-heading">
+      <div>
+        <div class="card-header">
+          <div class="card-title-group">
+            <span class="card-meta">Persistent Local Telemetry Record</span>
+            <h2 id="telemetry-log-heading">Crew Clinical Journal Entries</h2>
+          </div>
+          <span class="simulated-tag">Client LocalStorage</span>
+        </div>
+        <p class="text-muted" style="font-size: 0.88rem;">
+          Verified entries logged with systolic, diastolic, heart rate and SpO2. All data is persisted locally and classified by the status engine.
+        </p>
+
+        <div class="telemetry-log-table-wrapper">
+          <table class="telemetry-log-table" aria-label="Recent clinical vital entries">
+            <thead>
+              <tr>
+                <th scope="col">Station Timestamp</th>
+                <th scope="col">Blood Pressure</th>
+                <th scope="col">Heart Rate</th>
+                <th scope="col">SpO2</th>
+                <th scope="col">Classification</th>
+              </tr>
+            </thead>
+            <tbody id="clinical-log-tbody">
+              <!-- Dynamically populated from localStorage -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Quick Guidance Overview Card -->
+      <div>
+        <div class="card-header">
+          <div class="card-title-group">
+            <span class="card-meta">Tiered Decision Support</span>
+            <h2>Active Clinical Guidance Tier</h2>
+          </div>
+          <span class="text-faint">No drug dosing</span>
+        </div>
+
+        <div id="active-guidance-preview">
+          <!-- Dynamically populated from TIERED_GUIDANCE matching current status -->
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+
+  <!-- ================= GUIDED MEASUREMENT MODAL (WITH CALM BREATHING GUIDE & HR) ================= -->
+  <div class="drawer-backdrop" id="measurement-backdrop" role="dialog" aria-modal="true" aria-hidden="true" aria-labelledby="measurement-modal-title">
+    <div class="modal-dialog" id="measurement-dialog">
+      <div class="drawer-header">
+        <div>
+          <span class="card-meta">Measurement Step</span>
+          <h2 id="measurement-modal-title">Resting Cardiovascular Vitals</h2>
+        </div>
+        <button class="drawer-close-btn" id="close-measurement-modal" aria-label="Cancel measurement and return to journal">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="18" y1="6" x2="6" y2="18"/>
+            <line x1="6" y1="6" x2="18" y2="18"/>
+          </svg>
+        </button>
+      </div>
+
+      <!-- Stage 1: Breathing stabilization coach -->
+      <div id="measurement-stage-breathing" class="breathing-coach-box breathing-active">
+        <span class="card-meta">Calm Stabilization Sequence</span>
+        <div class="breathing-instruction" id="breath-cue-text">Inhale gently...</div>
+        <div class="breathing-subtext">Synchronize breathing to stabilize cephalic venous pressure</div>
+
+        <!-- Animated Breathing Ring & Orb -->
+        <div class="breathing-visual">
+          <div class="breathing-outer-ring" aria-hidden="true"></div>
+          <div class="breathing-orb" id="breathing-orb-indicator">
+            <span class="num-tabular" id="breath-seconds-counter">4s</span>
+          </div>
+        </div>
+
+        <p class="text-muted" style="font-size: 0.9rem; max-width: 400px; margin-top: 8px;">
+          Keep shoulders relaxed. Resting blood pressure telemetry requires a calm microgravity baseline.
+        </p>
+
+        <div style="display: flex; gap: 12px; margin-top: 18px; width: 100%;">
+          <button class="btn-primary" id="skip-to-record-btn" style="flex: 1;">
+            <span>Proceed to Telemetry Recording</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Stage 2: Telemetry Input with Gloved Hands Stepper Controls & Validation -->
+      <div id="measurement-stage-input" style="display: none;">
+        <p class="text-muted" style="margin-bottom: 14px; font-size: 0.9rem;">
+          Adjust values using the 52px touch steppers (gloved-hand accessible). Input validation detects impossible clinical values.
+        </p>
+
+        <!-- Inline Validation Error Box -->
+        <div id="vitals-validation-error" class="validation-error-msg" role="alert" aria-live="assertive"></div>
+
+        <!-- Systolic BP -->
+        <div>
+          <label for="bp-sys-val" style="font-weight: 600; font-size: 0.9rem; color: var(--color-ink);">Systolic Arterial Pressure (mmHg)</label>
+          <div class="stepper-control">
+            <button class="stepper-btn" id="bp-sys-down" aria-label="Decrease systolic blood pressure by 1">-</button>
+            <div class="stepper-value num-tabular" id="bp-sys-val">118</div>
+            <button class="stepper-btn" id="bp-sys-up" aria-label="Increase systolic blood pressure by 1">+</button>
+          </div>
+        </div>
+
+        <!-- Diastolic BP -->
+        <div style="margin-top: 10px;">
+          <label for="bp-dia-val" style="font-weight: 600; font-size: 0.9rem; color: var(--color-ink);">Diastolic Arterial Pressure (mmHg)</label>
+          <div class="stepper-control">
+            <button class="stepper-btn" id="bp-dia-down" aria-label="Decrease diastolic blood pressure by 1">-</button>
+            <div class="stepper-value num-tabular" id="bp-dia-val">76</div>
+            <button class="stepper-btn" id="bp-dia-up" aria-label="Increase diastolic blood pressure by 1">+</button>
+          </div>
+        </div>
+
+        <!-- Heart Rate (Requirement 3) -->
+        <div style="margin-top: 10px;">
+          <label for="hr-val" style="font-weight: 600; font-size: 0.9rem; color: var(--color-ink);">Resting Heart Rate (bpm)</label>
+          <div class="stepper-control">
+            <button class="stepper-btn" id="hr-down" aria-label="Decrease heart rate by 1">-</button>
+            <div class="stepper-value num-tabular" id="hr-val">62</div>
+            <button class="stepper-btn" id="hr-up" aria-label="Increase heart rate by 1">+</button>
+          </div>
+        </div>
+
+        <!-- SpO2 Oxygen Saturation -->
+        <div style="margin-top: 10px;">
+          <label for="spo2-val" style="font-weight: 600; font-size: 0.9rem; color: var(--color-ink);">SpO2 Pulse Oximetry (%)</label>
+          <div class="stepper-control">
+            <button class="stepper-btn" id="spo2-down" aria-label="Decrease SpO2 by 1">-</button>
+            <div class="stepper-value num-tabular" id="spo2-val">99%</div>
+            <button class="stepper-btn" id="spo2-up" aria-label="Increase SpO2 by 1">+</button>
+          </div>
+        </div>
+
+        <div style="display: flex; gap: 14px; margin-top: 20px;">
+          <button class="btn-secondary" id="back-to-breathing-btn" style="flex: 1;">
+            <span>Back</span>
+          </button>
+          <button class="btn-primary" id="confirm-save-vitals-btn" style="flex: 2;">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 8px;">
+              <polyline points="20 6 9 17 4 12"/>
+            </svg>
+            <span>Evaluate & Save Vitals</span>
+          </button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+
+  <!-- ================= DETAILED TELEMETRY INSPECTOR SLIDE-IN DRAWER ================= -->
+  <div class="drawer-backdrop" id="system-drawer-backdrop" role="dialog" aria-modal="true" aria-hidden="true" aria-labelledby="drawer-system-title">
+    <div class="drawer-panel" id="system-drawer">
+      <div class="drawer-header">
+        <div>
+          <span class="card-meta">Anatomical System Telemetry</span>
+          <h2 id="drawer-system-title">Ocular SANS Protocol</h2>
+        </div>
+        <button class="drawer-close-btn" id="close-system-drawer" aria-label="Close telemetry drawer">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="18" y1="6" x2="6" y2="18"/>
+            <line x1="6" y1="6" x2="18" y2="18"/>
+          </svg>
+        </button>
+      </div>
+
+      <div class="drawer-body">
+        <div style="display: flex; align-items: center; justify-content: space-between; gap: 8px;">
+          <span style="font-weight: 600; color: var(--color-ink);">Diagnostic Classification:</span>
+          <div class="status-badge status--attention" id="drawer-status-badge">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/>
+              <line x1="12" y1="9" x2="12" y2="13"/>
+              <line x1="12" y1="17" x2="12.01" y2="17"/>
+            </svg>
+            <span id="drawer-status-label">Watch</span>
+          </div>
+        </div>
+
+        <div class="journal-card" style="padding: 18px;">
+          <h4 style="margin-bottom: 8px;">Microgravity Mechanism Notes</h4>
+          <p class="text-muted" style="font-size: 0.9rem; line-height: 1.6;" id="drawer-mechanism-desc">
+            <!-- Data driven -->
+          </p>
+        </div>
+
+        <!-- Telemetry Metrics Grid -->
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px;">
+          <div style="background: var(--color-surface-hover); padding: 14px; border-radius: var(--radius-md); border: 1px solid var(--color-border);">
+            <div class="text-faint" id="drawer-metric1-label">Current Reading</div>
+            <div class="num-tabular" id="drawer-metric-val" style="font-size: 1.45rem; font-weight: 700; color: var(--color-ink); margin: 4px 0;">312 µm</div>
+            <div class="text-faint" id="drawer-metric1-sub">Nominal limit: 300 µm [Simulated]</div>
+          </div>
+          <div style="background: var(--color-surface-hover); padding: 14px; border-radius: var(--radius-md); border: 1px solid var(--color-border);">
+            <div class="text-faint" id="drawer-metric2-label">Secondary Parameter</div>
+            <div class="num-tabular" id="drawer-metric2-val" style="font-size: 1.45rem; font-weight: 700; color: var(--color-ochre-text); margin: 4px 0;">+4.7%</div>
+            <div class="text-faint" id="drawer-metric2-sub">Shift from baseline [Simulated]</div>
+          </div>
+        </div>
+
+        <!-- Clinical Field Log Input -->
+        <div style="margin-top: 10px;">
+          <label for="clinical-field-note" style="font-weight: 600; font-size: 0.9rem; color: var(--color-ink); display: block; margin-bottom: 8px;">
+            Crew Clinical Journal Observation
+          </label>
+          <textarea id="clinical-field-note" rows="3" style="width: 100%; border: 1px solid var(--color-border); border-radius: var(--radius-md); background: var(--color-surface); color: var(--color-ink); padding: 12px; font-family: var(--font-sans); font-size: 0.92rem;" placeholder="Record subjective observations (e.g. vision sharpness, headache, orthostatic stability)..."></textarea>
+          <button class="btn-primary" id="save-note-btn" style="width: 100%; margin-top: 10px;">
+            <span>Append Entry to Journal</span>
+          </button>
+        </div>
+
+        <!-- Contact Flight Surgeon Action -->
+        <div style="margin-top: 14px; padding-top: 18px; border-top: 1px solid var(--color-border);">
+          <button class="btn-vermillion" id="drawer-surgeon-btn" style="width: 100%;">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 8px;">
+              <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
+            </svg>
+            <span>Simulate Surgeon Consultation</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ================= EVIDENCE & SOURCES DRAWER (REQUIREMENT 4) ================= -->
+  <div class="drawer-backdrop" id="evidence-drawer-backdrop" role="dialog" aria-modal="true" aria-hidden="true" aria-labelledby="evidence-drawer-title">
+    <div class="drawer-panel" id="evidence-drawer">
+      <div class="drawer-header">
+        <div>
+          <span class="card-meta">Clinical Knowledge Base</span>
+          <h2 id="evidence-drawer-title">Evidence & References</h2>
+        </div>
+        <button class="drawer-close-btn" id="close-evidence-drawer" aria-label="Close evidence drawer">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="18" y1="6" x2="6" y2="18"/>
+            <line x1="6" y1="6" x2="18" y2="18"/>
+          </svg>
+        </button>
+      </div>
+
+      <div class="drawer-body">
+        <aside class="journal-card" style="padding: 16px; background: var(--color-surface-hover);" role="note">
+          <h4 style="font-size: 0.95rem; margin-bottom: 4px;">Regulatory Notice</h4>
+          <p class="text-muted" style="font-size: 0.85rem;">
+            Decision support research prototype. Not a certified medical device. All reference ranges are grounded in open aerospace medicine literature.
+          </p>
+        </aside>
+
+        <div>
+          <h3 style="font-size: 1.1rem; margin-bottom: 12px;">Physiological Reference Ranges</h3>
+          <div id="indicators-evidence-list" style="display: flex; flex-direction: column; gap: 12px;">
+            <!-- Populated from CLINICAL_INDICATORS -->
+          </div>
+        </div>
+
+        <div style="margin-top: 16px;">
+          <h3 style="font-size: 1.1rem; margin-bottom: 12px;">Primary Clinical Sources</h3>
+          <div id="sources-evidence-list" style="display: flex; flex-direction: column; gap: 12px;">
+            <!-- Populated from CLINICAL_SOURCES -->
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ================= TIERED GUIDANCE DRAWER (REQUIREMENT 5) ================= -->
+  <div class="drawer-backdrop" id="guidance-drawer-backdrop" role="dialog" aria-modal="true" aria-hidden="true" aria-labelledby="guidance-drawer-title">
+    <div class="drawer-panel" id="guidance-drawer">
+      <div class="drawer-header">
+        <div>
+          <span class="card-meta">Standardized Clinical Triage</span>
+          <h2 id="guidance-drawer-title">Tiered Action Guidance</h2>
+        </div>
+        <button class="drawer-close-btn" id="close-guidance-drawer" aria-label="Close guidance drawer">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="18" y1="6" x2="6" y2="18"/>
+            <line x1="6" y1="6" x2="18" y2="18"/>
+          </svg>
+        </button>
+      </div>
+
+      <div class="drawer-body">
+        <aside class="journal-card" style="padding: 14px; background: var(--color-surface-hover);" role="note">
+          <p class="text-muted" style="font-size: 0.86rem;">
+            <strong>Safety Mandate:</strong> Operational, environmental, and non-pharmacologic countermeasures only. Strictly <em>no drug dosing</em> is provided by this decision support tool.
+          </p>
+        </aside>
+
+        <div id="all-tiered-guidance-cards">
+          <!-- Populated from TIERED_GUIDANCE -->
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ================= FLIGHT SURGEON TRANSMISSION LEDGER MODAL ================= -->
+  <div class="drawer-backdrop" id="surgeon-ledger-backdrop" role="dialog" aria-modal="true" aria-hidden="true" aria-labelledby="surgeon-ledger-title">
+    <div class="modal-dialog" id="surgeon-ledger-dialog">
+      <div class="drawer-header">
+        <div>
+          <span class="card-meta">Downlink Comm Channel</span>
+          <h2 id="surgeon-ledger-title">Flight Surgeon Ledger</h2>
+        </div>
+        <button class="drawer-close-btn" id="close-surgeon-modal" aria-label="Close flight surgeon ledger">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="18" y1="6" x2="6" y2="18"/>
+            <line x1="6" y1="6" x2="18" y2="18"/>
+          </svg>
+        </button>
+      </div>
+
+      <p class="text-muted" style="margin-bottom: 14px; font-size: 0.9rem;">
+        <strong>[SIMULATED TRANSMISSION]</strong> Telemetry packet will be bundled for simulated transmission over White Sands Ground Terminal.
+      </p>
+
+      <div class="journal-card" style="background: var(--color-surface-hover); margin-bottom: 18px; padding: 18px;">
+        <div style="font-weight: 600; font-size: 0.95rem; margin-bottom: 8px;">Simulated Telemetry Bundle</div>
+        <ul style="list-style: none; font-size: 0.88rem; color: var(--color-ink-muted); display: flex; flex-direction: column; gap: 6px;">
+          <li>• Current Readiness Score: <strong class="num-tabular" style="color:var(--color-ink);" id="summary-readiness">87%</strong></li>
+          <li>• Active Classification: <strong style="color:var(--color-ochre-text);" id="summary-active-flag">Ocular SANS (Watch)</strong></li>
+          <li>• Blood Pressure: <strong class="num-tabular" style="color:var(--color-ink);" id="summary-bp">118 / 76 mmHg</strong></li>
+          <li>• Heart Rate: <strong class="num-tabular" style="color:var(--color-ink);" id="summary-hr">62 bpm</strong></li>
+          <li>• Pulse Oximetry: <strong class="num-tabular" style="color:var(--color-ink);" id="summary-spo2">99% SpO2</strong></li>
+        </ul>
+      </div>
+
+      <div style="display: flex; flex-direction: column; gap: 12px;">
+        <button class="btn-vermillion" id="send-surgeon-telemetry-btn" style="width: 100%;">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 8px;">
+            <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
+          </svg>
+          <span>Transmit Simulated Packet to Flight Surgeon</span>
+        </button>
+
+        <button class="btn-secondary" id="simulate-emergency-btn" style="border-color: var(--color-vermillion); color: var(--color-vermillion-text);">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 8px;">
+            <polygon points="7.86 2 16.14 2 22 7.86 22 16.14 16.14 22 7.86 22 2 16.14 2 7.86 7.86 2"/>
+            <line x1="12" y1="8" x2="12" y2="12"/>
+            <line x1="12" y1="16" x2="12.01" y2="16"/>
+          </svg>
+          <span>Simulate Emergency State (Level 4 System Test)</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notification Container (Accessible live region) -->
+  <div id="toast-container" class="toast-container" aria-live="polite" aria-atomic="true"></div>
+
+  <!-- Clinical Knowledge Base Data Script -->
+  <script src="clinical-ranges.js"></script>
+  <!-- Application Core Script -->
+  <script src="app.js"></script>
+</body>
+</html>

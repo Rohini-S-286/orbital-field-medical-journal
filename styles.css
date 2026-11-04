@@ -1,0 +1,1374 @@
+/* ==========================================================================
+   ORBITAL FIELD MEDICAL JOURNAL — DESIGN SYSTEM & TOKENS
+   Visual Identity: Warm, Calm, Editorial-Clinical
+   ========================================================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..700;1,9..144,300..700&family=Inter:wght@400;500;600;700&display=swap');
+
+:root {
+  /* ================= LIGHT THEME (WARM IVORY - DEFAULT) ================= */
+  --color-bg: #FBF6EA;                /* Warm Ivory background / paper */
+  --color-surface: #FFFDF7;           /* Raised surface / cards */
+  --color-surface-hover: #F5EED9;     /* Subtle interactive surface hover */
+  --color-border: #E8DFC9;            /* Subtle card/journal border */
+  --color-border-strong: #D5C7A9;     /* Accent divider border */
+
+  /* Text & Ink */
+  --color-ink: #1F2A24;               /* Deep green-black text (WCAG AAA > 13:1) */
+  --color-ink-muted: #4B5A51;         /* Muted clinical notes / labels (WCAG AA 5.8:1) */
+  --color-ink-faint: #44544A;         /* Darkened metadata to meet WCAG AA (6.5:1 on #FFFDF7) */
+
+  /* Emerald Green (Primary Brand, "Healthy / In-range", Primary Actions) */
+  --color-emerald: #0B7A56;
+  --color-emerald-hover: #095F43;
+  --color-emerald-tint: #DDF1E8;
+  --color-emerald-tint-soft: #EEF8F3;
+  --color-emerald-border: #9FD3BF;
+
+  /* Vermillion (Accent, Alerts, "Critical / Contact Flight Surgeon / Emergency") */
+  --color-vermillion: #E34234;
+  --color-vermillion-hover: #C2352A;
+  --color-vermillion-tint: #FCE3DF;
+  --color-vermillion-border: #F6ABA2;
+  --color-vermillion-text: #B42318;   /* Darkened text token for WCAG AA (5.5:1 on #FFFDF7) */
+
+  /* Caution / Ochre (ONLY for "Attention / Watch" Status Scale) */
+  --color-ochre: #C98A1B;
+  --color-ochre-tint: #F7EBCF;
+  --color-ochre-border: #ECD299;
+  --color-ochre-text: #855500;        /* Darkened text token for WCAG AA (5.6:1 on #FFFDF7) */
+
+  /* Tactile Paper Shadows */
+  --shadow-sm: 0 1px 3px rgba(31, 42, 36, 0.05), 0 1px 2px rgba(180, 160, 120, 0.08);
+  --shadow-md: 0 4px 14px rgba(31, 42, 36, 0.06), 0 2px 6px rgba(180, 160, 120, 0.12);
+  --shadow-lg: 0 12px 32px rgba(31, 42, 36, 0.09), 0 4px 10px rgba(180, 160, 120, 0.14);
+
+  /* Radius (12-16px per specification) */
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-full: 9999px;
+
+  /* Typography with robust offline fallbacks */
+  --font-serif: 'Fraunces', 'Newsreader', 'Charter', 'Baskerville', 'Georgia', serif;
+  --font-sans: 'Inter', 'Source Sans 3', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-size-base: 18px;
+  --line-height-base: 1.6;
+
+  /* Space Ergonomics (Gloved Hands / Zero-G Precision) */
+  --min-touch-target: 48px;
+
+  /* Subtle paper grain texture */
+  --paper-grain-opacity: 0.045;
+  --paper-grain-bg: radial-gradient(ellipse at 50% 0%, rgba(255, 255, 255, 0.6) 0%, rgba(251, 246, 234, 0) 80%);
+}
+
+/* ================= DARK THEME (NIGHT CABIN LIGHTING) ================= */
+[data-theme="dark"] {
+  --color-bg: #0F1A15;                /* Night cabin deep green-black background */
+  --color-surface: #16241D;           /* Raised dark cabin card surface */
+  --color-surface-hover: #1E3329;     /* Night cabin hover state */
+  --color-border: #273A30;            /* Subtle dark grid border */
+  --color-border-strong: #3B5748;     /* Accent divider border */
+
+  /* Text & Ink */
+  --color-ink: #F4EEDD;               /* Warm Ivory text on dark (WCAG AAA 14.2:1) */
+  --color-ink-muted: #9BB0A3;         /* Muted cabin telemetry (WCAG AA 5.2:1) */
+  --color-ink-faint: #A3B5AA;         /* Lightened for dark WCAG AA (6.3:1) */
+
+  /* Emerald (Lightened slightly for dark contrast) */
+  --color-emerald: #149B6F;
+  --color-emerald-hover: #17B280;
+  --color-emerald-tint: rgba(20, 155, 111, 0.22);
+  --color-emerald-tint-soft: rgba(20, 155, 111, 0.12);
+  --color-emerald-border: #1E664B;
+
+  /* Vermillion (Lightened slightly for dark contrast) */
+  --color-vermillion: #F05A4D;
+  --color-vermillion-hover: #FF6F63;
+  --color-vermillion-tint: rgba(240, 90, 77, 0.24);
+  --color-vermillion-border: #7A2821;
+  --color-vermillion-text: #FF7D72;   /* High contrast on dark (5.9:1) */
+
+  /* Caution / Ochre (Lightened for night cabin) */
+  --color-ochre: #E09F2B;
+  --color-ochre-tint: rgba(224, 159, 43, 0.22);
+  --color-ochre-border: #6B4913;
+  --color-ochre-text: #F2B44B;        /* High contrast on dark (7.4:1) */
+
+  /* Night Cabin Shadows */
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.4);
+  --shadow-md: 0 4px 14px rgba(0, 0, 0, 0.55);
+  --shadow-lg: 0 12px 32px rgba(0, 0, 0, 0.7);
+
+  --paper-grain-opacity: 0.025;
+  --paper-grain-bg: radial-gradient(ellipse at 50% 0%, rgba(22, 36, 29, 0.6) 0%, rgba(15, 26, 21, 0) 80%);
+}
+
+/* ================= RESET & BASE STYLES ================= */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-size: var(--font-size-base);
+  line-height: var(--line-height-base);
+  color-scheme: light dark;
+}
+
+body {
+  font-family: var(--font-sans);
+  background-color: var(--color-bg);
+  color: var(--color-ink);
+  min-height: 100vh;
+  position: relative;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Tabular numerals for all telemetry data */
+.num-tabular,
+.reading-val,
+.telemetry-val,
+.timer-val {
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.02em;
+}
+
+/* Paper Grain Texture Overlay */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 999;
+  opacity: var(--paper-grain-opacity);
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 240 240' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+}
+
+/* Subtle ambient paper glow */
+.paper-glow {
+  background-image: var(--paper-grain-bg);
+}
+
+/* ================= TYPOGRAPHY ================= */
+h1, h2, h3, h4, .serif-heading {
+  font-family: var(--font-serif);
+  font-weight: 600;
+  line-height: 1.25;
+  color: var(--color-ink);
+  letter-spacing: -0.015em;
+}
+
+h1 { font-size: 1.9rem; }
+h2 { font-size: 1.45rem; }
+h3 { font-size: 1.2rem; }
+h4 { font-size: 1.05rem; }
+
+p, span, li, button, input {
+  font-family: var(--font-sans);
+}
+
+.text-muted {
+  color: var(--color-ink-muted);
+}
+
+.text-faint {
+  color: var(--color-ink-faint);
+  font-size: 0.85rem;
+}
+
+.text-ochre {
+  color: var(--color-ochre-text);
+  font-weight: 600;
+}
+
+.text-vermillion {
+  color: var(--color-vermillion-text);
+  font-weight: 600;
+}
+
+.text-emerald {
+  color: var(--color-emerald);
+  font-weight: 600;
+}
+
+/* Simulation tag pill */
+.simulated-tag {
+  display: inline-flex;
+  align-items: center;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  padding: 2px 7px;
+  border-radius: var(--radius-full);
+  background-color: var(--color-surface-hover);
+  border: 1px solid var(--color-border);
+  color: var(--color-ink-muted);
+}
+
+/* ================= ACCESSIBLE 48PX MINIMUM TOUCH TARGETS ================= */
+button,
+a,
+input,
+select,
+.touch-target {
+  min-height: var(--min-touch-target);
+  min-width: var(--min-touch-target);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.95rem;
+  font-weight: 500;
+  border-radius: var(--radius-md);
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  text-decoration: none;
+  touch-action: manipulation;
+  user-select: none;
+}
+
+button:focus-visible,
+a:focus-visible,
+input:focus-visible,
+[tabindex]:focus-visible {
+  outline: 3px solid var(--color-emerald);
+  outline-offset: 3px;
+}
+
+/* Primary Button (Emerald) */
+.btn-primary {
+  background-color: var(--color-emerald);
+  color: #FFFDF7;
+  padding: 12px 24px;
+  box-shadow: var(--shadow-sm);
+  font-weight: 600;
+}
+
+.btn-primary:hover {
+  background-color: var(--color-emerald-hover);
+  box-shadow: var(--shadow-md);
+  transform: translateY(-1px);
+}
+
+.btn-primary:active {
+  transform: translateY(0);
+}
+
+/* Secondary / Journal Card Button */
+.btn-secondary {
+  background-color: var(--color-surface);
+  color: var(--color-ink);
+  border: 1px solid var(--color-border);
+  padding: 12px 20px;
+}
+
+.btn-secondary:hover {
+  background-color: var(--color-surface-hover);
+  border-color: var(--color-border-strong);
+}
+
+/* Alert / Flight Surgeon Button */
+.btn-vermillion {
+  background-color: var(--color-vermillion);
+  color: #FFFDF7;
+  padding: 12px 22px;
+  font-weight: 600;
+}
+
+.btn-vermillion:hover {
+  background-color: var(--color-vermillion-hover);
+}
+
+/* Ghost / Icon button */
+.btn-icon {
+  background: transparent;
+  border: 1px solid var(--color-border);
+  color: var(--color-ink);
+  padding: 10px;
+  border-radius: var(--radius-md);
+}
+
+.btn-icon:hover {
+  background-color: var(--color-surface);
+  border-color: var(--color-border-strong);
+}
+
+/* ================= STATUS SYSTEM (Multi-Signal, Red-Green Colorblind Proof) =================
+   Rule: Emerald, Ochre, Vermillion must NEVER be the only signal.
+   Signal 1: Color token (Emerald / Ochre / Vermillion)
+   Signal 2: Distinct Icon (Check-Circle / Alert-Triangle / Phone / Siren)
+   Signal 3: Label Text ("In range", "Watch", "Contact flight surgeon", "Emergency")
+   Signal 4: Distinct pattern / border / hatch styling
+   ======================================================================================== */
+
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 14px;
+  min-height: 36px;
+  border-radius: var(--radius-full);
+  font-size: 0.85rem;
+  font-weight: 600;
+  line-height: 1.2;
+  letter-spacing: 0.02em;
+  border: 1.5px solid transparent;
+  white-space: nowrap;
+}
+
+.status-badge svg {
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+}
+
+/* 1. IN RANGE */
+.status--in-range {
+  background-color: var(--color-emerald-tint);
+  color: var(--color-emerald);
+  border-color: var(--color-emerald-border);
+}
+
+/* 2. ATTENTION / WATCH (OCHRE ONLY HERE - DARK TEXT FOR WCAG AA) */
+.status--attention {
+  background-color: var(--color-ochre-tint);
+  color: var(--color-ochre-text);
+  border-color: var(--color-ochre-border);
+  border-style: dashed;
+}
+
+/* 3. CONTACT FLIGHT SURGEON */
+.status--flight-surgeon {
+  background-color: var(--color-vermillion-tint);
+  color: var(--color-vermillion-text);
+  border-color: var(--color-vermillion-border);
+  border-width: 2px;
+}
+
+/* 4. EMERGENCY (SOLID VERMILLION FILL + SIREN + HATCHED BORDER PATTERN) */
+.status--emergency {
+  background-color: var(--color-vermillion);
+  color: #FFFFFF;
+  border: 2px solid #FFFFFF;
+  box-shadow: 0 0 0 3px var(--color-vermillion), 0 4px 12px rgba(227, 66, 52, 0.4);
+  background-image: repeating-linear-gradient(
+    45deg,
+    rgba(255, 255, 255, 0.12),
+    rgba(255, 255, 255, 0.12) 10px,
+    transparent 10px,
+    transparent 20px
+  );
+  animation: emergencyPulse 1.8s infinite ease-in-out;
+}
+
+@keyframes emergencyPulse {
+  0%, 100% {
+    box-shadow: 0 0 0 3px var(--color-vermillion), 0 4px 12px rgba(227, 66, 52, 0.3);
+  }
+  50% {
+    box-shadow: 0 0 0 6px var(--color-vermillion), 0 6px 18px rgba(227, 66, 52, 0.6);
+  }
+}
+
+/* ================= CARDS & EDITORIAL CONTAINERS ================= */
+.journal-card {
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: 24px;
+  box-shadow: var(--shadow-sm);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  position: relative;
+}
+
+.journal-card:hover {
+  border-color: var(--color-border-strong);
+}
+
+.journal-card--elevated {
+  box-shadow: var(--shadow-md);
+}
+
+.card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 18px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid var(--color-border);
+  gap: 12px;
+}
+
+.card-title-group {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.card-meta {
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--color-ink-muted);
+  font-weight: 600;
+}
+
+/* ================= HEADER & APP SHELL ================= */
+.app-header {
+  background-color: var(--color-surface);
+  border-bottom: 1px solid var(--color-border);
+  padding: 14px 24px;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  backdrop-filter: blur(8px);
+}
+
+.header-inner {
+  max-width: 1400px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.brand-group {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.journal-insignia {
+  width: 48px;
+  height: 48px;
+  border-radius: var(--radius-md);
+  background-color: var(--color-emerald-tint);
+  border: 1.5px solid var(--color-emerald-border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-emerald);
+}
+
+.brand-titles h1 {
+  font-size: 1.35rem;
+  letter-spacing: -0.01em;
+}
+
+.brand-titles .mission-meta {
+  font-size: 0.8rem;
+  color: var(--color-ink-muted);
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.header-controls {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+/* Mode toggles & flight surgeon quick link */
+.theme-toggle-btn {
+  gap: 8px;
+  padding: 8px 16px;
+  border-radius: var(--radius-full);
+}
+
+.offline-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  padding: 6px 12px;
+  min-height: 36px;
+  background-color: var(--color-emerald-tint);
+  color: var(--color-emerald);
+  border-radius: var(--radius-full);
+  border: 1px solid var(--color-emerald-border);
+}
+
+.offline-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: var(--color-emerald);
+}
+
+/* Clinical disclaimer banner */
+.disclaimer-banner {
+  background-color: var(--color-surface);
+  border-bottom: 1px solid var(--color-border);
+  padding: 8px 24px;
+  font-size: 0.82rem;
+  color: var(--color-ink-muted);
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+/* ================= MAIN DASHBOARD GRID (TABLET-FIRST) ================= */
+.dashboard-container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 24px;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 24px;
+}
+
+@media (min-width: 900px) {
+  .dashboard-container {
+    grid-template-columns: 420px 1fr;
+    align-items: start;
+  }
+}
+
+@media (min-width: 1200px) {
+  .dashboard-container {
+    grid-template-columns: 460px 1fr 380px;
+  }
+}
+
+/* Full width section for clinical logs and guidance */
+.dashboard-full-width {
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 24px;
+}
+
+@media (min-width: 1000px) {
+  .dashboard-full-width {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+/* ================= 1. CENTERED BODY MAP SVG ================= */
+.body-map-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  overflow: hidden;
+}
+
+.body-map-wrapper {
+  position: relative;
+  width: 100%;
+  max-width: 360px;
+  margin: 12px 0 20px;
+  display: flex;
+  justify-content: center;
+}
+
+.body-map-svg {
+  width: 100%;
+  height: auto;
+  max-height: 480px;
+  display: block;
+}
+
+/* Thin emerald line-art (stroked, not filled) */
+.body-silhouette {
+  fill: none;
+  stroke: var(--color-emerald);
+  stroke-width: 1.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  opacity: 0.65;
+  transition: opacity 0.3s ease;
+}
+
+/* Physiological systems (stroked, filled with status tints) */
+.body-system-region {
+  cursor: pointer;
+  stroke-width: 1.5;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  outline: none;
+}
+
+.body-system-region:hover,
+.body-system-region:focus-visible {
+  filter: drop-shadow(0 0 6px rgba(11, 122, 86, 0.4));
+  stroke-width: 2.5;
+}
+
+/* System Status Fills & Strokes */
+.system--in-range {
+  fill: var(--color-emerald-tint);
+  stroke: var(--color-emerald);
+}
+
+.system--attention {
+  fill: var(--color-ochre-tint);
+  stroke: var(--color-ochre);
+  stroke-dasharray: 4 2;
+}
+
+.system--flight-surgeon {
+  fill: var(--color-vermillion-tint);
+  stroke: var(--color-vermillion);
+  stroke-width: 2;
+}
+
+.system--emergency {
+  fill: var(--color-vermillion);
+  stroke: #FFFFFF;
+  stroke-width: 2.5;
+}
+
+/* Purposeful Framer-style Pulse Ring on Flagged System */
+.pulse-ring-marker {
+  transform-origin: center;
+  animation: pulseRing 2.4s infinite cubic-bezier(0.215, 0.61, 0.355, 1);
+}
+
+@keyframes pulseRing {
+  0% {
+    r: 10;
+    opacity: 0.9;
+    stroke-width: 3;
+  }
+  60% {
+    r: 28;
+    opacity: 0;
+    stroke-width: 1;
+  }
+  100% {
+    r: 28;
+    opacity: 0;
+    stroke-width: 0;
+  }
+}
+
+/* Body map interactive selector pills - 48px touch targets */
+.body-map-legend {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+}
+
+.legend-chip {
+  min-height: var(--min-touch-target);
+  padding: 8px 16px;
+  font-size: 0.88rem;
+  border-radius: var(--radius-full);
+  border: 1px solid var(--color-border);
+  background-color: var(--color-surface);
+  color: var(--color-ink);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.2s ease;
+}
+
+.legend-chip:hover {
+  background-color: var(--color-surface-hover);
+  border-color: var(--color-border-strong);
+}
+
+.legend-chip.active {
+  border-color: var(--color-emerald);
+  background-color: var(--color-emerald-tint);
+  color: var(--color-emerald);
+  font-weight: 600;
+}
+
+/* ================= 2. OVERALL STATUS RING ================= */
+.status-ring-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.ring-visual-wrapper {
+  position: relative;
+  width: 190px;
+  height: 190px;
+  margin: 10px auto 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.status-svg-ring {
+  width: 100%;
+  height: 100%;
+  transform: rotate(-90deg);
+}
+
+.ring-bg-track {
+  fill: none;
+  stroke: var(--color-border);
+  stroke-width: 10;
+}
+
+/* EXACT MATHEMATICAL CIRCUMFERENCE: 2 * PI * 76 = 477.52 */
+.ring-progress-bar {
+  fill: none;
+  stroke: var(--color-emerald);
+  stroke-width: 10;
+  stroke-linecap: round;
+  stroke-dasharray: 477.52;
+  stroke-dashoffset: 62.08; /* ~87% default */
+  transition: stroke-dashoffset 1s cubic-bezier(0.16, 1, 0.3, 1), stroke 0.3s ease;
+}
+
+.ring-center-content {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.ring-score {
+  font-family: var(--font-serif);
+  font-size: 2.8rem;
+  font-weight: 700;
+  line-height: 1;
+  color: var(--color-ink);
+}
+
+.ring-score-label {
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--color-ink-muted);
+  font-weight: 600;
+  margin-top: 4px;
+}
+
+/* ================= 3. TODAY'S CHECK-IN CHECKLIST ================= */
+.checkin-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  list-style: none;
+  margin-top: 8px;
+}
+
+.checkin-item {
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  min-height: 56px;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.checkin-item:hover {
+  background-color: var(--color-surface-hover);
+  border-color: var(--color-border-strong);
+}
+
+.checkin-item.completed {
+  border-left: 4px solid var(--color-emerald);
+  opacity: 0.9;
+}
+
+.checkin-item.pending {
+  border-left: 4px solid var(--color-ochre);
+}
+
+.checkin-content {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex: 1;
+}
+
+.checkin-icon-box {
+  width: 44px;
+  height: 44px;
+  border-radius: var(--radius-sm);
+  background-color: var(--color-emerald-tint-soft);
+  color: var(--color-emerald);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.checkin-item.pending .checkin-icon-box {
+  background-color: var(--color-ochre-tint);
+  color: var(--color-ochre-text);
+}
+
+.checkin-titles {
+  display: flex;
+  flex-direction: column;
+}
+
+.checkin-name {
+  font-weight: 600;
+  font-size: 0.95rem;
+  color: var(--color-ink);
+}
+
+.checkin-meta {
+  font-size: 0.8rem;
+  color: var(--color-ink-muted);
+}
+
+/* ================= 4. NEXT DUE MEASUREMENT CARD ================= */
+.next-due-card {
+  background-color: var(--color-surface);
+  border: 1.5px solid var(--color-border-strong);
+  border-radius: var(--radius-lg);
+  padding: 24px;
+  position: relative;
+  overflow: hidden;
+}
+
+.next-due-banner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.timer-display {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  margin: 14px 0 18px;
+}
+
+.timer-digits {
+  font-family: var(--font-serif);
+  font-size: 2.4rem;
+  font-weight: 700;
+  color: var(--color-ink);
+  line-height: 1;
+}
+
+.timer-unit {
+  font-size: 0.9rem;
+  color: var(--color-ink-muted);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+/* ================= 5. CHARTS WITH DISTINCT MARKERS & LINE STYLES ================= */
+.chart-container {
+  width: 100%;
+  margin: 14px 0;
+  background-color: var(--color-surface-hover);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: 16px;
+}
+
+.trend-svg {
+  width: 100%;
+  height: 160px;
+  overflow: visible;
+}
+
+/* Animated chart draw-in */
+.chart-path-in-range {
+  fill: none;
+  stroke: var(--color-emerald);
+  stroke-width: 2.5;
+  stroke-linecap: round;
+  stroke-dasharray: 600;
+  stroke-dashoffset: 600;
+  animation: drawChart 1.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.chart-path-attention {
+  fill: none;
+  stroke: var(--color-ochre);
+  stroke-width: 2.5;
+  stroke-linecap: round;
+  stroke-dasharray: 8 5; /* Dashed line style */
+  stroke-dashoffset: 600;
+  animation: drawChart 1.8s cubic-bezier(0.16, 1, 0.3, 1) forwards 0.2s;
+}
+
+.chart-path-alert {
+  fill: none;
+  stroke: var(--color-vermillion);
+  stroke-width: 2.5;
+  stroke-dasharray: 3 4; /* Dotted line style */
+  stroke-dashoffset: 600;
+  animation: drawChart 1.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes drawChart {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+/* Chart Markers: Circle, Diamond, Triangle */
+.chart-marker-circle {
+  fill: var(--color-emerald);
+  stroke: var(--color-surface);
+  stroke-width: 2;
+  cursor: pointer;
+}
+
+.chart-marker-diamond {
+  fill: var(--color-ochre);
+  stroke: var(--color-surface);
+  stroke-width: 2;
+  cursor: pointer;
+}
+
+.chart-marker-triangle {
+  fill: var(--color-vermillion);
+  stroke: var(--color-surface);
+  stroke-width: 2;
+  cursor: pointer;
+}
+
+.chart-legend {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+  font-size: 0.8rem;
+  color: var(--color-ink-muted);
+  margin-top: 10px;
+}
+
+.chart-legend-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* ================= 6. PURPOSEFUL MOTION & BREATHING GUIDE ================= */
+.breathing-coach-box {
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: 28px 20px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+}
+
+.breathing-visual {
+  position: relative;
+  width: 180px;
+  height: 180px;
+  margin: 18px auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.breathing-outer-ring {
+  position: absolute;
+  width: 170px;
+  height: 170px;
+  border-radius: 50%;
+  border: 1.5px dashed var(--color-border-strong);
+}
+
+.breathing-orb {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background: radial-gradient(circle, var(--color-emerald-tint) 0%, rgba(11, 122, 86, 0.15) 100%);
+  border: 2px solid var(--color-emerald);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-emerald);
+  font-weight: 600;
+  font-size: 0.95rem;
+  box-shadow: 0 0 20px rgba(11, 122, 86, 0.15);
+  transition: transform 0.1s linear;
+}
+
+/* Calm 4-4-4 Breathing Cycle */
+.breathing-active .breathing-orb {
+  animation: calmBreath 12s infinite ease-in-out;
+}
+
+@keyframes calmBreath {
+  0% {
+    transform: scale(1);
+    box-shadow: 0 0 10px rgba(11, 122, 86, 0.1);
+  }
+  33.3% {
+    transform: scale(1.85);
+    box-shadow: 0 0 35px rgba(11, 122, 86, 0.35);
+  }
+  66.6% {
+    transform: scale(1.85);
+    box-shadow: 0 0 35px rgba(11, 122, 86, 0.35);
+  }
+  100% {
+    transform: scale(1);
+    box-shadow: 0 0 10px rgba(11, 122, 86, 0.1);
+  }
+}
+
+.breathing-instruction {
+  font-family: var(--font-serif);
+  font-size: 1.35rem;
+  font-weight: 600;
+  color: var(--color-ink);
+  margin-top: 6px;
+  min-height: 36px;
+}
+
+.breathing-subtext {
+  font-size: 0.85rem;
+  color: var(--color-ink-muted);
+}
+
+/* ================= 7. ACCESSIBLE MODALS & DRAWERS (VISIBILITY: HIDDEN WHEN CLOSED) ================= */
+.drawer-backdrop {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(15, 26, 21, 0.65);
+  backdrop-filter: blur(4px);
+  z-index: 500;
+  opacity: 0;
+  visibility: hidden; /* Requirement 6: closed modals hidden from AT/keyboard */
+  pointer-events: none;
+  transition: opacity 0.3s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.drawer-backdrop.open {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+}
+
+.drawer-panel {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  max-width: 560px;
+  background-color: var(--color-surface);
+  border-left: 1px solid var(--color-border);
+  box-shadow: var(--shadow-lg);
+  z-index: 510;
+  transform: translateX(100%);
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  padding: 32px 28px;
+}
+
+.drawer-backdrop.open .drawer-panel {
+  transform: translateX(0);
+}
+
+.drawer-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 24px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--color-border);
+  gap: 12px;
+}
+
+.drawer-body {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  flex: 1;
+}
+
+/* 48px target on close button */
+.drawer-close-btn {
+  background: transparent;
+  border: 1px solid var(--color-border);
+  color: var(--color-ink);
+  border-radius: var(--radius-md);
+  padding: 12px;
+  min-height: var(--min-touch-target);
+  min-width: var(--min-touch-target);
+}
+
+.drawer-close-btn:hover {
+  background-color: var(--color-surface-hover);
+  border-color: var(--color-border-strong);
+}
+
+/* Modal Dialog */
+.modal-dialog {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(0.96);
+  width: calc(100% - 32px);
+  max-width: 620px;
+  max-height: 90vh;
+  overflow-y: auto;
+  background-color: var(--color-surface);
+  border: 1.5px solid var(--color-border-strong);
+  border-radius: var(--radius-lg);
+  padding: 32px;
+  box-shadow: var(--shadow-lg);
+  z-index: 600;
+  opacity: 0;
+  visibility: hidden; /* Requirement 6 */
+  pointer-events: none;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.drawer-backdrop.open .modal-dialog {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transform: translate(-50%, -50%) scale(1);
+}
+
+/* ================= 8. GLOVED HAND TOUCH ADJUSTMENT CONTROLS ================= */
+.stepper-control {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: var(--color-surface-hover);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: 8px;
+  margin: 10px 0;
+}
+
+.stepper-btn {
+  width: 52px;
+  height: 52px;
+  min-width: 52px;
+  min-height: 52px;
+  font-size: 1.5rem;
+  font-weight: 700;
+  background-color: var(--color-surface);
+  color: var(--color-ink);
+  border: 1px solid var(--color-border-strong);
+  border-radius: var(--radius-sm);
+}
+
+.stepper-btn:hover {
+  background-color: var(--color-emerald-tint);
+  border-color: var(--color-emerald);
+  color: var(--color-emerald);
+}
+
+.stepper-value {
+  font-family: var(--font-serif);
+  font-size: 1.85rem;
+  font-weight: 700;
+  color: var(--color-ink);
+}
+
+/* Validation error alert */
+.validation-error-msg {
+  background-color: var(--color-vermillion-tint);
+  color: var(--color-vermillion-text);
+  border: 1px solid var(--color-vermillion-border);
+  border-radius: var(--radius-sm);
+  padding: 10px 14px;
+  font-size: 0.88rem;
+  font-weight: 600;
+  margin: 12px 0;
+  display: none;
+}
+
+/* ================= 9. CLINICAL TELEMETRY LOG TABLE ================= */
+.telemetry-log-table-wrapper {
+  overflow-x: auto;
+  margin-top: 14px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+}
+
+.telemetry-log-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+  font-size: 0.88rem;
+}
+
+.telemetry-log-table th {
+  background-color: var(--color-surface-hover);
+  color: var(--color-ink-muted);
+  font-weight: 600;
+  text-transform: uppercase;
+  font-size: 0.78rem;
+  letter-spacing: 0.05em;
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.telemetry-log-table td {
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--color-border);
+  color: var(--color-ink);
+}
+
+.telemetry-log-table tr:last-child td {
+  border-bottom: none;
+}
+
+/* ================= 10. TIERED GUIDANCE CARDS ================= */
+.guidance-tier-card {
+  border-radius: var(--radius-md);
+  border: 1px solid var(--color-border);
+  padding: 18px;
+  background-color: var(--color-surface);
+  margin-bottom: 16px;
+}
+
+.guidance-tier-card.tier--in-range {
+  border-left: 4px solid var(--color-emerald);
+}
+
+.guidance-tier-card.tier--attention {
+  border-left: 4px solid var(--color-ochre);
+}
+
+.guidance-tier-card.tier--flight-surgeon {
+  border-left: 4px solid var(--color-vermillion);
+}
+
+.guidance-tier-card.tier--emergency {
+  border-left: 4px solid var(--color-vermillion);
+  background-image: repeating-linear-gradient(
+    45deg,
+    rgba(227, 66, 52, 0.03),
+    rgba(227, 66, 52, 0.03) 10px,
+    transparent 10px,
+    transparent 20px
+  );
+}
+
+.guidance-actions-list {
+  list-style: none;
+  margin: 12px 0 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  font-size: 0.9rem;
+  color: var(--color-ink);
+}
+
+.guidance-actions-list li::before {
+  content: "•";
+  color: var(--color-emerald);
+  font-weight: bold;
+  display: inline-block;
+  width: 1em;
+  margin-left: -1em;
+}
+
+.guidance-tier-card.tier--attention .guidance-actions-list li::before {
+  color: var(--color-ochre);
+}
+
+.guidance-tier-card.tier--flight-surgeon .guidance-actions-list li::before,
+.guidance-tier-card.tier--emergency .guidance-actions-list li::before {
+  color: var(--color-vermillion);
+}
+
+/* ================= 11. TOAST NOTIFICATIONS (NO ALERT POPUPS) ================= */
+.toast-container {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  max-width: 420px;
+  pointer-events: none;
+}
+
+.toast {
+  background-color: var(--color-surface);
+  color: var(--color-ink);
+  border: 1.5px solid var(--color-border-strong);
+  border-radius: var(--radius-md);
+  padding: 14px 20px;
+  box-shadow: var(--shadow-lg);
+  font-size: 0.92rem;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  opacity: 0;
+  transform: translateY(12px);
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  pointer-events: auto;
+}
+
+.toast--show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.toast--success {
+  border-left: 4px solid var(--color-emerald);
+}
+
+.toast--warning {
+  border-left: 4px solid var(--color-ochre);
+}
+
+.toast--alert {
+  border-left: 4px solid var(--color-vermillion);
+}
+
+/* ================= 12. PREFERS-REDUCED-MOTION SUPPORT ================= */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  .pulse-ring-marker {
+    display: none !important;
+  }
+
+  .chart-path-in-range,
+  .chart-path-attention,
+  .chart-path-alert {
+    stroke-dashoffset: 0 !important;
+  }
+
+  .breathing-orb {
+    transform: none !important;
+  }
+}
