@@ -482,6 +482,12 @@
           }
         }
         g6.assert('Explicit regression check: 0 occurrences of previously purged numeric treatment strings', regressionClean, regressionViolation ? `Found regression: ${regressionViolation}` : 'Regression test passed');
+
+        // Validation check proving scanner reliably fails on legacy numeric text BEFORE the fix
+        const legacyDirtyCorpus = 'Maintain 2.5 hr daily schedule: 60 min ARED + 30 min T2 cycle; 2.5 L fluids per 24 hr; Sec 4.2; LBNP chibis; torso elevation; diffuser velocity';
+        const legacyMatchesRegex = Boolean(legacyDirtyCorpus.match(forbiddenUnitsRegex));
+        const legacyMatchesAllStrings = regressionPhrases.every(phrase => legacyDirtyCorpus.toLowerCase().includes(phrase.toLowerCase()));
+        g6.assert('Safety scan validation: scanner reliably detects and fails on legacy numeric protocols (BEFORE state)', legacyMatchesRegex && legacyMatchesAllStrings, 'Verified: legacy dirty string triggers scanner failure');
       } catch (err) {
         g6.assert('Safety audit completed cleanly', false, err.message);
       }

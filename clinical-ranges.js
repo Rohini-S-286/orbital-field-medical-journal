@@ -281,7 +281,7 @@ const TIERED_GUIDANCE = {
       'Perform follow-up optical assessment as scheduled.'
     ],
     sourceId: 'NASA-HRP-SANS',
-    source: 'NASA Human Research Program SANS Evidence Report (2020 Rev)',
+    source: 'Risk of Spaceflight-Associated Neuro-ocular Syndrome (SANS) Evidence Report',
     sourceVerification: 'needs_verification'
   },
   flightSurgeon: {
@@ -296,7 +296,7 @@ const TIERED_GUIDANCE = {
       'Review continuous cabin atmospheric logs (pCO2, pO2, total cabin pressure, trace contaminants).'
     ],
     sourceId: 'ISS-MEDB-7.1',
-    source: 'ISS Medical Operations Protocol MedB-7.1',
+    source: 'ISS Medical Operations Protocol MedB-7.1: Telemedicine Consultation & Action Thresholds',
     sourceVerification: 'needs_verification'
   },
   emergency: {
@@ -312,7 +312,7 @@ const TIERED_GUIDANCE = {
       'Begin stabilizing primary airway, breathing, and systemic circulation (ABCs) according to station emergency checklist.'
     ],
     sourceId: 'ISS-MEDB-7.1',
-    source: 'ISS Emergency Medical Procedures, Flight Rule B13-102',
+    source: 'ISS Medical Operations Protocol MedB-7.1: Telemedicine Consultation & Action Thresholds',
     sourceVerification: 'needs_verification'
   }
 };

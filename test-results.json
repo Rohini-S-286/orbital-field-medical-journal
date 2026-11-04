@@ -1,11 +1,11 @@
 {
   "app": "Orbital Field Medical Journal",
   "suite": "Orbital Field Medical Journal: Verification Suite",
-  "timestamp": "2026-11-04T11:32:07.619660+00:00",
-  "passed": 68,
+  "timestamp": "2026-11-04T11:57:41.697420+00:00",
+  "passed": 69,
   "failed": 0,
-  "total": 68,
-  "durationMs": 38,
+  "total": 69,
+  "durationMs": 33,
   "results": [
     {
       "title": "1. Clinical Indicators &amp; Tier Boundaries (14 Indicators)",
@@ -299,6 +299,11 @@
           "name": "Explicit regression check: 0 occurrences of previously purged numeric treatment strings",
           "passed": true,
           "details": "Regression test passed"
+        },
+        {
+          "name": "Safety scan validation: scanner reliably detects and fails on legacy numeric protocols (BEFORE state)",
+          "passed": true,
+          "details": "Verified: legacy dirty string triggers scanner failure"
         }
       ]
     },

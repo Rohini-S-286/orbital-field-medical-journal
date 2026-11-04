@@ -1295,6 +1295,13 @@ document.addEventListener('DOMContentLoaded', () => {
     Object.entries(TIERED_GUIDANCE).forEach(([key, tier]) => {
       const card = document.createElement('div');
       card.className = `guidance-tier-card tier--${tier.statusKey}`;
+      const srcObj = (typeof CLINICAL_SOURCES !== 'undefined' && CLINICAL_SOURCES[tier.sourceId]) || null;
+      const srcTitle = srcObj ? srcObj.title : tier.source;
+      const isVerified = (tier.sourceVerification === 'verified') || (srcObj && srcObj.verification === 'verified');
+      const badgeHtml = isVerified
+        ? `<span class="status-badge status--in-range" style="font-size: 0.72rem; padding: 2px 8px; display: inline-flex; align-items: center; gap: 4px;"><svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Verified</span>`
+        : `<span class="status-badge status--attention" style="font-size: 0.72rem; padding: 2px 8px; display: inline-flex; align-items: center; gap: 4px;"><svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/></svg>Needs Verification</span>`;
+
       card.innerHTML = `
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
           <h4 style="font-size: 1rem; color: var(--color-ink);">${tier.level}</h4>
@@ -1304,8 +1311,9 @@ document.addEventListener('DOMContentLoaded', () => {
         <ul class="guidance-actions-list">
           ${tier.actions.map(act => `<li>${act}</li>`).join('')}
         </ul>
-        <div class="text-faint" style="margin-top: 10px; border-top: 1px solid var(--color-border); padding-top: 8px;">
-          <strong>Evidence Source:</strong> ${tier.source}
+        <div style="margin-top: 10px; border-top: 1px solid var(--color-border); padding-top: 8px; display: flex; justify-content: space-between; align-items: center; gap: 8px; flex-wrap: wrap;">
+          <div class="text-faint"><strong>Evidence Source:</strong> ${srcTitle}</div>
+          ${badgeHtml}
         </div>
       `;
       container.appendChild(card);
@@ -1322,6 +1330,13 @@ document.addEventListener('DOMContentLoaded', () => {
     else if (status === 'emergency') tierKey = 'emergency';
 
     const tier = TIERED_GUIDANCE[tierKey];
+    const srcObj = (typeof CLINICAL_SOURCES !== 'undefined' && CLINICAL_SOURCES[tier.sourceId]) || null;
+    const srcTitle = srcObj ? srcObj.title : tier.source;
+    const isVerified = (tier.sourceVerification === 'verified') || (srcObj && srcObj.verification === 'verified');
+    const badgeHtml = isVerified
+      ? `<span class="status-badge status--in-range" style="font-size: 0.70rem; padding: 1px 6px; display: inline-flex; align-items: center; gap: 3px;"><svg viewBox="0 0 24 24" width="10" height="10" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Verified</span>`
+      : `<span class="status-badge status--attention" style="font-size: 0.70rem; padding: 1px 6px; display: inline-flex; align-items: center; gap: 3px;"><svg viewBox="0 0 24 24" width="10" height="10" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/></svg>Needs Verification</span>`;
+
     preview.innerHTML = `
       <div class="guidance-tier-card tier--${tier.statusKey}" style="margin-bottom: 0;">
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
@@ -1332,8 +1347,11 @@ document.addEventListener('DOMContentLoaded', () => {
         <ul class="guidance-actions-list" style="font-size: 0.85rem;">
           ${tier.actions.slice(0, 3).map(a => `<li>${a}</li>`).join('')}
         </ul>
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 10px; pt-2; border-top: 1px solid var(--color-border);">
-          <span class="text-faint">Ref: ${tier.source}</span>
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 10px; padding-top: 8px; border-top: 1px solid var(--color-border); gap: 8px; flex-wrap: wrap;">
+          <div style="display: flex; align-items: center; gap: 6px;">
+            <span class="text-faint">Ref: ${srcTitle}</span>
+            ${badgeHtml}
+          </div>
           <button class="btn-secondary" id="preview-open-guidance-btn" style="min-height: 36px; padding: 4px 12px; font-size: 0.8rem;">Full Protocol</button>
         </div>
       </div>
