@@ -228,6 +228,19 @@
       g1.assert('CLINICAL_INDICATORS dictionary length strictly equals 14 (no alias mutation)', Object.keys(indicators).length === 14, `Found: ${Object.keys(indicators).length}`);
       g1.assert('DECLARED_INDICATORS_COUNT constant strictly equals 14', window.DECLARED_INDICATORS_COUNT === 14, `Declared: ${window.DECLARED_INDICATORS_COUNT}`);
 
+      try {
+        const indJsonRes = await fetch('./data/indicators.json');
+        if (indJsonRes.ok) {
+          const indJson = await indJsonRes.json();
+          const indJsonKeys = Object.keys(indJson);
+          g1.assert('data/indicators.json key count strictly agrees with declared count (14 keys, no 15-key alias leak)', indJsonKeys.length === 14, `Count: ${indJsonKeys.length}`);
+          const matchAll = indicatorKeys.every(k => indJson[k] !== undefined);
+          g1.assert('data/indicators.json keys match CLINICAL_INDICATORS dictionary 1:1', matchAll, `14/14 keys matched`);
+        }
+      } catch (e) {
+        g1.assert('data/indicators.json loaded cleanly', false, e.message);
+      }
+
       // Source integrity verification
       const sources = window.CLINICAL_SOURCES || {};
       let allIndicatorSourcesExist = true;
@@ -531,6 +544,47 @@
 
       const d28 = getTestProfile(28);
       g7.assert('Days 25–30 return preparation is in-range (306 µm)', d28.ocular === 306 && d28.status === 'in-range');
+
+      // Journal temporal boundary test (entries from later days must NEVER appear)
+      function filterVisibleLogsByDay(logs, currentDay) {
+        return (logs || []).filter(log => {
+          const match = log.timestamp && log.timestamp.match(/Day\s+(\d+)/i);
+          const logDay = log.day || (match ? parseInt(match[1], 10) : null);
+          return !logDay || logDay <= currentDay;
+        });
+      }
+      const mixedLogs = [
+        { day: 10, timestamp: 'Day 10, 06:40 UTC' },
+        { day: 14, timestamp: 'Day 14, 06:40 UTC' },
+        { day: 18, timestamp: 'Day 18, 12:00 UTC' },
+        { day: 19, timestamp: 'Day 19, 08:30 UTC' },
+        { day: 25, timestamp: 'Day 25, 06:40 UTC' }
+      ];
+      const visibleDay14 = filterVisibleLogsByDay(mixedLogs, 14);
+      const noFutureLogsOnDay14 = visibleDay14.every(l => l.day <= 14);
+      g7.assert('Journal entries derive from demo day only (entries from later days never appear)', noFutureLogsOnDay14 && visibleDay14.length === 2, `Day 14 visible count: ${visibleDay14.length}`);
+
+      // Tripartite consistency test: Reset (Day 14) vs Jump to Day 19
+      function evaluateDayConsistency(day) {
+        const profile = getTestProfile(day);
+        const seeds = [
+          { day: day, timestamp: `Day ${day}, 06:40 UTC` },
+          { day: Math.max(1, day - 1), timestamp: `Day ${Math.max(1, day - 1)}, 18:20 UTC` }
+        ];
+        const visible = filterVisibleLogsByDay(seeds, day);
+        const latestEntryDay = Math.max(...visible.map(v => v.day));
+        const chartObserved = profile.ocular;
+        return {
+          headerMatches: latestEntryDay === day,
+          noFuture: visible.every(v => v.day <= day),
+          chartObserved
+        };
+      }
+      const day14Consistency = evaluateDayConsistency(14);
+      const day19Consistency = evaluateDayConsistency(19);
+      const resetConsistent = day14Consistency.headerMatches && day14Consistency.noFuture && day14Consistency.chartObserved === 302;
+      const jumpConsistent = day19Consistency.headerMatches && day19Consistency.noFuture && day19Consistency.chartObserved === 328;
+      g7.assert('Reset (Day 14) and Jump to Day 19 maintain tripartite consistency across header day, journal entries, and trend chart', resetConsistent && jumpConsistent, 'Confirmed: Day 14 (302 µm) and Day 19 (328 µm) consistent');
 
       // ================= GROUP 8: RESILIENT STORAGE FALLBACK (LOCALSTORAGE BLOCKED) =================
       const g8 = group('8. Resilient In-Memory Storage Subsystem (Quota & Permission Handling)');

@@ -1263,10 +1263,19 @@ document.addEventListener('DOMContentLoaded', () => {
   function renderClinicalLogTable() {
     const tbody = document.getElementById('clinical-log-tbody');
     if (!tbody) return;
-    const logs = getPersistedLogs();
+    const currentDay = state.demoDay || state.missionDay || 14;
+    const rawLogs = getPersistedLogs();
+
+    // STRICT RULE (STEP 2): derive from current demo day only; entries from later days must NEVER appear
+    const logs = (rawLogs || []).filter(log => {
+      const match = log.timestamp && log.timestamp.match(/Day\s+(\d+)/i);
+      const logDay = log.day || (match ? parseInt(match[1], 10) : null);
+      return !logDay || logDay <= currentDay;
+    });
+
     tbody.innerHTML = '';
     if (!logs || logs.length === 0) {
-      tbody.innerHTML = `<tr><td colspan="5" style="text-align: center; padding: 24px; color: var(--color-ink-muted);">No entries yet. Complete a measurement to log one.</td></tr>`;
+      tbody.innerHTML = `<tr><td colspan="5" style="text-align: center; padding: 24px; color: var(--color-ink-muted);">No entries yet for Day ${currentDay}. Complete a measurement to log one.</td></tr>`;
       return;
     }
     logs.forEach(log => {
@@ -1916,35 +1925,54 @@ document.addEventListener('DOMContentLoaded', () => {
       state.systems.neuro.metric1Val = '214 ms';
     }
 
-    // Synchronize seed journal timestamps to current demo day
-    const persistedRaw = storage.getItem('astro_clinical_log');
-    let logs = null;
-    if (persistedRaw) {
-      try { logs = JSON.parse(persistedRaw); } catch (e) {}
-    }
-    if (!logs || (logs.length <= 2 && logs.every(l => !l.note || l.note.includes('nominal') || l.note.includes('stabilized')))) {
-      const updatedSeeds = [
-        {
-          timestamp: `Day ${day}, 06:40 UTC`,
-          sysBP: 116,
-          diaBP: 74,
-          hr: 58,
-          spo2: 99,
-          status: 'in-range',
-          note: 'Post-sleep baseline resting vitals nominal.'
-        },
-        {
-          timestamp: `Day ${Math.max(1, day - 1)}, 18:20 UTC`,
-          sysBP: 122,
-          diaBP: 78,
-          hr: 66,
-          spo2: 99,
-          status: 'in-range',
-          note: 'Post-workout cooldown vitals stabilized.'
-        }
-      ];
-      storage.setItem('astro_clinical_log', JSON.stringify(updatedSeeds));
-      renderClinicalLogTable();
+    // Synchronize seed journal timestamps to current demo day (no later days)
+    const updatedSeeds = [
+      {
+        day: day,
+        timestamp: `Day ${day}, 06:40 UTC`,
+        sysBP: day === 19 ? 132 : 116,
+        diaBP: day === 19 ? 86 : 74,
+        hr: day === 19 ? 78 : 58,
+        spo2: 99,
+        status: day === 19 ? 'attention' : 'in-range',
+        note: day === 19 ? 'Simulated deviation: acute SANS retinal shift detected.' : 'Post-sleep baseline resting vitals nominal.'
+      },
+      {
+        day: Math.max(1, day - 1),
+        timestamp: `Day ${Math.max(1, day - 1)}, 18:20 UTC`,
+        sysBP: 122,
+        diaBP: 78,
+        hr: 66,
+        spo2: 99,
+        status: 'in-range',
+        note: 'Post-workout cooldown vitals stabilized.'
+      }
+    ];
+    storage.setItem('astro_clinical_log', JSON.stringify(updatedSeeds));
+    renderClinicalLogTable();
+
+    // Synchronize Today's Check-in List state to current demo day
+    const cardioItem = document.getElementById('checkin-item-cardio');
+    const cardioMeta = document.getElementById('checkin-cardio-meta');
+    const cardioBadge = document.getElementById('checkin-cardio-badge');
+    const checkinProgress = document.getElementById('checkin-progress-counter');
+
+    if (day === 19) {
+      if (cardioItem) cardioItem.className = 'checkin-item pending';
+      if (cardioMeta) cardioMeta.textContent = 'Flagged on Day 19 • Blood pressure deviation (132/86 mmHg)';
+      if (cardioBadge) {
+        setBadge('#checkin-cardio-badge', 'attention');
+        cardioBadge.textContent = 'Watch';
+      }
+      if (checkinProgress) checkinProgress.textContent = '2 / 4 Complete';
+    } else {
+      if (cardioItem) cardioItem.className = 'checkin-item pending';
+      if (cardioMeta) cardioMeta.textContent = 'Due in 38m • Cuff, pulse oximeter & HR';
+      if (cardioBadge) {
+        setBadge('#checkin-cardio-badge', 'attention');
+        cardioBadge.textContent = 'Due Next';
+      }
+      if (checkinProgress) checkinProgress.textContent = '2 / 4 Complete';
     }
 
     // Refresh UI & Gauge

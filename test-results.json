@@ -1,11 +1,11 @@
 {
   "app": "Orbital Field Medical Journal",
   "suite": "Orbital Field Medical Journal: Verification Suite",
-  "timestamp": "2026-11-04T11:57:41.697420+00:00",
-  "passed": 69,
+  "timestamp": "2026-11-04T12:02:30.209866+00:00",
+  "passed": 73,
   "failed": 0,
-  "total": 69,
-  "durationMs": 33,
+  "total": 73,
+  "durationMs": 22,
   "results": [
     {
       "title": "1. Clinical Indicators &amp; Tier Boundaries (14 Indicators)",
@@ -24,6 +24,16 @@
           "name": "DECLARED_INDICATORS_COUNT constant strictly equals 14",
           "passed": true,
           "details": "Declared: 14"
+        },
+        {
+          "name": "data/indicators.json key count strictly agrees with declared count (14 keys, no 15-key alias leak)",
+          "passed": true,
+          "details": "Count: 14"
+        },
+        {
+          "name": "data/indicators.json keys match CLINICAL_INDICATORS dictionary 1:1",
+          "passed": true,
+          "details": "14/14 keys matched"
         },
         {
           "name": "Every indicator sourceId resolves to registered CLINICAL_SOURCES record",
@@ -339,6 +349,16 @@
           "name": "Days 25\u201330 return preparation is in-range (306 \u00b5m)",
           "passed": true,
           "details": ""
+        },
+        {
+          "name": "Journal entries derive from demo day only (entries from later days never appear)",
+          "passed": true,
+          "details": "Day 14 visible count: 2"
+        },
+        {
+          "name": "Reset (Day 14) and Jump to Day 19 maintain tripartite consistency across header day, journal entries, and trend chart",
+          "passed": true,
+          "details": "Confirmed: Day 14 (302 \u00b5m) and Day 19 (328 \u00b5m) consistent"
         }
       ]
     },
