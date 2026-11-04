@@ -49,12 +49,41 @@ document.addEventListener('DOMContentLoaded', () => {
     el.innerHTML = `${config.iconSvg}<span>${labelText}</span>`;
   }
 
+  // ================= SAFE IN-MEMORY FALLBACK STORAGE (REQUIREMENT 5) =================
+  const storage = {
+    _mem: {},
+    getItem(key) {
+      try {
+        if (typeof localStorage !== 'undefined') {
+          const val = localStorage.getItem(key);
+          if (val !== null) return val;
+        }
+      } catch (e) {}
+      return this._mem[key] !== undefined ? this._mem[key] : null;
+    },
+    setItem(key, val) {
+      try {
+        if (typeof localStorage !== 'undefined') {
+          localStorage.setItem(key, val);
+        }
+      } catch (e) {}
+      this._mem[key] = String(val);
+    },
+    removeItem(key) {
+      try {
+        if (typeof localStorage !== 'undefined') {
+          localStorage.removeItem(key);
+        }
+      } catch (e) {}
+      delete this._mem[key];
+    }
+  };
+
   // ================= STATE MANAGEMENT =================
-  let savedTheme = 'light';
-  try {
-    savedTheme = localStorage.getItem('astro_theme') || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
-  } catch (e) {
-    savedTheme = 'light';
+  let savedTheme = storage.getItem('astro_theme');
+  const hasStoredTheme = savedTheme !== null;
+  if (!hasStoredTheme) {
+    savedTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
   }
 
   const state = {
@@ -71,7 +100,7 @@ document.addEventListener('DOMContentLoaded', () => {
         yUnit: 'µm',
         baselineMin: 270,
         baselineMax: 300,
-        metric1Label: 'Optic Disc RNFL Thickness',
+        metric1Label: 'Peripapillary retinal thickness (simulated)',
         metric1Val: '312 µm',
         metric1Sub: '+14 µm baseline shift [Simulated]',
         metric2Label: 'Visual Acuity (LogMAR)',
@@ -267,13 +296,11 @@ document.addEventListener('DOMContentLoaded', () => {
   const themeLabelText = document.getElementById('theme-label-text');
   const themeIconMoon = document.getElementById('theme-icon-moon');
 
-  function applyTheme(theme) {
+  function applyTheme(theme, persist = false) {
     state.theme = theme;
     document.documentElement.setAttribute('data-theme', theme);
-    try {
-      localStorage.setItem('astro_theme', theme);
-    } catch (e) {
-      // Ignore in private storage
+    if (persist) {
+      storage.setItem('astro_theme', theme);
     }
 
     if (theme === 'dark') {
@@ -296,10 +323,20 @@ document.addEventListener('DOMContentLoaded', () => {
       `;
     }
   }
-  applyTheme(state.theme);
+
+  // Initialize theme without forcing storage overwrite
+  applyTheme(state.theme, false);
 
   themeToggleBtn.addEventListener('click', () => {
-    applyTheme(state.theme === 'dark' ? 'light' : 'dark');
+    const nextTheme = state.theme === 'dark' ? 'light' : 'dark';
+    applyTheme(nextTheme, true);
+  });
+
+  // Listen to OS color scheme changes if not explicitly overridden by user in storage
+  window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
+    if (!storage.getItem('astro_theme')) {
+      applyTheme(e.matches ? 'dark' : 'light', false);
+    }
   });
 
   // ================= DYNAMIC SVG TREND CHART GENERATOR (REQUIREMENT 2) =================
@@ -547,7 +584,16 @@ document.addEventListener('DOMContentLoaded', () => {
     const offset = RING_CIRCUMFERENCE * (1 - state.overallReadiness / 100);
     ringProgressIndicator.style.strokeDashoffset = offset;
 
-    // Evaluate overall readiness category
+    // Ring colour agrees strictly with readiness score (high score = emerald ring)
+    if (state.overallReadiness >= 80) {
+      ringProgressIndicator.style.stroke = 'var(--color-emerald)';
+    } else if (state.overallReadiness >= 60) {
+      ringProgressIndicator.style.stroke = 'var(--color-ochre)';
+    } else {
+      ringProgressIndicator.style.stroke = 'var(--color-vermillion)';
+    }
+
+    // Evaluate overall clinical triage status category across all systems
     const anyEmergency = Object.values(state.systems).some(s => s.status === 'emergency');
     const anySurgeon = Object.values(state.systems).some(s => s.status === 'flight-surgeon');
     const anyAttention = Object.values(state.systems).some(s => s.status === 'attention');
@@ -558,26 +604,22 @@ document.addEventListener('DOMContentLoaded', () => {
     if (anyEmergency) {
       overallStatus = 'emergency';
       statusLabel = 'Emergency Protocol';
-      ringProgressIndicator.style.stroke = 'var(--color-vermillion)';
       overallStatusSummary.textContent = 'Critical anomaly flagged. Immediate intra-cabin consultation and crew emergency procedures active.';
     } else if (anySurgeon) {
       overallStatus = 'flight-surgeon';
       statusLabel = 'Surgeon Consult Flagged';
-      ringProgressIndicator.style.stroke = 'var(--color-vermillion)';
-      overallStatusSummary.textContent = 'Clinical threshold exceeded. Priority telemedicine consult scheduled on next TDRS ground pass.';
+      overallStatusSummary.textContent = 'Clinical threshold exceeded. Priority telemedicine consult scheduled on next simulated ground pass.';
     } else if (anyAttention) {
       overallStatus = 'attention';
       statusLabel = 'Watch Protocol';
-      ringProgressIndicator.style.stroke = 'var(--color-ochre)';
       overallStatusSummary.textContent = 'Vitals stable across 5/6 core systems. Ocular SANS shows mild bilateral disc hyper-reflectivity under routine tracking.';
     } else {
       overallStatus = 'in-range';
       statusLabel = 'Within expected range';
-      ringProgressIndicator.style.stroke = 'var(--color-emerald)';
       overallStatusSummary.textContent = 'All physiological telemetry within expected microgravity adaptation limits. Countermeasure schedule on track.';
     }
 
-    // REQUIREMENT 4: Replaced 'Fit for Duty' with 'Within expected range'
+    // Update crew readiness badge and status summaries
     setBadge(crewReadinessBadge, overallStatus, statusLabel);
     const activeFlagEl = document.getElementById('summary-active-flag');
     if (activeFlagEl) {
@@ -585,6 +627,48 @@ document.addEventListener('DOMContentLoaded', () => {
       activeFlagEl.style.color = overallStatus === 'attention' ? 'var(--color-ochre-text)' : overallStatus === 'in-range' ? 'var(--color-emerald)' : 'var(--color-vermillion-text)';
     }
     document.getElementById('summary-readiness').textContent = `${state.overallReadiness}%`;
+
+    // Keep SVG body map visual classes & aria-labels synchronized (Requirement 9)
+    updateBodyMapVisuals();
+  }
+
+  function updateBodyMapVisuals() {
+    Object.values(state.systems).forEach(sys => {
+      const el = document.getElementById(`sys-${sys.id}`);
+      if (el) {
+        el.className.baseVal = `body-system-region system--${sys.status}`;
+        el.setAttribute('aria-label', `${sys.name}. Status: ${STATUS_CONFIG[sys.status].label}.`);
+        const pulse = el.querySelector('.pulse-ring-marker');
+        if (pulse) {
+          if (sys.status === 'emergency' || sys.status === 'flight-surgeon') {
+            pulse.setAttribute('stroke', 'var(--color-vermillion)');
+          } else if (sys.status === 'attention') {
+            pulse.setAttribute('stroke', 'var(--color-ochre)');
+          } else {
+            pulse.setAttribute('stroke', 'var(--color-emerald)');
+          }
+        }
+      }
+    });
+  }
+
+  // Readiness Calculation Info Popover Handler
+  const readinessPopoverTrigger = document.getElementById('readiness-popover-trigger');
+  const readinessPopover = document.getElementById('readiness-popover');
+  const closeReadinessPopover = document.getElementById('close-readiness-popover');
+  if (readinessPopoverTrigger && readinessPopover) {
+    readinessPopoverTrigger.addEventListener('click', () => {
+      const isVisible = readinessPopover.style.display === 'block';
+      readinessPopover.style.display = isVisible ? 'none' : 'block';
+      readinessPopoverTrigger.setAttribute('aria-expanded', isVisible ? 'false' : 'true');
+    });
+    if (closeReadinessPopover) {
+      closeReadinessPopover.addEventListener('click', () => {
+        readinessPopover.style.display = 'none';
+        readinessPopoverTrigger.setAttribute('aria-expanded', 'false');
+        readinessPopoverTrigger.focus();
+      });
+    }
   }
 
   // ================= STATUS DRILL (CYCLE STATUS SCALE) =================
@@ -673,11 +757,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // ================= LOCAL STORAGE PERSISTENCE (REQUIREMENT 3) =================
   function getPersistedLogs() {
-    try {
-      const data = localStorage.getItem('astro_clinical_log');
-      if (data) return JSON.parse(data);
-    } catch (e) {
-      console.warn('LocalStorage unavailable:', e);
+    const data = storage.getItem('astro_clinical_log');
+    if (data) {
+      try {
+        return JSON.parse(data);
+      } catch (e) {}
     }
     // Initial simulated seed data if empty
     return [
@@ -705,11 +789,7 @@ document.addEventListener('DOMContentLoaded', () => {
   function savePersistedLog(entry) {
     const logs = getPersistedLogs();
     logs.unshift(entry);
-    try {
-      localStorage.setItem('astro_clinical_log', JSON.stringify(logs.slice(0, 30)));
-    } catch (e) {
-      console.warn('LocalStorage save failed:', e);
-    }
+    storage.setItem('astro_clinical_log', JSON.stringify(logs.slice(0, 30)));
     renderClinicalLogTable();
   }
 
@@ -827,10 +907,20 @@ document.addEventListener('DOMContentLoaded', () => {
         const item = document.createElement('div');
         item.className = 'journal-card';
         item.style.padding = '14px';
+        const isVerified = src.verification === 'verified';
+        const badgeHtml = isVerified
+          ? `<span class="status-badge status--in-range" style="font-size: 0.72rem; padding: 2px 8px;"><svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Verified</span>`
+          : `<span class="status-badge status--attention" style="font-size: 0.72rem; padding: 2px 8px;"><svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/></svg>Needs Verification</span>`;
+        const linkHtml = src.url ? `<a href="${src.url}" target="_blank" rel="noopener noreferrer" style="font-size: 0.8rem; color: var(--color-emerald); text-decoration: underline; margin-top: 6px; display: inline-block;">View Reference Document &rarr;</a>` : '';
+
         item.innerHTML = `
-          <div style="font-weight: 600; color: var(--color-ink); font-size: 0.92rem;">${src.title}</div>
-          <div class="text-faint" style="margin: 4px 0;">${src.institution} • ${src.year}</div>
-          <p class="text-muted" style="font-size: 0.85rem;">${src.scope}</p>
+          <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 8px;">
+            <div style="font-weight: 600; color: var(--color-ink); font-size: 0.92rem;">${src.title}</div>
+            ${badgeHtml}
+          </div>
+          <div class="text-faint" style="margin: 4px 0;">${src.publisher || src.institution} • ${src.year} • Ref ID: ${src.id}</div>
+          <p class="text-muted" style="font-size: 0.85rem; margin-top: 4px;">${src.scope}</p>
+          ${linkHtml}
         `;
         sourcesList.appendChild(item);
       });
@@ -890,60 +980,86 @@ document.addEventListener('DOMContentLoaded', () => {
     stopBreathingGuide();
   });
 
+  const stepLabel = document.getElementById('measurement-step-label');
+
   skipToRecordBtn.addEventListener('click', () => {
     stopBreathingGuide();
     stageBreathing.style.display = 'none';
     stageInput.style.display = 'block';
+    if (stepLabel) stepLabel.textContent = 'Step 2 of 2: Telemetry Recording';
+    const firstInput = document.getElementById('bp-sys-val');
+    if (firstInput) setTimeout(() => firstInput.focus(), 60);
   });
 
   backToBreathingBtn.addEventListener('click', () => {
     stageInput.style.display = 'none';
     stageBreathing.style.display = 'flex';
     validationErrorBox.style.display = 'none';
+    if (stepLabel) stepLabel.textContent = 'Step 1 of 2: Breathing Stabilization';
     startBreathingGuide();
   });
 
-  // Gloved Hand Stepper Controls for Vitals
-  const bpSysVal = document.getElementById('bp-sys-val');
-  const bpDiaVal = document.getElementById('bp-dia-val');
-  const hrVal = document.getElementById('hr-val');
-  const spo2Val = document.getElementById('spo2-val');
+  // Gloved Hand Stepper Controls with Press-and-Hold Auto-Repeat & Direct Typing (Requirement 8)
+  function setupStepper(inputId, downBtnId, upBtnId, min, max, stateProp) {
+    const inputEl = document.getElementById(inputId);
+    const downBtn = document.getElementById(downBtnId);
+    const upBtn = document.getElementById(upBtnId);
+    if (!inputEl || !downBtn || !upBtn) return;
 
-  document.getElementById('bp-sys-up').addEventListener('click', () => {
-    state.measurementVitals.sysBP += 1;
-    bpSysVal.textContent = state.measurementVitals.sysBP;
-  });
-  document.getElementById('bp-sys-down').addEventListener('click', () => {
-    state.measurementVitals.sysBP = Math.max(50, state.measurementVitals.sysBP - 1);
-    bpSysVal.textContent = state.measurementVitals.sysBP;
-  });
+    function applyVal(newVal) {
+      const clamped = Math.max(min, Math.min(max, newVal));
+      state.measurementVitals[stateProp] = clamped;
+      inputEl.value = clamped;
+    }
 
-  document.getElementById('bp-dia-up').addEventListener('click', () => {
-    state.measurementVitals.diaBP += 1;
-    bpDiaVal.textContent = state.measurementVitals.diaBP;
-  });
-  document.getElementById('bp-dia-down').addEventListener('click', () => {
-    state.measurementVitals.diaBP = Math.max(30, state.measurementVitals.diaBP - 1);
-    bpDiaVal.textContent = state.measurementVitals.diaBP;
-  });
+    inputEl.addEventListener('input', () => {
+      const v = parseInt(inputEl.value, 10);
+      if (!isNaN(v)) {
+        state.measurementVitals[stateProp] = Math.max(min, Math.min(max, v));
+      }
+    });
 
-  document.getElementById('hr-up').addEventListener('click', () => {
-    state.measurementVitals.hr += 1;
-    hrVal.textContent = state.measurementVitals.hr;
-  });
-  document.getElementById('hr-down').addEventListener('click', () => {
-    state.measurementVitals.hr = Math.max(30, state.measurementVitals.hr - 1);
-    hrVal.textContent = state.measurementVitals.hr;
-  });
+    function setupPressAndHold(btn, delta) {
+      let intervalId = null;
+      let timeoutId = null;
 
-  document.getElementById('spo2-up').addEventListener('click', () => {
-    state.measurementVitals.spo2 = Math.min(100, state.measurementVitals.spo2 + 1);
-    spo2Val.textContent = `${state.measurementVitals.spo2}%`;
-  });
-  document.getElementById('spo2-down').addEventListener('click', () => {
-    state.measurementVitals.spo2 = Math.max(50, state.measurementVitals.spo2 - 1);
-    spo2Val.textContent = `${state.measurementVitals.spo2}%`;
-  });
+      function start(e) {
+        if (e.button !== undefined && e.button !== 0) return;
+        applyVal(state.measurementVitals[stateProp] + delta);
+        timeoutId = setTimeout(() => {
+          intervalId = setInterval(() => {
+            applyVal(state.measurementVitals[stateProp] + delta);
+          }, 85);
+        }, 300);
+      }
+
+      function stop() {
+        if (timeoutId) clearTimeout(timeoutId);
+        if (intervalId) clearInterval(intervalId);
+        timeoutId = null;
+        intervalId = null;
+      }
+
+      btn.addEventListener('pointerdown', start);
+      btn.addEventListener('pointerup', stop);
+      btn.addEventListener('pointerleave', stop);
+      btn.addEventListener('pointercancel', stop);
+      btn.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          applyVal(state.measurementVitals[stateProp] + delta);
+        }
+      });
+    }
+
+    setupPressAndHold(downBtn, -1);
+    setupPressAndHold(upBtn, 1);
+  }
+
+  setupStepper('bp-sys-val', 'bp-sys-down', 'bp-sys-up', 50, 260, 'sysBP');
+  setupStepper('bp-dia-val', 'bp-dia-down', 'bp-dia-up', 30, 160, 'diaBP');
+  setupStepper('hr-val', 'hr-down', 'hr-up', 30, 220, 'hr');
+  setupStepper('spo2-val', 'spo2-down', 'spo2-up', 50, 100, 'spo2');
 
   // EVALUATE & SAVE VITALS (REQUIREMENT 3: Status Engine + Persistence)
   confirmSaveVitalsBtn.addEventListener('click', () => {
@@ -1018,7 +1134,7 @@ document.addEventListener('DOMContentLoaded', () => {
       selectSystem('cardio');
     }
 
-    showToast(`Vitals recorded & classified: "${classification.label}". Readiness: ${state.overallReadiness}%.`, classification.status === 'emergency' ? 'alert' : classification.status === 'attention' ? 'warning' : 'success');
+    showToast(`Entry saved to this device (Classified: ${classification.label}). Readiness: ${state.overallReadiness}%.`, classification.status === 'emergency' ? 'alert' : classification.status === 'attention' ? 'warning' : 'success');
   });
 
   // ================= SYSTEM INSPECTOR DRAWER =================
@@ -1036,7 +1152,7 @@ document.addEventListener('DOMContentLoaded', () => {
   saveNoteBtn.addEventListener('click', () => {
     const noteText = clinicalFieldNote.value.trim();
     if (noteText) {
-      showToast('Observation successfully appended to simulated clinical telemetry log.', 'success');
+      showToast('Entry saved to this device.', 'success');
       clinicalFieldNote.value = '';
       closeModal(systemDrawerBackdrop);
     }
@@ -1076,7 +1192,7 @@ document.addEventListener('DOMContentLoaded', () => {
   closeSurgeonModal.addEventListener('click', () => closeModal(surgeonLedgerBackdrop));
 
   sendSurgeonTelemetryBtn.addEventListener('click', () => {
-    showToast('SIMULATED: Priority Telemetry Bundle bundled for simulated ground pass transmission.', 'success');
+    showToast('Simulated packet prepared (no data leaves this device).', 'success');
     closeModal(surgeonLedgerBackdrop);
   });
 
@@ -1104,16 +1220,45 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  // Keyboard accessibility: ESC key to close, and D for theme WITHOUT Ctrl/Cmd/Alt hijack! (Requirement 6)
+  // Keyboard accessibility: ESC key to close, focus trapping, and D for theme WITHOUT modifier hijack (Requirement 7)
   document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape') {
       [measurementBackdrop, systemDrawerBackdrop, surgeonLedgerBackdrop, evidenceBackdrop, guidanceBackdrop].forEach(b => {
         if (b && b.classList.contains('open')) closeModal(b);
       });
+      const popover = document.getElementById('readiness-popover');
+      if (popover && popover.style.display !== 'none') {
+        popover.style.display = 'none';
+        const trigger = document.getElementById('readiness-popover-trigger');
+        if (trigger) trigger.setAttribute('aria-expanded', 'false');
+      }
       stopBreathingGuide();
+    } else if (e.key === 'Tab') {
+      const openBackdrop = document.querySelector('.drawer-backdrop.open');
+      if (openBackdrop) {
+        const focusables = Array.from(openBackdrop.querySelectorAll(
+          'button:not([disabled]), [href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])'
+        )).filter(el => el.offsetParent !== null);
+        if (focusables.length > 0) {
+          const first = focusables[0];
+          const last = focusables[focusables.length - 1];
+          if (e.shiftKey && document.activeElement === first) {
+            e.preventDefault();
+            last.focus();
+          } else if (!e.shiftKey && document.activeElement === last) {
+            e.preventDefault();
+            first.focus();
+          }
+        }
+      }
     } else if ((e.key === 'd' || e.key === 'D') && !e.ctrlKey && !e.metaKey && !e.altKey) {
-      if (document.activeElement.tagName !== 'INPUT' && document.activeElement.tagName !== 'TEXTAREA') {
-        applyTheme(state.theme === 'dark' ? 'light' : 'dark');
+      const targetTag = (e.target && e.target.tagName) || '';
+      const activeTag = (document.activeElement && document.activeElement.tagName) || '';
+      if (!['INPUT', 'TEXTAREA', 'SELECT'].includes(targetTag) &&
+          !['INPUT', 'TEXTAREA', 'SELECT'].includes(activeTag) &&
+          !document.activeElement.isContentEditable &&
+          !(e.target && e.target.isContentEditable)) {
+        applyTheme(state.theme === 'dark' ? 'light' : 'dark', true);
       }
     }
   });

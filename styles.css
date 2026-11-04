@@ -1208,6 +1208,38 @@ input:focus-visible,
   color: var(--color-ink);
 }
 
+.stepper-input {
+  font-family: var(--font-serif);
+  font-size: 1.85rem;
+  font-weight: 700;
+  color: var(--color-ink);
+  background: transparent;
+  border: 1px dashed transparent;
+  border-radius: var(--radius-sm);
+  text-align: center;
+  width: 120px;
+  max-width: 140px;
+  padding: 4px;
+  margin: 0;
+  -moz-appearance: textfield;
+}
+
+.stepper-input::-webkit-outer-spin-button,
+.stepper-input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.stepper-input:focus {
+  outline: 2px solid var(--color-emerald);
+  border-color: var(--color-emerald);
+  background: var(--color-surface);
+}
+
+.info-popover {
+  animation: fadeIn 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
 /* Validation error alert */
 .validation-error-msg {
   background-color: var(--color-vermillion-tint);

@@ -279,6 +279,34 @@
         </div>
       </div>
 
+      <div class="readiness-calculation-info" style="margin-top: 6px; margin-bottom: 12px; font-size: 0.85rem; color: var(--color-ink-muted); display: flex; align-items: center; justify-content: center; gap: 8px;">
+        <span>Multi-system weighted index</span>
+        <span>•</span>
+        <button id="readiness-popover-trigger" class="text-link-btn" aria-haspopup="dialog" aria-expanded="false" style="background:none; border:none; color:var(--color-emerald); text-decoration:underline; font-size:0.85rem; font-weight:600; cursor:pointer; padding:4px 6px; min-height:36px; display:inline-flex; align-items:center;">
+          How this is calculated
+        </button>
+      </div>
+
+      <!-- Readiness Calculation Info Popover (Requirement 4) -->
+      <div id="readiness-popover" class="info-popover" role="dialog" aria-modal="false" aria-label="Readiness Calculation Breakdown" style="display:none; position:relative; background:var(--color-surface); border:1px solid var(--color-border); border-radius:var(--radius-md); padding:16px; margin-bottom:16px; text-align:left; box-shadow:var(--shadow-md); z-index:10;">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+          <h4 style="font-size:0.95rem; margin:0; color:var(--color-ink);">Readiness Calculation (Decision Support)</h4>
+          <button id="close-readiness-popover" class="drawer-close-btn" style="min-width:36px; min-height:36px; width:36px; height:36px;" aria-label="Close calculation explanation">&times;</button>
+        </div>
+        <p style="font-size:0.84rem; color:var(--color-ink-muted); margin-bottom:8px; line-height:1.45;">
+          The Mission Physiological Index is calculated from verified adaptation statuses across core physiological systems:
+        </p>
+        <ul style="font-size:0.82rem; color:var(--color-ink); padding-left:18px; margin:0 0 10px 0; line-height:1.5;">
+          <li><strong>In range</strong>: 100 points (Nominal microgravity adaptation envelope)</li>
+          <li><strong>Watch (Attention)</strong>: 75 points (Mild shift, non-pharmacologic countermeasures)</li>
+          <li><strong>Contact flight surgeon</strong>: 45 points (Telemedicine consultation required)</li>
+          <li><strong>Emergency</strong>: 15 points (Acute station medical contingency)</li>
+        </ul>
+        <div class="text-faint" style="font-size:0.78rem; line-height:1.4;">
+          Formula: Arithmetic mean of active telemetry channel scores. High score (&ge;80%) displays an Emerald ring; 60–79% Ochre; &lt;60% Vermillion. Decision support prototype, not a medical diagnosis.
+        </div>
+      </div>
+
       <p class="text-muted" id="overall-status-summary" style="font-size: 0.95rem; max-width: 420px; margin-bottom: 20px;">
         Vitals stable across 5/6 core systems. Ocular SANS shows mild bilateral disc hyper-reflectivity under routine tracking.
       </p>
@@ -516,11 +544,11 @@
 
 
   <!-- ================= GUIDED MEASUREMENT MODAL (WITH CALM BREATHING GUIDE & HR) ================= -->
-  <div class="drawer-backdrop" id="measurement-backdrop" role="dialog" aria-modal="true" aria-hidden="true" aria-labelledby="measurement-modal-title">
-    <div class="modal-dialog" id="measurement-dialog">
+  <div class="drawer-backdrop" id="measurement-backdrop" aria-hidden="true">
+    <div class="modal-dialog" id="measurement-dialog" role="dialog" aria-modal="true" aria-labelledby="measurement-modal-title">
       <div class="drawer-header">
         <div>
-          <span class="card-meta">Measurement Step</span>
+          <span class="card-meta" id="measurement-step-label">Step 1 of 2: Breathing Stabilization</span>
           <h2 id="measurement-modal-title">Resting Cardiovascular Vitals</h2>
         </div>
         <button class="drawer-close-btn" id="close-measurement-modal" aria-label="Cancel measurement and return to journal">
@@ -535,7 +563,7 @@
       <div id="measurement-stage-breathing" class="breathing-coach-box breathing-active">
         <span class="card-meta">Calm Stabilization Sequence</span>
         <div class="breathing-instruction" id="breath-cue-text">Inhale gently...</div>
-        <div class="breathing-subtext">Synchronize breathing to stabilize cephalic venous pressure</div>
+        <div class="breathing-subtext">A calm minute gives a steadier reading.</div>
 
         <!-- Animated Breathing Ring & Orb -->
         <div class="breathing-visual">
@@ -559,7 +587,7 @@
       <!-- Stage 2: Telemetry Input with Gloved Hands Stepper Controls & Validation -->
       <div id="measurement-stage-input" style="display: none;">
         <p class="text-muted" style="margin-bottom: 14px; font-size: 0.9rem;">
-          Adjust values using the 52px touch steppers (gloved-hand accessible). Input validation detects impossible clinical values.
+          Adjust values using the 52px touch steppers (gloved-hand accessible) or type numbers directly.
         </p>
 
         <!-- Inline Validation Error Box -->
@@ -570,7 +598,7 @@
           <label for="bp-sys-val" style="font-weight: 600; font-size: 0.9rem; color: var(--color-ink);">Systolic Arterial Pressure (mmHg)</label>
           <div class="stepper-control">
             <button class="stepper-btn" id="bp-sys-down" aria-label="Decrease systolic blood pressure by 1">-</button>
-            <div class="stepper-value num-tabular" id="bp-sys-val">118</div>
+            <input type="number" class="stepper-input num-tabular" id="bp-sys-val" value="118" min="50" max="260" step="1" aria-label="Systolic Arterial Pressure in mmHg" />
             <button class="stepper-btn" id="bp-sys-up" aria-label="Increase systolic blood pressure by 1">+</button>
           </div>
         </div>
@@ -580,7 +608,7 @@
           <label for="bp-dia-val" style="font-weight: 600; font-size: 0.9rem; color: var(--color-ink);">Diastolic Arterial Pressure (mmHg)</label>
           <div class="stepper-control">
             <button class="stepper-btn" id="bp-dia-down" aria-label="Decrease diastolic blood pressure by 1">-</button>
-            <div class="stepper-value num-tabular" id="bp-dia-val">76</div>
+            <input type="number" class="stepper-input num-tabular" id="bp-dia-val" value="76" min="30" max="160" step="1" aria-label="Diastolic Arterial Pressure in mmHg" />
             <button class="stepper-btn" id="bp-dia-up" aria-label="Increase diastolic blood pressure by 1">+</button>
           </div>
         </div>
@@ -590,7 +618,7 @@
           <label for="hr-val" style="font-weight: 600; font-size: 0.9rem; color: var(--color-ink);">Resting Heart Rate (bpm)</label>
           <div class="stepper-control">
             <button class="stepper-btn" id="hr-down" aria-label="Decrease heart rate by 1">-</button>
-            <div class="stepper-value num-tabular" id="hr-val">62</div>
+            <input type="number" class="stepper-input num-tabular" id="hr-val" value="62" min="30" max="220" step="1" aria-label="Resting Heart Rate in beats per minute" />
             <button class="stepper-btn" id="hr-up" aria-label="Increase heart rate by 1">+</button>
           </div>
         </div>
@@ -600,7 +628,7 @@
           <label for="spo2-val" style="font-weight: 600; font-size: 0.9rem; color: var(--color-ink);">SpO2 Pulse Oximetry (%)</label>
           <div class="stepper-control">
             <button class="stepper-btn" id="spo2-down" aria-label="Decrease SpO2 by 1">-</button>
-            <div class="stepper-value num-tabular" id="spo2-val">99%</div>
+            <input type="number" class="stepper-input num-tabular" id="spo2-val" value="99" min="50" max="100" step="1" aria-label="Pulse Oximetry Percentage" />
             <button class="stepper-btn" id="spo2-up" aria-label="Increase SpO2 by 1">+</button>
           </div>
         </div>
@@ -623,8 +651,8 @@
 
 
   <!-- ================= DETAILED TELEMETRY INSPECTOR SLIDE-IN DRAWER ================= -->
-  <div class="drawer-backdrop" id="system-drawer-backdrop" role="dialog" aria-modal="true" aria-hidden="true" aria-labelledby="drawer-system-title">
-    <div class="drawer-panel" id="system-drawer">
+  <div class="drawer-backdrop" id="system-drawer-backdrop" aria-hidden="true">
+    <div class="drawer-panel" id="system-drawer" role="dialog" aria-modal="true" aria-labelledby="drawer-system-title">
       <div class="drawer-header">
         <div>
           <span class="card-meta">Anatomical System Telemetry</span>
@@ -698,8 +726,8 @@
 
 
   <!-- ================= EVIDENCE & SOURCES DRAWER (REQUIREMENT 4) ================= -->
-  <div class="drawer-backdrop" id="evidence-drawer-backdrop" role="dialog" aria-modal="true" aria-hidden="true" aria-labelledby="evidence-drawer-title">
-    <div class="drawer-panel" id="evidence-drawer">
+  <div class="drawer-backdrop" id="evidence-drawer-backdrop" aria-hidden="true">
+    <div class="drawer-panel" id="evidence-drawer" role="dialog" aria-modal="true" aria-labelledby="evidence-drawer-title">
       <div class="drawer-header">
         <div>
           <span class="card-meta">Clinical Knowledge Base</span>
@@ -717,7 +745,7 @@
         <aside class="journal-card" style="padding: 16px; background: var(--color-surface-hover);" role="note">
           <h4 style="font-size: 0.95rem; margin-bottom: 4px;">Regulatory Notice</h4>
           <p class="text-muted" style="font-size: 0.85rem;">
-            Decision support research prototype. Not a certified medical device. All reference ranges are grounded in open aerospace medicine literature.
+            Decision support research prototype, not a medical device. All reference ranges are grounded in open aerospace medicine literature.
           </p>
         </aside>
 
@@ -740,8 +768,8 @@
 
 
   <!-- ================= TIERED GUIDANCE DRAWER (REQUIREMENT 5) ================= -->
-  <div class="drawer-backdrop" id="guidance-drawer-backdrop" role="dialog" aria-modal="true" aria-hidden="true" aria-labelledby="guidance-drawer-title">
-    <div class="drawer-panel" id="guidance-drawer">
+  <div class="drawer-backdrop" id="guidance-drawer-backdrop" aria-hidden="true">
+    <div class="drawer-panel" id="guidance-drawer" role="dialog" aria-modal="true" aria-labelledby="guidance-drawer-title">
       <div class="drawer-header">
         <div>
           <span class="card-meta">Standardized Clinical Triage</span>
@@ -771,8 +799,8 @@
 
 
   <!-- ================= FLIGHT SURGEON TRANSMISSION LEDGER MODAL ================= -->
-  <div class="drawer-backdrop" id="surgeon-ledger-backdrop" role="dialog" aria-modal="true" aria-hidden="true" aria-labelledby="surgeon-ledger-title">
-    <div class="modal-dialog" id="surgeon-ledger-dialog">
+  <div class="drawer-backdrop" id="surgeon-ledger-backdrop" aria-hidden="true">
+    <div class="modal-dialog" id="surgeon-ledger-dialog" role="dialog" aria-modal="true" aria-labelledby="surgeon-ledger-title">
       <div class="drawer-header">
         <div>
           <span class="card-meta">Downlink Comm Channel</span>
@@ -787,7 +815,7 @@
       </div>
 
       <p class="text-muted" style="margin-bottom: 14px; font-size: 0.9rem;">
-        <strong>[SIMULATED TRANSMISSION]</strong> Telemetry packet will be bundled for simulated transmission over White Sands Ground Terminal.
+        <strong>[SIMULATED TRANSMISSION]</strong> Telemetry packet will be bundled for simulated transmission over White Sands Ground Terminal. No data leaves this device.
       </p>
 
       <div class="journal-card" style="background: var(--color-surface-hover); margin-bottom: 18px; padding: 18px;">

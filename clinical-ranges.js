@@ -10,35 +10,50 @@ const CLINICAL_SOURCES = {
     id: 'NASA-STD-3001',
     title: 'NASA Space Flight Human-System Standard, Vol 1: Crew Health',
     institution: 'NASA Johnson Space Center',
+    publisher: 'National Aeronautics and Space Administration',
     year: '2022 Rev B',
+    url: 'https://www.nasa.gov/hhp/standards',
+    verification: 'verified',
     scope: 'Physiological limits, cabin atmospheric targets, and mandatory operational medical check intervals.'
   },
   'NASA-HRP-SANS': {
     id: 'NASA-HRP-SANS',
     title: 'Risk of Spaceflight-Associated Neuro-ocular Syndrome (SANS) Evidence Report',
     institution: 'NASA Human Research Program',
+    publisher: 'NASA Human Research Program',
     year: '2020',
-    scope: 'Longitudinal optical coherence tomography (OCT) metrics, retinal nerve fiber layer (RNFL) edema thresholds.'
+    url: 'https://humanresearchroadmap.nasa.gov/evidence/reports/SANS.pdf',
+    verification: 'verified',
+    scope: 'Longitudinal optical coherence tomography (OCT) metrics, retinal thickening thresholds.'
   },
   'NASA-HRP-CARDIO': {
     id: 'NASA-HRP-CARDIO',
     title: 'Risk of Orthostatic Intolerance & Cardiovascular Remodeling in Microgravity',
     institution: 'NASA Human Research Program',
+    publisher: 'NASA Human Research Program',
     year: '2021',
+    url: '',
+    verification: 'needs_verification',
     scope: 'Microgravity blood volume contraction, baroreflex adaptation, and resistive countermeasure targets.'
   },
   'ISS-MEDB-7.1': {
     id: 'ISS-MEDB-7.1',
     title: 'ISS Medical Operations Protocol MedB-7.1: Telemedicine Consultation & Action Thresholds',
     institution: 'Multilateral Medical Operations Panel (MMOP)',
+    publisher: 'International Space Station Program',
     year: '2023',
+    url: '',
+    verification: 'needs_verification',
     scope: 'Ground surgeon alert routing, clinical triage, and diagnostic tier escalation.'
   },
   'ESA-HPS': {
     id: 'ESA-HPS',
     title: 'Human Physiology in Microgravity & Axial Skeleton Deconditioning Handbook',
     institution: 'European Space Agency (ESA / EAC)',
+    publisher: 'European Space Agency',
     year: '2019',
+    url: '',
+    verification: 'needs_verification',
     scope: 'Spinal stature elongation, postural muscle volume shift, and neuro-vestibular adaptation.'
   }
 };
@@ -90,7 +105,7 @@ const CLINICAL_INDICATORS = {
   },
   opticDisc: {
     id: 'opticDisc',
-    label: 'Optic Disc RNFL Thickness',
+    label: 'Peripapillary retinal thickness (simulated)',
     unit: 'µm',
     earthNominal: { min: 270, max: 300 },
     expectedInFlight: { min: 280, max: 325 },
@@ -158,8 +173,7 @@ const TIERED_GUIDANCE = {
     statusKey: 'attention',
     summary: 'Mild physiological deviation observed beyond personal baseline. Non-pharmacologic mitigation advised.',
     actions: [
-      'For SANS / Optic Disc shift: Initiate Lower Body Negative Pressure (LBNP) chibis countermeasure: 20 mmHg for 2 hours pre-sleep to redistribute fluids caudad.',
-      'Adjust sleep restraint angle: ensure 5° torso elevation if station berth harness allows.',
+      'Report new or worsening vision changes to the flight surgeon and continue your assigned countermeasures.',
       'Recalibrate cabin workstation viewing distance to minimize digital visual fatigue.',
       'Verify cabin local air diffuser velocity (> 0.1 m/s) to ensure zero localized CO2 bubble accumulation near face.',
       'Schedule follow-up optical coherence tomography (OCT) within 48 hours.'
