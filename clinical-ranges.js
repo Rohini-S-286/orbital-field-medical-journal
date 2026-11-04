@@ -67,9 +67,10 @@ const CLINICAL_INDICATORS = {
     expectedInFlight: { min: 95, max: 140 },
     personalBaseline: 115,
     personalSd: 4.0,
+    thresholdBasis: 'relative to personal baseline (within in-flight envelope)',
     sourceId: 'NASA-STD-3001',
     confidence: 'High (ISS Expeditions 1–70 normative telemetry)',
-    physiologicNote: 'Initial cephalad fluid shift elevates stroke volume; subsequent hypovolemia (~12% plasma reduction) stabilizes resting pressures.'
+    physiologicNote: 'Initial cephalad fluid shift elevates stroke volume; subsequent hypovolemia stabilizes resting pressures.'
   },
   diastolic: {
     id: 'diastolic',
@@ -79,6 +80,7 @@ const CLINICAL_INDICATORS = {
     expectedInFlight: { min: 65, max: 90 },
     personalBaseline: 75,
     personalSd: 3.5,
+    thresholdBasis: 'relative to personal baseline (within in-flight envelope)',
     sourceId: 'NASA-STD-3001',
     confidence: 'High (ISS Expeditions 1–70 normative telemetry)',
     physiologicNote: 'Systemic vascular resistance generally maintained or slightly decreased in microgravity.'
@@ -91,6 +93,8 @@ const CLINICAL_INDICATORS = {
     expectedInFlight: { min: 55, max: 95 },
     personalBaseline: 62,
     personalSd: 4.0,
+    thresholdBasis: 'relative to personal baseline (within in-flight envelope)',
+    illustrativeThresholds: true,
     sourceId: 'NASA-HRP-CARDIO',
     confidence: 'High (Continuous Holter & resting vitals telemetry)',
     physiologicNote: 'Resting heart rate in conditioned astronauts often stays lower in-flight unless hypovolemic stress or thermal load is present.'
@@ -103,9 +107,10 @@ const CLINICAL_INDICATORS = {
     expectedInFlight: { min: 96, max: 100 },
     personalBaseline: 99,
     personalSd: 1.0,
+    thresholdBasis: 'absolute (in-flight physiological envelope)',
     sourceId: 'NASA-STD-3001',
     confidence: 'High (Continuous cabin life support matching)',
-    physiologicNote: 'Homogeneous alveolar ventilation in 0g preserves high hemoglobin saturation.'
+    physiologicNote: 'Homogeneous alveolar ventilation in microgravity preserves high hemoglobin saturation.'
   },
   opticDisc: {
     id: 'opticDisc',
@@ -115,9 +120,10 @@ const CLINICAL_INDICATORS = {
     expectedInFlight: { min: 280, max: 325 },
     personalBaseline: 298,
     personalSd: 5.5,
+    thresholdBasis: 'relative to personal baseline (within in-flight envelope)',
     sourceId: 'NASA-HRP-SANS',
     confidence: 'Moderate (Longitudinal OCT fundus scans from 40+ long-duration flyers)',
-    physiologicNote: 'Persistent cephalad venous pressure elevates optic nerve sheath diameter (ONSD) and can induce disc edema.'
+    physiologicNote: 'Persistent cephalad venous pressure elevates optic nerve sheath diameter and can induce disc edema.'
   },
   visualAcuity: {
     id: 'visualAcuity',
@@ -127,9 +133,10 @@ const CLINICAL_INDICATORS = {
     expectedInFlight: { min: -0.05, max: 0.15 },
     personalBaseline: 0.00,
     personalSd: 0.04,
+    thresholdBasis: 'relative to personal baseline',
     sourceId: 'NASA-HRP-SANS',
     confidence: 'High (Standardized electronic visual acuity tests)',
-    physiologicNote: 'Posterior globe flattening causes a hyperopic shift (+0.50 to +1.50 diopters) in long-duration crew.'
+    physiologicNote: 'Posterior globe flattening causes a hyperopic shift in long-duration crew.'
   },
   vorGain: {
     id: 'vorGain',
@@ -139,6 +146,8 @@ const CLINICAL_INDICATORS = {
     expectedInFlight: { min: 0.90, max: 1.10 },
     personalBaseline: 1.00,
     personalSd: 0.03,
+    thresholdBasis: 'relative to personal baseline',
+    illustrativeThresholds: true,
     sourceId: 'ESA-HPS',
     confidence: 'High (Dynamic visual acuity and eye-tracking helmets)',
     physiologicNote: 'Otolith-canal discordance dampens gaze stabilization during head turns until cerebellar reweighting occurs.'
@@ -150,9 +159,10 @@ const CLINICAL_INDICATORS = {
     earthNominal: { min: 0.3, max: 1.0 },
     expectedInFlight: { min: 1.5, max: 3.0 },
     personalBaseline: 2.4,
+    thresholdBasis: 'absolute (cabin ECLSS environmental envelope)',
     sourceId: 'NASA-STD-3001',
     confidence: 'High (ISS Environmental Control & Life Support System telemetry)',
-    physiologicNote: 'Absence of natural thermal convection causes localized CO2 pooling around astronaut sleeping quarters if ventilation is impaired.'
+    physiologicNote: 'Absence of natural thermal convection causes localized CO2 pooling around astronaut quarters if ventilation is impaired.'
   },
   spineElongation: {
     id: 'spineElongation',
@@ -161,9 +171,11 @@ const CLINICAL_INDICATORS = {
     earthNominal: { min: 0, max: 0 },
     expectedInFlight: { min: 1.5, max: 4.5 },
     personalBaseline: 0,
+    thresholdBasis: 'relative to terrestrial stature (in-flight elongation)',
+    illustrativeThresholds: true,
     sourceId: 'ESA-HPS',
     confidence: 'High (Ultrasound & ultrasound stadiometry studies)',
-    physiologicNote: 'Intervertebral disc imbibition causes 2–5 cm stature lengthening and paraspinal flattening.'
+    physiologicNote: 'Intervertebral disc imbibition causes stature lengthening and paraspinal flattening.'
   },
   calfCircumference: {
     id: 'calfCircumference',
@@ -173,9 +185,11 @@ const CLINICAL_INDICATORS = {
     expectedInFlight: { min: 36.5, max: 38.5 },
     personalBaseline: 38.2,
     personalSd: 0.4,
+    thresholdBasis: 'relative to personal baseline (countermeasure compliance)',
+    illustrativeThresholds: true,
     sourceId: 'NASA-HRP-CARDIO',
     confidence: 'High (Pre/post-flight MRI & in-flight circumferential tape telemetry)',
-    physiologicNote: 'Fluid shift produces immediate "bird-leg" phenomenon (-1 to -2 cm), followed by slow slow-twitch soleus atrophy if unexercised.'
+    physiologicNote: 'Fluid shift produces immediate fluid reduction, followed by slow slow-twitch soleus atrophy if unexercised.'
   },
   reactionTime: {
     id: 'reactionTime',
@@ -185,9 +199,10 @@ const CLINICAL_INDICATORS = {
     expectedInFlight: { min: 190, max: 260 },
     personalBaseline: 214,
     personalSd: 12.0,
+    thresholdBasis: 'relative to personal baseline (alertness drift)',
     sourceId: 'NASA-STD-3001',
     confidence: 'High (Standardized Psychomotor Vigilance Task)',
-    physiologicNote: 'Behavioral alertness measure. Reaction times > 300 ms or lapses > 500 ms indicate operational fatigue and circadian sleep debt.'
+    physiologicNote: 'Behavioral alertness measure. Reaction latency increases indicate operational fatigue and circadian sleep debt.'
   },
   sleepDuration: {
     id: 'sleepDuration',
@@ -197,9 +212,10 @@ const CLINICAL_INDICATORS = {
     expectedInFlight: { min: 6.5, max: 8.5 },
     personalBaseline: 7.2,
     personalSd: 0.5,
+    thresholdBasis: 'absolute (circadian health standard)',
     sourceId: 'NASA-STD-3001',
     confidence: 'High (Actigraphy & polysomnography headband)',
-    physiologicNote: 'Orbital dawn/dusk cycle (90-minute revolutions) suppresses natural melatonin. Sleep < 6.0 hrs elevates cognitive error rates.'
+    physiologicNote: 'Orbital light cycles suppress natural melatonin. Reduced sleep duration elevates cognitive error rates.'
   },
   radiationDose: {
     id: 'radiationDose',
@@ -209,9 +225,10 @@ const CLINICAL_INDICATORS = {
     expectedInFlight: { min: 200, max: 400 },
     personalBaseline: 270,
     personalSd: 25.0,
+    thresholdBasis: 'absolute (ALARA radiation dosimetry limit)',
     sourceId: 'NASA-STD-3001',
     confidence: 'High (Continuous passive and active semiconductor radiation dosimeters)',
-    physiologicNote: 'Galactic cosmic radiation and South Atlantic Anomaly crossings increase daily ionizing exposure ~20-30x terrestrial background.'
+    physiologicNote: 'Galactic cosmic radiation and South Atlantic Anomaly crossings increase daily ionizing exposure relative to terrestrial background.'
   },
   coreTemp: {
     id: 'coreTemp',
@@ -221,15 +238,20 @@ const CLINICAL_INDICATORS = {
     expectedInFlight: { min: 36.8, max: 37.6 },
     personalBaseline: 37.0,
     personalSd: 0.2,
+    thresholdBasis: 'relative to personal baseline (spaceflight hyperthermia envelope)',
+    illustrativeThresholds: true,
     sourceId: 'ESA-HPS',
     confidence: 'High (Circadian ingestible pill & double sensor forehead telemetry)',
-    physiologicNote: 'Spaceflight core body temperature runs ~0.5–1.0 °C higher ("space fever") due to impaired convective skin heat dissipation.'
+    physiologicNote: 'Spaceflight core body temperature runs slightly higher due to impaired convective skin heat dissipation.'
   }
 };
 
+const DECLARED_INDICATORS_COUNT = 14;
+
 /**
  * Tiered Clinical Decision Guidance
- * STRICT RULE: No drug dosing. Operational and non-pharmacologic countermeasures only.
+ * STRICT RULE: No numeric treatment protocols, no drug names, no dosing.
+ * Operational, non-numeric and non-pharmacologic countermeasures only.
  */
 const TIERED_GUIDANCE = {
   routine: {
@@ -238,12 +260,14 @@ const TIERED_GUIDANCE = {
     statusKey: 'in-range',
     summary: 'Physiological parameters within expected orbital adaptation envelope.',
     actions: [
-      'Maintain 2.5 hr daily countermeasure schedule: 60 min ARED resistive training + 30 min T2 cycle ergometer interval session.',
-      'Maintain standardized hydration protocol: 2.5 L electrolyte-balanced fluids per 24 hr.',
-      'Log routine morning vitals and optical Amsler visual acuity grid daily.',
-      'Ensure 8-hour sleep mask discipline with sound-dampened cabin acoustic ventilation.'
+      'Complete your scheduled resistive and cycle exercise sessions.',
+      'Stay hydrated as directed by your mission nutrition plan.',
+      'Log routine morning vitals and optical visual acuity checks.',
+      'Maintain scheduled sleep discipline with cabin acoustic dampening.'
     ],
-    source: 'NASA-STD-3001 Vol 1, Sec 4.2'
+    sourceId: 'NASA-STD-3001',
+    source: 'NASA Space Flight Human-System Standard, Vol 1: Crew Health',
+    sourceVerification: 'verified'
   },
   selfCare: {
     level: 'Self-Care (Watch / Attention)',
@@ -254,8 +278,9 @@ const TIERED_GUIDANCE = {
       'Report new or worsening vision changes to the flight surgeon and continue your assigned countermeasures.',
       'Recalibrate cabin workstation viewing distance to minimize digital visual fatigue.',
       'Verify cabin local air diffuser function to ensure adequate atmospheric circulation and prevent localized CO2 accumulation.',
-      'Schedule follow-up optical coherence tomography (OCT) within 48 hours.'
+      'Perform follow-up optical assessment as scheduled.'
     ],
+    sourceId: 'NASA-HRP-SANS',
     source: 'NASA Human Research Program SANS Evidence Report (2020 Rev)',
     sourceVerification: 'needs_verification'
   },
@@ -270,6 +295,7 @@ const TIERED_GUIDANCE = {
       'Suspend high-impact maximal resistive lifting until baroreceptor and cardiovascular stability confirmed by surgeon.',
       'Review continuous cabin atmospheric logs (pCO2, pO2, total cabin pressure, trace contaminants).'
     ],
+    sourceId: 'ISS-MEDB-7.1',
     source: 'ISS Medical Operations Protocol MedB-7.1',
     sourceVerification: 'needs_verification'
   },
@@ -285,12 +311,11 @@ const TIERED_GUIDANCE = {
       'Open direct emergency medical voice loop to Flight Surgeon (Surgeon-1).',
       'Begin stabilizing primary airway, breathing, and systemic circulation (ABCs) according to station emergency checklist.'
     ],
+    sourceId: 'ISS-MEDB-7.1',
     source: 'ISS Emergency Medical Procedures, Flight Rule B13-102',
     sourceVerification: 'needs_verification'
   }
 };
-
-CLINICAL_INDICATORS.restingHr = CLINICAL_INDICATORS.heartRate;
 
 const INDICATORS = CLINICAL_INDICATORS;
 
@@ -301,6 +326,7 @@ const INDICATORS = CLINICAL_INDICATORS;
  * 3. Individual astronaut personal baseline and variance
  */
 function classifyIndicator(indicatorId, value, customBaseline = null) {
+  if (indicatorId === 'restingHr') indicatorId = 'heartRate';
   const ind = (typeof CLINICAL_INDICATORS !== 'undefined' && CLINICAL_INDICATORS[indicatorId]) ||
               (typeof INDICATORS !== 'undefined' && INDICATORS[indicatorId]);
   if (!ind) {
@@ -417,6 +443,7 @@ function validateVitalInputs(values) {
 
 // Attach to window and modules
 if (typeof window !== 'undefined') {
+  window.DECLARED_INDICATORS_COUNT = DECLARED_INDICATORS_COUNT;
   window.INDICATORS = INDICATORS;
   window.CLINICAL_INDICATORS = CLINICAL_INDICATORS;
   window.CLINICAL_SOURCES = CLINICAL_SOURCES;
@@ -426,6 +453,7 @@ if (typeof window !== 'undefined') {
 }
 if (typeof module !== 'undefined' && module.exports) {
   module.exports = {
+    DECLARED_INDICATORS_COUNT,
     INDICATORS,
     CLINICAL_INDICATORS,
     CLINICAL_SOURCES,

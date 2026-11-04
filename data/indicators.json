@@ -4,181 +4,284 @@
     "label": "Systolic Arterial Pressure",
     "systemId": "cardio",
     "unit": "mmHg",
-    "earthNominal": { "min": 90, "max": 120 },
-    "expectedInFlight": { "min": 95, "max": 130 },
+    "earthNominal": {
+      "min": 90,
+      "max": 120
+    },
+    "expectedInFlight": {
+      "min": 95,
+      "max": 140
+    },
     "personalBaseline": 115,
     "personalSd": 4.5,
     "sourceId": "NASA-STD-3001",
     "confidence": "High (ISS Expeditions 1–70 normative telemetry)",
-    "physiologicNote": "Initial cephalad fluid shift elevates stroke volume; subsequent hypovolemia (~12% plasma reduction) stabilizes resting pressures."
+    "physiologicNote": "Initial cephalad fluid shift elevates stroke volume; subsequent hypovolemia (~12% plasma reduction) stabilizes resting pressures.",
+    "thresholdBasis": "relative to personal baseline (within in-flight envelope)"
   },
   "diastolic": {
     "id": "diastolic",
     "label": "Diastolic Arterial Pressure",
     "systemId": "cardio",
     "unit": "mmHg",
-    "earthNominal": { "min": 60, "max": 80 },
-    "expectedInFlight": { "min": 65, "max": 85 },
+    "earthNominal": {
+      "min": 60,
+      "max": 80
+    },
+    "expectedInFlight": {
+      "min": 65,
+      "max": 90
+    },
     "personalBaseline": 75,
     "personalSd": 3.8,
     "sourceId": "NASA-STD-3001",
     "confidence": "High (ISS Expeditions 1–70 normative telemetry)",
-    "physiologicNote": "Systemic vascular resistance generally maintained or slightly decreased in microgravity."
+    "physiologicNote": "Systemic vascular resistance generally maintained or slightly decreased in microgravity.",
+    "thresholdBasis": "relative to personal baseline (within in-flight envelope)"
   },
   "heartRate": {
     "id": "heartRate",
     "label": "Resting Heart Rate",
     "systemId": "cardio",
     "unit": "bpm",
-    "earthNominal": { "min": 60, "max": 100 },
-    "expectedInFlight": { "min": 55, "max": 90 },
+    "earthNominal": {
+      "min": 60,
+      "max": 100
+    },
+    "expectedInFlight": {
+      "min": 55,
+      "max": 95
+    },
     "personalBaseline": 62,
     "personalSd": 3.2,
     "sourceId": "NASA-HRP-CARDIO",
     "confidence": "High (Continuous Holter & resting vitals telemetry)",
-    "physiologicNote": "Resting heart rate in conditioned astronauts often stays lower in-flight unless hypovolemic stress or thermal load is present."
+    "physiologicNote": "Resting heart rate in conditioned astronauts often stays lower in-flight unless hypovolemic stress or thermal load is present.",
+    "thresholdBasis": "relative to personal baseline (within in-flight envelope)",
+    "illustrativeThresholds": true
   },
   "spo2": {
     "id": "spo2",
     "label": "Pulse Oximetry (SpO2)",
     "systemId": "pulmonary",
     "unit": "%",
-    "earthNominal": { "min": 95, "max": 100 },
-    "expectedInFlight": { "min": 96, "max": 100 },
+    "earthNominal": {
+      "min": 95,
+      "max": 100
+    },
+    "expectedInFlight": {
+      "min": 96,
+      "max": 100
+    },
     "personalBaseline": 99,
     "personalSd": 0.8,
     "sourceId": "NASA-STD-3001",
     "confidence": "High (Continuous cabin life support matching)",
-    "physiologicNote": "Homogeneous alveolar ventilation in 0g preserves high hemoglobin saturation."
+    "physiologicNote": "Homogeneous alveolar ventilation in 0g preserves high hemoglobin saturation.",
+    "thresholdBasis": "absolute (in-flight physiological envelope)"
   },
   "opticDisc": {
     "id": "opticDisc",
     "label": "Peripapillary Retinal Thickness",
     "systemId": "ocular",
     "unit": "µm",
-    "earthNominal": { "min": 270, "max": 300 },
-    "expectedInFlight": { "min": 280, "max": 325 },
+    "earthNominal": {
+      "min": 270,
+      "max": 300
+    },
+    "expectedInFlight": {
+      "min": 280,
+      "max": 325
+    },
     "personalBaseline": 298,
     "personalSd": 5.0,
     "sourceId": "NASA-HRP-SANS",
     "confidence": "Moderate (Longitudinal OCT fundus scans from 40+ long-duration flyers)",
-    "physiologicNote": "Persistent cephalad venous pressure elevates optic nerve sheath diameter (ONSD) and can induce disc edema."
+    "physiologicNote": "Persistent cephalad venous pressure elevates optic nerve sheath diameter (ONSD) and can induce disc edema.",
+    "thresholdBasis": "relative to personal baseline (within in-flight envelope)"
   },
   "visualAcuity": {
     "id": "visualAcuity",
     "label": "Visual Acuity (LogMAR)",
     "systemId": "ocular",
     "unit": "LogMAR",
-    "earthNominal": { "min": -0.10, "max": 0.10 },
-    "expectedInFlight": { "min": -0.05, "max": 0.15 },
-    "personalBaseline": 0.00,
+    "earthNominal": {
+      "min": -0.1,
+      "max": 0.1
+    },
+    "expectedInFlight": {
+      "min": -0.05,
+      "max": 0.15
+    },
+    "personalBaseline": 0.0,
     "personalSd": 0.04,
     "sourceId": "NASA-HRP-SANS",
     "confidence": "High (Standardized electronic visual acuity tests)",
-    "physiologicNote": "Posterior globe flattening causes a hyperopic shift (+0.50 to +1.50 diopters) in long-duration crew."
+    "physiologicNote": "Posterior globe flattening causes a hyperopic shift (+0.50 to +1.50 diopters) in long-duration crew.",
+    "thresholdBasis": "relative to personal baseline"
   },
   "vorGain": {
     "id": "vorGain",
     "label": "Vestibular Ocular Reflex (VOR)",
     "systemId": "cranial",
     "unit": "Gain",
-    "earthNominal": { "min": 0.95, "max": 1.05 },
-    "expectedInFlight": { "min": 0.90, "max": 1.10 },
-    "personalBaseline": 1.00,
+    "earthNominal": {
+      "min": 0.95,
+      "max": 1.05
+    },
+    "expectedInFlight": {
+      "min": 0.9,
+      "max": 1.1
+    },
+    "personalBaseline": 1.0,
     "personalSd": 0.03,
     "sourceId": "ESA-HPS",
     "confidence": "High (Dynamic visual acuity and eye-tracking helmets)",
-    "physiologicNote": "Otolith-canal discordance dampens gaze stabilization during head turns until cerebellar reweighting occurs."
+    "physiologicNote": "Otolith-canal discordance dampens gaze stabilization during head turns until cerebellar reweighting occurs.",
+    "thresholdBasis": "relative to personal baseline",
+    "illustrativeThresholds": true
   },
   "pco2": {
     "id": "pco2",
     "label": "Cabin Ambient pCO2",
     "systemId": "pulmonary",
     "unit": "mmHg",
-    "earthNominal": { "min": 0.3, "max": 1.0 },
-    "expectedInFlight": { "min": 1.5, "max": 3.0 },
+    "earthNominal": {
+      "min": 0.3,
+      "max": 1.0
+    },
+    "expectedInFlight": {
+      "min": 1.5,
+      "max": 3.0
+    },
     "personalBaseline": 2.4,
     "personalSd": 0.3,
     "sourceId": "NASA-STD-3001",
     "confidence": "High (ISS Environmental Control & Life Support System telemetry)",
-    "physiologicNote": "Absence of natural thermal convection causes localized CO2 pooling around astronaut sleeping quarters if ventilation is impaired."
+    "physiologicNote": "Absence of natural thermal convection causes localized CO2 pooling around astronaut sleeping quarters if ventilation is impaired.",
+    "thresholdBasis": "absolute (cabin ECLSS environmental envelope)"
   },
   "spineElongation": {
     "id": "spineElongation",
     "label": "Axial Spine Elongation",
     "systemId": "spine",
     "unit": "cm",
-    "earthNominal": { "min": 0.0, "max": 0.5 },
-    "expectedInFlight": { "min": 1.5, "max": 4.5 },
+    "earthNominal": {
+      "min": 0.0,
+      "max": 0.5
+    },
+    "expectedInFlight": {
+      "min": 1.5,
+      "max": 4.5
+    },
     "personalBaseline": 3.0,
     "personalSd": 0.5,
     "sourceId": "ESA-HPS",
     "confidence": "High (Ultrasound & ultrasound stadiometry studies)",
-    "physiologicNote": "Intervertebral disc imbibition causes 2–5 cm stature lengthening and paraspinal flattening."
+    "physiologicNote": "Intervertebral disc imbibition causes 2–5 cm stature lengthening and paraspinal flattening.",
+    "thresholdBasis": "relative to terrestrial stature (in-flight elongation)",
+    "illustrativeThresholds": true
   },
   "calfCircumference": {
     "id": "calfCircumference",
     "label": "Calf Muscle Circumference",
     "systemId": "limbs",
     "unit": "cm",
-    "earthNominal": { "min": 37.0, "max": 39.5 },
-    "expectedInFlight": { "min": 36.5, "max": 38.5 },
+    "earthNominal": {
+      "min": 37.0,
+      "max": 39.5
+    },
+    "expectedInFlight": {
+      "min": 36.5,
+      "max": 38.5
+    },
     "personalBaseline": 38.2,
     "personalSd": 0.4,
     "sourceId": "NASA-HRP-CARDIO",
     "confidence": "High (Pre/post-flight MRI & in-flight circumferential tape telemetry)",
-    "physiologicNote": "Fluid shift produces immediate bird-leg phenomenon (-1 to -2 cm), followed by slow slow-twitch soleus atrophy if unexercised."
+    "physiologicNote": "Fluid shift produces immediate bird-leg phenomenon (-1 to -2 cm), followed by slow slow-twitch soleus atrophy if unexercised.",
+    "thresholdBasis": "relative to personal baseline (countermeasure compliance)",
+    "illustrativeThresholds": true
   },
   "reactionTime": {
     "id": "reactionTime",
     "label": "PVT Response Latency",
     "systemId": "neuro",
     "unit": "ms",
-    "earthNominal": { "min": 180, "max": 240 },
-    "expectedInFlight": { "min": 190, "max": 260 },
+    "earthNominal": {
+      "min": 180,
+      "max": 240
+    },
+    "expectedInFlight": {
+      "min": 190,
+      "max": 260
+    },
     "personalBaseline": 214,
     "personalSd": 12.0,
     "sourceId": "NASA-STD-3001",
     "confidence": "High (Standardized Psychomotor Vigilance Task)",
-    "physiologicNote": "Behavioral alertness measure. Reaction times > 300 ms or lapses > 500 ms indicate operational fatigue and circadian sleep debt."
+    "physiologicNote": "Behavioral alertness measure. Reaction times > 300 ms or lapses > 500 ms indicate operational fatigue and circadian sleep debt.",
+    "thresholdBasis": "relative to personal baseline (alertness drift)"
   },
   "sleepDuration": {
     "id": "sleepDuration",
     "label": "Sleep Duration & Architecture",
     "systemId": "sleep",
     "unit": "hrs",
-    "earthNominal": { "min": 7.0, "max": 9.0 },
-    "expectedInFlight": { "min": 6.5, "max": 8.5 },
+    "earthNominal": {
+      "min": 7.0,
+      "max": 9.0
+    },
+    "expectedInFlight": {
+      "min": 6.5,
+      "max": 8.5
+    },
     "personalBaseline": 7.2,
     "personalSd": 0.5,
     "sourceId": "NASA-STD-3001",
     "confidence": "High (Actigraphy & polysomnography headband)",
-    "physiologicNote": "Orbital dawn/dusk cycle (90-minute revolutions) suppresses natural melatonin. Sleep < 6.0 hrs elevates cognitive error rates."
+    "physiologicNote": "Orbital dawn/dusk cycle (90-minute revolutions) suppresses natural melatonin. Sleep < 6.0 hrs elevates cognitive error rates.",
+    "thresholdBasis": "absolute (circadian health standard)"
   },
   "radiationDose": {
     "id": "radiationDose",
     "label": "Cosmic Radiation Exposure",
     "systemId": "immune",
     "unit": "µGy/d",
-    "earthNominal": { "min": 5, "max": 15 },
-    "expectedInFlight": { "min": 200, "max": 400 },
+    "earthNominal": {
+      "min": 5,
+      "max": 15
+    },
+    "expectedInFlight": {
+      "min": 200,
+      "max": 400
+    },
     "personalBaseline": 270,
     "personalSd": 25.0,
     "sourceId": "NASA-STD-3001",
     "confidence": "High (Continuous passive and active semiconductor radiation dosimeters)",
-    "physiologicNote": "Galactic cosmic radiation and South Atlantic Anomaly crossings increase daily ionizing exposure ~20-30x terrestrial background."
+    "physiologicNote": "Galactic cosmic radiation and South Atlantic Anomaly crossings increase daily ionizing exposure ~20-30x terrestrial background.",
+    "thresholdBasis": "absolute (ALARA radiation dosimetry limit)"
   },
   "coreTemp": {
     "id": "coreTemp",
     "label": "Core Body Temperature",
     "systemId": "metabolic",
     "unit": "°C",
-    "earthNominal": { "min": 36.5, "max": 37.3 },
-    "expectedInFlight": { "min": 36.8, "max": 37.6 },
+    "earthNominal": {
+      "min": 36.5,
+      "max": 37.3
+    },
+    "expectedInFlight": {
+      "min": 36.8,
+      "max": 37.6
+    },
     "personalBaseline": 37.0,
     "personalSd": 0.2,
     "sourceId": "ESA-HPS",
     "confidence": "High (Circadian ingestible pill & double sensor forehead telemetry)",
-    "physiologicNote": "Spaceflight core body temperature runs ~0.5–1.0 °C higher (space fever) due to impaired convective skin heat dissipation."
+    "physiologicNote": "Spaceflight core body temperature runs ~0.5–1.0 °C higher (space fever) due to impaired convective skin heat dissipation.",
+    "thresholdBasis": "relative to personal baseline (spaceflight hyperthermia envelope)",
+    "illustrativeThresholds": true
   }
 }

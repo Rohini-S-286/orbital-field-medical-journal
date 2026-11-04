@@ -41,7 +41,7 @@
 > 
 > *(Presenter clicks 'Jump to Day 19 Incident')*
 > 
-> *Now, let's test a mission crisis. We built an interactive **30-Day Flight Simulation Engine**. On Mission Elapsed Day 19, following a prolonged 7-hour EVA with elevated cabin carbon dioxide, the astronaut experiences acute optic disc swelling.*
+> *Now, let's test a mission crisis. We built an interactive **30-Day Flight Simulation Engine**. On Mission Elapsed Day 19, in an illustrative simulated deviation scenario [Simulated Scenario], the astronaut experiences acute optic disc thickening.*
 > 
 > *Watch what happens: Retinal thickness spikes to 328 µm—exceeding the in-flight envelope. The status escalates immediately to **Contact flight surgeon**, and overall mission readiness drops to 74%. The system generates an actionable Tier 3 action protocol: request Ku-band telemedicine, transmit 12-lead ECG and OCT fundus scans, and review cabin ventilation."*
 
@@ -55,7 +55,7 @@
 ### [2:40 – 3:00] Verification & Summary
 > *(Presenter clicks 'Tests' in top navigation)*
 > 
-> *"We do not just claim clinical validity—we prove it. Our companion **Automated Clinical Test Suite** executes 34 automated unit and integration tests directly in the browser with zero external dependencies, verifying EWMA drift detection, safety caps, and non-pharmacologic compliance.*
+> *"We do not just claim clinical validity—we prove it. Our companion **Automated Clinical Test Suite** executes 68 automated unit and integration assertions directly in the browser across 11 test groups with zero external dependencies, verifying EWMA drift detection, safety caps, and non-pharmacologic compliance.*
 > 
 > *The Orbital Field Medical Journal is a fully static, offline-first PWA, verified across tablet, mobile, and desktop. It is live right now on GitHub Pages, ready for astronauts on Artemis, Gaganyaan, and beyond. Thank you."*
 
@@ -69,7 +69,7 @@
 | **0:15 – 0:30** | Tapping between anatomical systems (Ocular, Cardiovascular, Neuro-vestibular). Inspecting Three-Reference Visual Ruler. | *"Meet the Orbital Field Medical Journal. Designed with editorial clarity, red-green colorblind proof status markers, and our Three-Reference Adaptation Model that compares Earth norms, in-flight envelopes, and personal baselines."* |
 | **0:30 – 0:50** | Interacting with NASA 5 Hazards Lens and 30-Day Mission Simulation. Clicking 'Jump to Day 19 Incident'. | *"Switch between ISS, Lunar, and Mars environments with realistic comm latency. Watch our simulation of Mission Day 19: an acute SANS optic disc shift escalates to Flight Surgeon consultation, triggering immediate non-pharmacologic countermeasures."* |
 | **0:50 – 1:10** | Opening PVT test, tapping green stimulus, recording latency. Showing Night Cabin dark theme toggle. | *"Astronauts track operational alertness with our integrated Psychomotor Vigilance Task. Switching to Night Cabin mode protects circadian rhythms under dim spacecraft lighting."* |
-| **1:10 – 1:30** | Opening standalone `tests.html` showing 34/34 assertions passing. Showing PWA offline indicator. | *"Zero drug dosing. 100% offline-first PWA. Verified by 34 automated clinical tests. The Orbital Field Medical Journal—keeping crew safe on the journey to Mars."* |
+| **1:10 – 1:30** | Opening standalone `tests.html` showing 68/68 assertions passing. Showing PWA offline indicator. | *"Zero drug dosing. 100% offline-first PWA. Verified by 68 automated clinical assertions. The Orbital Field Medical Journal—keeping crew safe on the journey to Mars."* |
 
 ---
 

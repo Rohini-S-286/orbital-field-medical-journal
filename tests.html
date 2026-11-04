@@ -225,6 +225,33 @@
       ];
 
       g1.assert('All 14 clinical indicators exist in dictionary', indicatorKeys.every(k => indicators[k] !== undefined), `Keys: ${Object.keys(indicators).length}`);
+      g1.assert('CLINICAL_INDICATORS dictionary length strictly equals 14 (no alias mutation)', Object.keys(indicators).length === 14, `Found: ${Object.keys(indicators).length}`);
+      g1.assert('DECLARED_INDICATORS_COUNT constant strictly equals 14', window.DECLARED_INDICATORS_COUNT === 14, `Declared: ${window.DECLARED_INDICATORS_COUNT}`);
+
+      // Source integrity verification
+      const sources = window.CLINICAL_SOURCES || {};
+      let allIndicatorSourcesExist = true;
+      let missingIndicatorSource = '';
+      Object.keys(indicators).forEach(k => {
+        const sid = indicators[k].sourceId;
+        if (!sources[sid]) {
+          allIndicatorSourcesExist = false;
+          missingIndicatorSource = `${k} -> ${sid}`;
+        }
+      });
+      g1.assert('Every indicator sourceId resolves to registered CLINICAL_SOURCES record', allIndicatorSourcesExist, missingIndicatorSource ? `Missing: ${missingIndicatorSource}` : 'All 14 indicator sources verified');
+
+      const guidance = window.TIERED_GUIDANCE || {};
+      let allGuidanceSourcesExist = true;
+      let missingGuidanceSource = '';
+      Object.keys(guidance).forEach(tierKey => {
+        const sid = guidance[tierKey].sourceId;
+        if (!sources[sid]) {
+          allGuidanceSourcesExist = false;
+          missingGuidanceSource = `${tierKey} -> ${sid}`;
+        }
+      });
+      g1.assert('Every tiered guidance protocol resolves to registered CLINICAL_SOURCES record', allGuidanceSourcesExist, missingGuidanceSource ? `Missing: ${missingGuidanceSource}` : 'All 4 guidance tier sources verified');
 
       indicatorKeys.forEach(k => {
         const ind = indicators[k];
@@ -294,6 +321,11 @@
         g3.assert('Extreme systolic (190 mmHg) triggers emergency', cSysEmer.status === 'emergency');
         g3.assert('Extreme diastolic (120 mmHg) triggers emergency', cDiaEmer.status === 'emergency');
         g3.assert('Extreme heart rate (150 bpm) triggers emergency', cHrEmer.status === 'emergency');
+
+        const combinedExtreme = [cSysEmer, cDiaEmer, cHrEmer];
+        const noneInRange = combinedExtreme.every(res => res.status !== 'in-range');
+        const allEmergency = combinedExtreme.every(res => res.status === 'emergency');
+        g3.assert('Triaged vital set (190/120 mmHg, 150 bpm) never returns in-range', noneInRange && allEmergency);
 
         function testCrisisReadiness(systems) {
           const weights = { 'in-range': 100, 'attention': 70, 'flight-surgeon': 35, 'emergency': 10 };
@@ -380,8 +412,8 @@
         const srcRes = await fetch('./data/sources.json');
         let srcText = '';
         if (srcRes.ok) {
-          const sources = await srcRes.json();
-          srcText = JSON.stringify(sources).toLowerCase();
+          const sourcesData = await srcRes.json();
+          srcText = JSON.stringify(sourcesData).toLowerCase();
         }
 
         // Also scan in-memory TIERED_GUIDANCE and CLINICAL_SOURCES
@@ -415,6 +447,41 @@
           }
         }
         g6.assert('Zero forbidden dosing or unverified numeric treatment protocols in sources or guidance', cleanAudit, violation ? `Violation: ${violation}` : 'Clean non-pharmacologic protocols verified');
+
+        // Regex scan for forbidden numeric units in tiered guidance
+        const forbiddenUnitsRegex = /\b\d+(\.\d+)?\s*(min|mins|minutes?|hr|hrs|hours?|h|s|sec|seconds?|L|liters?|litres?|mL|mmHg|m\/s|degrees?|deg|%)\b/i;
+        let regexViolation = '';
+        if (window.TIERED_GUIDANCE) {
+          Object.values(window.TIERED_GUIDANCE).forEach(tier => {
+            const textToScan = [tier.summary, ...(tier.actions || [])].join(' ');
+            const match = textToScan.match(forbiddenUnitsRegex);
+            if (match && !regexViolation) {
+              regexViolation = `${tier.level}: "${match[0]}"`;
+            }
+          });
+        }
+        g6.assert('Tiered guidance contains zero numeric treatment units or dosing durations', !regexViolation, regexViolation ? `Violation: ${regexViolation}` : 'Zero numeric treatment units verified');
+
+        // Explicit regression scan for purged phrases
+        const regressionPhrases = [
+          '60 min',
+          '2.5 L',
+          'per 24 hr',
+          'Sec 4.2',
+          'LBNP chibis',
+          'torso elevation',
+          'diffuser velocity'
+        ];
+        let regressionClean = true;
+        let regressionViolation = '';
+        for (const phrase of regressionPhrases) {
+          if (fullAuditCorpus.includes(phrase.toLowerCase())) {
+            regressionClean = false;
+            regressionViolation = phrase;
+            break;
+          }
+        }
+        g6.assert('Explicit regression check: 0 occurrences of previously purged numeric treatment strings', regressionClean, regressionViolation ? `Found regression: ${regressionViolation}` : 'Regression test passed');
       } catch (err) {
         g6.assert('Safety audit completed cleanly', false, err.message);
       }
@@ -582,6 +649,18 @@
       });
 
       document.getElementById('test-groups-container').innerHTML = html;
+
+      // Expose report globally for headless verification and test-results export
+      window.__TEST_REPORT__ = {
+        app: 'Orbital Field Medical Journal',
+        suite: 'Orbital Field Medical Journal: Verification Suite',
+        timestamp: new Date().toISOString(),
+        passed: totalPassed,
+        failed: totalFailed,
+        total: totalPassed + totalFailed,
+        durationMs: duration,
+        results: testReport
+      };
 
       // JSON Export Handler
       document.getElementById('export-report-btn').addEventListener('click', () => {

@@ -573,7 +573,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
       <!-- 3. Personal Baseline & Current Value -->
       <div class="ruler-row">
-        <span class="ruler-label" title="Personal Baseline and Current Telemetry">Baseline / Cur</span>
+        <span class="ruler-label" title="Personal Baseline and Current Telemetry">Baseline / Current</span>
         <div class="ruler-track-container" title="Baseline: ${baseline} ${unit} (±${sd}). Current: ${currentVal} ${unit}">
           <!-- Baseline confidence band -->
           <div class="ruler-baseline-band" style="left: ${baseBandLeft.toFixed(1)}%; width: ${baseBandWidth.toFixed(1)}%;" title="Personal rolling band: ${(baseline - sd).toFixed(1)}–${(baseline + sd).toFixed(1)}"></div>
@@ -640,7 +640,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // ================= DYNAMIC SVG TREND CHART GENERATOR (REQUIREMENT 2 & PHASE 2) =================
-  function renderTrendChart(trendData, systemStatus, yUnit, baselineMin, baselineMax) {
+  function renderTrendChart(trendData, systemStatus, yUnit, baselineMin, baselineMax, indKey = null) {
     const wrapper = document.getElementById('dynamic-chart-wrapper');
     if (!wrapper) return;
 
@@ -649,17 +649,21 @@ document.addEventListener('DOMContentLoaded', () => {
       return;
     }
 
+    const indObj = indKey && window.CLINICAL_INDICATORS && window.CLINICAL_INDICATORS[indKey];
+    const earthMin = indObj && indObj.earthNominal ? indObj.earthNominal.min : null;
+    const earthMax = indObj && indObj.earthNominal ? indObj.earthNominal.max : null;
+
     // Chart Dimensions (12px minimum labels per Phase 2)
     const svgWidth = 360;
-    const svgHeight = 160;
+    const svgHeight = 165;
     const padLeft = 52;
     const padRight = 16;
-    const padTop = 22;
+    const padTop = 26; // Generous space so limit label sits strictly above plot area
     const padBottom = 32;
     const plotWidth = svgWidth - padLeft - padRight;
     const plotHeight = svgHeight - padTop - padBottom;
 
-    // Determine value range across observed, baseline, and nominal band
+    // Determine value range across observed, baseline, in-flight band, and Earth band
     const allVals = [];
     trendData.forEach(d => {
       allVals.push(d.observed);
@@ -667,16 +671,20 @@ document.addEventListener('DOMContentLoaded', () => {
     });
     if (typeof baselineMin === 'number') allVals.push(baselineMin);
     if (typeof baselineMax === 'number') allVals.push(baselineMax);
+    if (typeof earthMin === 'number') allVals.push(earthMin);
+    if (typeof earthMax === 'number') allVals.push(earthMax);
 
     const dataMin = Math.min(...allVals);
     const dataMax = Math.max(...allVals);
-    const margin = (dataMax - dataMin) * 0.18 || (dataMax * 0.1) || 1;
-    const minVal = dataMin - margin;
-    const maxVal = dataMax + margin;
+    const rawSpan = dataMax - dataMin || 10;
+    const step = rawSpan > 100 ? 20 : rawSpan > 40 ? 10 : rawSpan > 10 ? 5 : 2;
+
+    const minVal = Math.floor((dataMin - rawSpan * 0.15) / step) * step;
+    const maxVal = Math.ceil((dataMax + rawSpan * 0.18) / step) * step;
     const valRange = maxVal - minVal || 1;
 
     function scaleX(index) {
-      return padLeft + index * (plotWidth / (trendData.length - 1));
+      return padLeft + index * (plotWidth / Math.max(1, trendData.length - 1));
     }
     function scaleY(val) {
       const norm = (val - minVal) / valRange;
@@ -689,41 +697,50 @@ document.addEventListener('DOMContentLoaded', () => {
       return val.toFixed(2);
     }
 
-    // Baseline nominal band coordinates
-    let bandSvg = '';
+    // 1. Shaded expected in-flight adaptation band (e.g. 280-325 µm)
+    let flightBandSvg = '';
+    let earthBandSvg = '';
     let limitLineSvg = '';
+
     if (typeof baselineMin === 'number' && typeof baselineMax === 'number') {
       const yTop = Math.max(padTop, scaleY(baselineMax));
       const yBottom = Math.min(padTop + plotHeight, scaleY(baselineMin));
       const bandHeight = Math.max(2, yBottom - yTop);
-      bandSvg = `<rect x="${padLeft}" y="${yTop}" width="${plotWidth}" height="${bandHeight}" fill="var(--color-emerald-tint-soft)" opacity="0.8" />
-                 <line x1="${padLeft}" y1="${yTop}" x2="${padLeft + plotWidth}" y2="${yTop}" stroke="var(--color-emerald-border)" stroke-dasharray="3 3" stroke-width="1" />
-                 <line x1="${padLeft}" y1="${yBottom}" x2="${padLeft + plotWidth}" y2="${yBottom}" stroke="var(--color-emerald-border)" stroke-dasharray="3 3" stroke-width="1" />`;
+      flightBandSvg = `
+        <rect x="${padLeft}" y="${yTop}" width="${plotWidth}" height="${bandHeight}" fill="var(--color-emerald-tint-soft)" opacity="0.75" />
+        <line x1="${padLeft}" y1="${yTop}" x2="${padLeft + plotWidth}" y2="${yTop}" stroke="var(--color-emerald-border)" stroke-dasharray="3 3" stroke-width="1" />
+        <line x1="${padLeft}" y1="${yBottom}" x2="${padLeft + plotWidth}" y2="${yBottom}" stroke="var(--color-emerald-border)" stroke-dasharray="3 3" stroke-width="1" />
+      `;
 
+      // Limit line with label placed safely above the plot area to never overlap data
       limitLineSvg = `
         <line x1="${padLeft}" y1="${yTop}" x2="${padLeft + plotWidth}" y2="${yTop}" stroke="var(--color-ochre-text)" stroke-dasharray="4 2" stroke-width="1.5" />
-        <text x="${padLeft + plotWidth}" y="${Math.max(14, yTop - 5)}" fill="var(--color-ochre-text)" font-size="12" font-weight="600" text-anchor="end">Nominal Limit: ${baselineMax} ${yUnit}</text>
+        <text x="${padLeft + plotWidth}" y="${padTop - 6}" fill="var(--color-ochre-text)" font-size="12" font-weight="600" text-anchor="end">In-Flight Limit: ${baselineMax} ${yUnit}</text>
       `;
     }
 
-    // Clean Round Grid Lines & 12px Y Axis labels (Requirement 3: no unrounded 315.2 ticks)
-    const midVal = (maxVal + minVal) / 2;
-    const yTick1 = maxVal - margin * 0.4;
-    const yTick2 = midVal;
-    const yTick3 = minVal + margin * 0.4;
+    // 2. Separate thin Earth sea-level reference band if distinct
+    if (typeof earthMin === 'number' && typeof earthMax === 'number' && (earthMax !== baselineMax || earthMin !== baselineMin)) {
+      const eTop = Math.max(padTop, scaleY(earthMax));
+      const eBottom = Math.min(padTop + plotHeight, scaleY(earthMin));
+      const eHeight = Math.max(2, eBottom - eTop);
+      earthBandSvg = `
+        <rect x="${padLeft}" y="${eTop}" width="${plotWidth}" height="${eHeight}" fill="var(--color-border)" opacity="0.35" />
+        <line x1="${padLeft}" y1="${eTop}" x2="${padLeft + plotWidth}" y2="${eTop}" stroke="var(--color-ink-faint)" stroke-dasharray="2 2" stroke-width="0.75" />
+      `;
+    }
 
-    const gridY1 = scaleY(yTick1);
-    const gridY2 = scaleY(yTick2);
-    const gridY3 = scaleY(yTick3);
-
-    const gridSvg = `
-      <line x1="${padLeft}" y1="${gridY1}" x2="${padLeft + plotWidth}" y2="${gridY1}" stroke="var(--color-border)" stroke-width="1" />
-      <line x1="${padLeft}" y1="${gridY2}" x2="${padLeft + plotWidth}" y2="${gridY2}" stroke="var(--color-border)" stroke-width="1" />
-      <line x1="${padLeft}" y1="${gridY3}" x2="${padLeft + plotWidth}" y2="${gridY3}" stroke="var(--color-border)" stroke-width="1" />
-      <text x="${padLeft - 8}" y="${gridY1 + 4}" fill="var(--color-ink-muted)" font-size="12" text-anchor="end" class="num-tabular">${formatTick(yTick1)}</text>
-      <text x="${padLeft - 8}" y="${gridY2 + 4}" fill="var(--color-ink-muted)" font-size="12" text-anchor="end" class="num-tabular">${formatTick(yTick2)}</text>
-      <text x="${padLeft - 8}" y="${gridY3 + 4}" fill="var(--color-ink-muted)" font-size="12" text-anchor="end" class="num-tabular">${formatTick(yTick3)}</text>
-    `;
+    // Clean Round Grid Lines & 12px Y Axis labels
+    const tickCount = 3;
+    let gridSvg = '';
+    for (let t = 0; t <= tickCount; t++) {
+      const tickVal = minVal + t * ((maxVal - minVal) / tickCount);
+      const gy = scaleY(tickVal);
+      gridSvg += `
+        <line x1="${padLeft}" y1="${gy}" x2="${padLeft + plotWidth}" y2="${gy}" stroke="var(--color-border)" stroke-width="1" />
+        <text x="${padLeft - 8}" y="${gy + 4}" fill="var(--color-ink-muted)" font-size="12" text-anchor="end" class="num-tabular">${formatTick(tickVal)}</text>
+      `;
+    }
 
     // Baseline Line: Solid Emerald Line per Requirement 3
     const baselinePoints = trendData.map((d, i) => `${scaleX(i)},${scaleY(d.baseline)}`);
@@ -782,7 +799,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     wrapper.innerHTML = `
       <svg class="trend-svg" viewBox="0 0 ${svgWidth} ${svgHeight}" role="img" aria-label="7-day telemetry trend graph for ${sysName}">
-        ${bandSvg}
+        ${earthBandSvg}
+        ${flightBandSvg}
         ${gridSvg}
         ${limitLineSvg}
         <!-- Solid Emerald Baseline curve (Requirement 3) -->
@@ -807,7 +825,10 @@ document.addEventListener('DOMContentLoaded', () => {
           <span class="simulated-tag">[Simulated]</span>
         </div>
       </div>
-      <!-- Screen reader summary (Requirement 3) -->
+      <!-- Screen reader summary with both Earth & in-flight ranges -->
+      <p class="sr-only" aria-live="polite">Longitudinal telemetry trend for ${sysName}: ${earthMin !== null ? `Earth sea-level reference is ${earthMin} to ${earthMax} ${yUnit}; ` : ''}Expected in-flight adaptation envelope is ${baselineMin} to ${baselineMax} ${yUnit}. Current reading is ${latestPoint.observed} ${yUnit} recorded on ${latestPoint.day}. Diagnostic status: ${STATUS_CONFIG[systemStatus].label}.</p>
+    `;
+  }
       <p class="sr-only" aria-live="polite">Longitudinal telemetry trend for ${sysName}: Baseline is ${baselineMin} to ${baselineMax} ${yUnit}. Current reading is ${latestPoint.observed} ${yUnit} recorded on ${latestPoint.day}. Diagnostic status: ${STATUS_CONFIG[systemStatus].label}.</p>
     `;
   }
@@ -838,9 +859,17 @@ document.addEventListener('DOMContentLoaded', () => {
     inspectMetric1.textContent = sys.metric1Val;
     inspectMetric2.textContent = sys.metric2Val;
     if (inspectMetric1Label) inspectMetric1Label.textContent = sys.metric1Label;
-    if (inspectMetric1Sub) inspectMetric1Sub.textContent = sys.metric1Sub;
+    if (inspectMetric1Sub) {
+      inspectMetric1Sub.textContent = sys.metric1Sub;
+      inspectMetric1Sub.style.color = (sys.status === 'attention') ? 'var(--color-ochre-text)' :
+                                      (sys.status === 'flight-surgeon' || sys.status === 'emergency') ? 'var(--color-vermillion-text)' :
+                                      'var(--color-ink-muted)';
+    }
     if (inspectMetric2Label) inspectMetric2Label.textContent = sys.metric2Label;
-    if (inspectMetric2Sub) inspectMetric2Sub.textContent = sys.metric2Sub;
+    if (inspectMetric2Sub) {
+      inspectMetric2Sub.textContent = sys.metric2Sub;
+      inspectMetric2Sub.style.color = 'var(--color-ink-muted)';
+    }
 
     // Longitudinal drift detection (EWMA/CUSUM - Phase 6)
     const indObj = (window.CLINICAL_INDICATORS && window.CLINICAL_INDICATORS[sys.primaryIndicator]) || (typeof CLINICAL_INDICATORS !== 'undefined' && CLINICAL_INDICATORS[sys.primaryIndicator]);
@@ -867,7 +896,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // 5. Update Dynamic SVG Chart
-    renderTrendChart(sys.trendData, sys.status, sys.yUnit, sys.baselineMin, sys.baselineMax);
+    renderTrendChart(sys.trendData, sys.status, sys.yUnit, sys.baselineMin, sys.baselineMax, sys.primaryIndicator);
 
     // 6. Update Drawer Elements
     document.getElementById('drawer-system-title').textContent = sys.name;
@@ -1780,7 +1809,7 @@ document.addEventListener('DOMContentLoaded', () => {
     10: { name: 'Day 10: Steady-State Acclimation', note: 'Physiological vitals stable within flight envelope', ocular: 302, ocularStatus: 'in-range', caption: 'Day 10: Steady-state microgravity equilibrium. Cardiovascular and ocular adaptation within expected in-flight ranges.' },
     14: { name: 'Day 14: Mid-Mission Routine', note: 'Nominal steady-state routine; all systems in range (302 µm)', ocular: 302, ocularStatus: 'in-range', caption: 'Day 14: Mid-mission steady state. All systems in range, baseline adaptation stable.' },
     18: { name: 'Day 18: Pre-EVA Preparation', note: 'Pre-breathe oxygenation & suit checkout (308 µm, in-range)', ocular: 308, ocularStatus: 'in-range', caption: 'Day 18: Pre-EVA preparation. Workload elevated; vitals and ocular baseline remain in-range.' },
-    19: { name: 'Day 19: INCIDENT: Post-EVA SANS Peak', note: 'Prolonged 7h EVA + elevated CO2: Retinal thickness 328 µm! Surgeon contact recommended.', ocular: 328, ocularStatus: 'flight-surgeon', caption: 'Day 19: EVA Incident. Post-EVA SANS peak (328 µm). Contact flight surgeon flagged; readiness adjusted to 74%.' },
+    19: { name: 'Day 19: Simulated Scenario: Acute Retinal Deviation', note: 'Simulated scenario: Peripapillary retinal thickness reaches 328 µm [Simulated]. Contact flight surgeon recommended.', ocular: 328, ocularStatus: 'flight-surgeon', caption: 'Day 19: Simulated scenario: Ocular telemetry records 328 µm [Simulated]. Contact flight surgeon flagged; readiness adjusted to 74%.' },
     20: { name: 'Day 20: Countermeasure Recovery', note: 'Enhanced lower-body negative pressure & rest protocol applied', ocular: 316, ocularStatus: 'attention', caption: 'Day 20: Countermeasure recovery initiated under close Watch protocol (316 µm).' },
     24: { name: 'Day 24: Stabilization Under Watch', note: 'Retinal thickness resolves toward 316 µm; fatigue clearing', ocular: 316, ocularStatus: 'attention', caption: 'Day 24: Countermeasure recovery ongoing. Ocular swelling resolving under assigned protocol.' },
     25: { name: 'Day 25: Post-Incident Stabilization', note: 'Retinal thickness restored to nominal envelope (306 µm)', ocular: 306, ocularStatus: 'in-range', caption: 'Day 25: Post-incident stabilization. Target countermeasures successful, returning toward baseline envelope (306 µm).' },
@@ -1916,7 +1945,7 @@ document.addEventListener('DOMContentLoaded', () => {
       stopPlayback();
       applyMissionDay(19);
       selectSystem('ocular');
-      showToast('Simulating Day 19 Incident: Optic disc swelling (328 µm) exceeds in-flight envelope.', 'warning');
+      showToast('Simulated Scenario (Day 19): Peripapillary retinal thickness (328 µm [Simulated]) exceeds in-flight envelope.', 'warning');
     });
   }
 
@@ -2266,6 +2295,19 @@ document.addEventListener('DOMContentLoaded', () => {
   renderClinicalLogTable();
   updateOverallGauge();
   selectSystem('ocular');
+
+  // URL search parameter deep-linking (for tests, demos & automation)
+  try {
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.has('day')) {
+      applyMissionDay(parseInt(urlParams.get('day'), 10));
+    }
+    if (urlParams.has('env')) {
+      setEnvironment(urlParams.get('env'));
+    }
+  } catch (e) {
+    console.warn('URL params parsing note:', e);
+  }
 
   // Service Worker for real offline use (HTTPS or localhost only, relative scope)
   const isSecureOrLocal = window.location.protocol === 'https:' || window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';

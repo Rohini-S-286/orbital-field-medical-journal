@@ -3,7 +3,7 @@
 > **A warm, calm, editorial-clinical self-assessment and physiological telemetry journal designed for long-duration astronaut spaceflight missions.**
 
 [![NASA Space Apps 2026](https://img.shields.io/badge/NASA%20Space%20Apps-2026%20Submission-0B7A56.svg)](https://www.spaceappschallenge.org/)
-[![Automated Test Suite](https://img.shields.io/badge/Automated%20Tests-61%2F61%20Passing-0B7A56.svg)](./tests.html)
+[![Automated Test Suite](https://img.shields.io/badge/Automated%20Tests-68%2F68%20Passing-0B7A56.svg)](./tests.html)
 [![PWA Ready](https://img.shields.io/badge/PWA-Offline--First-0B7A56.svg)](#offline-pwa--service-worker)
 [![WCAG AA](https://img.shields.io/badge/WCAG%202.1-AA%20Compliant-0B7A56.svg)](#accessibility--space-ergonomics)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
@@ -36,7 +36,7 @@ During long-duration human space exploration (Artemis lunar surface missions, Lu
 | **Creativity** | Replaces cold, high-glare sci-fi HUDs with a warm, editorial-clinical "field journal" visual identity inspired by classic medical journals, reducing visual fatigue on 6+ month deployments. |
 | **Validity** | Implements the **Three-Reference Adaptation Model** comparing 1g Earth norms, expected in-flight 0g adaptation envelopes, and individual baselines using NASA-STD-3001 and NASA HRP evidence books. |
 | **Relevance** | Directly answers the challenge with 10 anatomical systems, the Spaceflight 5 Hazards lens, standard Psychomotor Vigilance Task (PVT), and non-pharmacologic tiered guidance with **zero drug dosing**. |
-| **Presentation** | Includes an interactive 30-Day Mission Simulation (featuring a MET Day 19 SANS incident), a standalone 61-assertion in-browser test suite (`tests.html`), and Night Cabin dark mode. |
+| **Presentation** | Includes an interactive 30-Day Mission Simulation (featuring a simulated MET Day 19 SANS deviation scenario), a standalone 68-assertion in-browser test suite (`tests.html`), and Night Cabin dark mode. |
 
 ---
 
@@ -71,7 +71,7 @@ Filter systems instantly by the fundamental human spaceflight hazards:
 
 ### 5. 30-Day Simulated Mission Playback (Judge Presentation Mode)
 - Scrubber slider and automated playback across a 30-day expedition.
-- **MET Day 19 Incident Drill:** Jump straight to Day 19 simulating a post-EVA optic disc thickening (328 µm) triggering Contact Flight Surgeon status and dropping mission readiness to 74%.
+- **MET Day 19 Incident Drill:** Jump straight to Day 19 simulating an acute SANS optic disc thickening deviation [Simulated Scenario] (328 µm) triggering Contact Flight Surgeon status and dropping mission readiness to 74%.
 - Reset button restores nominal mid-mission Day 14 baseline.
 
 ### 6. Interactive Psychomotor Vigilance Task (PVT)
@@ -88,12 +88,60 @@ Filter systems instantly by the fundamental human spaceflight hazards:
 
 ---
 
+## 🏛️ System Architecture
+
+```mermaid
+flowchart TD
+  subgraph Intake ["1. Telemetry Intake & Inputs"]
+    Sensors["Vitals & Biometrics<br/>(BP, HR, SpO2, Temp)"]
+    PVT["Cognitive PVT Test<br/>(Millisecond Reaction Time)"]
+    Timeline["30-Day Mission Timeline<br/>(MET Simulation Data)"]
+  end
+
+  subgraph Engine ["2. Clinical Status & Analytics Engine"]
+    Validator{"Telemetry Validation<br/>(Filter Outliers & Impossible Values)"}
+    ThreeRef["Three-Reference Model<br/>1. Earth 1g Range<br/>2. Expected In-Flight Envelope<br/>3. Personal Rolling Baseline"]
+    SPC["Statistical Process Control<br/>EWMA (α=0.3) & CUSUM Drift"]
+    Readiness["Readiness Assessment<br/>Weighted Score + Crisis Floor Cap"]
+  end
+
+  subgraph Presentation ["3. Human-System Interface (Editorial-Clinical)"]
+    BodyMap["Interactive Body Map<br/>(10 Systems + 5 Hazards)"]
+    StatusBadges["Multi-Signal Badges<br/>(Icon + Geometry + Text Label)"]
+    GuidancePanel["Tiered Non-Pharmacologic Guidance<br/>(Zero Drug Dosing Mandate)"]
+    OfflineStore["Resilient Storage<br/>(LocalStorage + Memory Fallback)"]
+  end
+
+  Sensors --> Validator
+  PVT --> Validator
+  Timeline --> Validator
+  Validator --> ThreeRef
+  ThreeRef --> SPC
+  SPC --> Readiness
+  Readiness --> BodyMap
+  Readiness --> StatusBadges
+  ThreeRef --> GuidancePanel
+  GuidancePanel --> OfflineStore
+```
+
+---
+
 ## 🧪 Automated Verification Test Suite
 
 The project includes an embedded, standalone test runner accessible at **[`tests.html`](https://rohini-s-286.github.io/orbital-field-medical-journal/tests.html)**:
-- **34 automated assertions** running natively in the browser with zero external dependencies.
+- **68 automated assertions across 11 test groups** running natively in the browser with zero external dependencies.
 - Tests status classification, readiness formula safety caps, impossible vital rejection, EWMA drift detection, and non-pharmacologic safety guarantees.
-- One-click export of structured JSON test reports for judging evaluation.
+- One-click export of structured JSON test reports (`test-results.json`) for judging evaluation.
+
+### What the Tests Prove
+The 68 automated verification assertions in `tests.html` provide definitive architectural proofs:
+1. **Mathematical Consistency:** Proves that all 14 clinical indicators correctly map values to the 4 status tiers (`in-range`, `attention`, `flight-surgeon`, `emergency`) based on their designated threshold basis (absolute vs. relative to baseline).
+2. **Safety Bounds & Triage Caps:** Proves that catastrophic sensor inputs (e.g. 190/120 mmHg or 150 bpm) strictly force readiness scores to $\le 35\%$, preventing hazardous "fit-for-duty" false negatives.
+3. **Clinical Safety Guarantee:** Proves through regex and string scans that zero numeric drug dosing, pharmaceutical names, or unverified treatment protocols exist in the codebase or data dictionaries.
+4. **Source Traceability:** Proves that 100% of indicators and guidance tiers resolve to authenticated sources in `data/sources.json`.
+5. **PWA & Offline Resilience:** Proves graceful degradation to in-memory caching when `localStorage` is blocked or quota-exceeded.
+
+> **Operational Distinction:** While these tests verify algorithmic correctness and safety boundaries, actual clinical envelopes for flight certification require formal review by NASA MMOP and flight surgeons.
 
 ---
 

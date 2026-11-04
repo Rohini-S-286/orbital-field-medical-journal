@@ -1,0 +1,405 @@
+{
+  "app": "Orbital Field Medical Journal",
+  "suite": "Orbital Field Medical Journal: Verification Suite",
+  "timestamp": "2026-11-04T11:32:07.619660+00:00",
+  "passed": 68,
+  "failed": 0,
+  "total": 68,
+  "durationMs": 38,
+  "results": [
+    {
+      "title": "1. Clinical Indicators &amp; Tier Boundaries (14 Indicators)",
+      "tests": [
+        {
+          "name": "All 14 clinical indicators exist in dictionary",
+          "passed": true,
+          "details": "Keys: 14"
+        },
+        {
+          "name": "CLINICAL_INDICATORS dictionary length strictly equals 14 (no alias mutation)",
+          "passed": true,
+          "details": "Found: 14"
+        },
+        {
+          "name": "DECLARED_INDICATORS_COUNT constant strictly equals 14",
+          "passed": true,
+          "details": "Declared: 14"
+        },
+        {
+          "name": "Every indicator sourceId resolves to registered CLINICAL_SOURCES record",
+          "passed": true,
+          "details": "All 14 indicator sources verified"
+        },
+        {
+          "name": "Every tiered guidance protocol resolves to registered CLINICAL_SOURCES record",
+          "passed": true,
+          "details": "All 4 guidance tier sources verified"
+        },
+        {
+          "name": "Indicator 'systolic' has complete 3-reference schema and source confidence",
+          "passed": true,
+          "details": "Source: NASA-STD-3001"
+        },
+        {
+          "name": "Indicator 'diastolic' has complete 3-reference schema and source confidence",
+          "passed": true,
+          "details": "Source: NASA-STD-3001"
+        },
+        {
+          "name": "Indicator 'heartRate' has complete 3-reference schema and source confidence",
+          "passed": true,
+          "details": "Source: NASA-HRP-CARDIO"
+        },
+        {
+          "name": "Indicator 'spo2' has complete 3-reference schema and source confidence",
+          "passed": true,
+          "details": "Source: NASA-STD-3001"
+        },
+        {
+          "name": "Indicator 'opticDisc' has complete 3-reference schema and source confidence",
+          "passed": true,
+          "details": "Source: NASA-HRP-SANS"
+        },
+        {
+          "name": "Indicator 'visualAcuity' has complete 3-reference schema and source confidence",
+          "passed": true,
+          "details": "Source: NASA-HRP-SANS"
+        },
+        {
+          "name": "Indicator 'vorGain' has complete 3-reference schema and source confidence",
+          "passed": true,
+          "details": "Source: ESA-HPS"
+        },
+        {
+          "name": "Indicator 'pco2' has complete 3-reference schema and source confidence",
+          "passed": true,
+          "details": "Source: NASA-STD-3001"
+        },
+        {
+          "name": "Indicator 'spineElongation' has complete 3-reference schema and source confidence",
+          "passed": true,
+          "details": "Source: ESA-HPS"
+        },
+        {
+          "name": "Indicator 'calfCircumference' has complete 3-reference schema and source confidence",
+          "passed": true,
+          "details": "Source: NASA-HRP-CARDIO"
+        },
+        {
+          "name": "Indicator 'reactionTime' has complete 3-reference schema and source confidence",
+          "passed": true,
+          "details": "Source: NASA-STD-3001"
+        },
+        {
+          "name": "Indicator 'sleepDuration' has complete 3-reference schema and source confidence",
+          "passed": true,
+          "details": "Source: NASA-STD-3001"
+        },
+        {
+          "name": "Indicator 'radiationDose' has complete 3-reference schema and source confidence",
+          "passed": true,
+          "details": "Source: NASA-STD-3001"
+        },
+        {
+          "name": "Indicator 'coreTemp' has complete 3-reference schema and source confidence",
+          "passed": true,
+          "details": "Source: ESA-HPS"
+        }
+      ]
+    },
+    {
+      "title": "2. Three-Reference Classification Engine (Key Indicators)",
+      "tests": [
+        {
+          "name": "Systolic 115 mmHg classifies as in-range",
+          "passed": true,
+          "details": ""
+        },
+        {
+          "name": "Systolic 135 mmHg classifies as attention (Watch)",
+          "passed": true,
+          "details": ""
+        },
+        {
+          "name": "Systolic 148 mmHg escalates to flight-surgeon",
+          "passed": true,
+          "details": ""
+        },
+        {
+          "name": "Systolic 185 mmHg escalates to emergency",
+          "passed": true,
+          "details": ""
+        },
+        {
+          "name": "Optic disc 298 \u00b5m classifies as in-range",
+          "passed": true,
+          "details": ""
+        },
+        {
+          "name": "Optic disc 302 \u00b5m (in-flight adaptation) classifies as in-range",
+          "passed": true,
+          "details": ""
+        },
+        {
+          "name": "Optic disc 312 \u00b5m classifies as attention (Watch)",
+          "passed": true,
+          "details": ""
+        },
+        {
+          "name": "Optic disc 328 \u00b5m classifies as flight-surgeon",
+          "passed": true,
+          "details": ""
+        },
+        {
+          "name": "Optic disc 345 \u00b5m escalates to emergency",
+          "passed": true,
+          "details": ""
+        },
+        {
+          "name": "Heart rate 62 bpm classifies as in-range",
+          "passed": true,
+          "details": ""
+        },
+        {
+          "name": "Heart rate 74 bpm classifies as attention (Watch)",
+          "passed": true,
+          "details": ""
+        },
+        {
+          "name": "Heart rate 98 bpm classifies as flight-surgeon",
+          "passed": true,
+          "details": ""
+        },
+        {
+          "name": "Heart rate 140 bpm classifies as emergency",
+          "passed": true,
+          "details": ""
+        },
+        {
+          "name": "PVT latency 214 ms classifies as in-range",
+          "passed": true,
+          "details": ""
+        },
+        {
+          "name": "PVT latency 255 ms classifies as attention (Watch)",
+          "passed": true,
+          "details": ""
+        },
+        {
+          "name": "PVT latency 275 ms classifies as flight-surgeon",
+          "passed": true,
+          "details": ""
+        },
+        {
+          "name": "Core temperature 37.0 \u00b0C classifies as in-range",
+          "passed": true,
+          "details": ""
+        },
+        {
+          "name": "Core temperature 38.0 \u00b0C classifies as flight-surgeon",
+          "passed": true,
+          "details": ""
+        }
+      ]
+    },
+    {
+      "title": "3. Extreme Value Handling &amp; Crisis Readiness Cap",
+      "tests": [
+        {
+          "name": "Extreme systolic (190 mmHg) triggers emergency",
+          "passed": true,
+          "details": ""
+        },
+        {
+          "name": "Extreme diastolic (120 mmHg) triggers emergency",
+          "passed": true,
+          "details": ""
+        },
+        {
+          "name": "Extreme heart rate (150 bpm) triggers emergency",
+          "passed": true,
+          "details": ""
+        },
+        {
+          "name": "Triaged vital set (190/120 mmHg, 150 bpm) never returns in-range",
+          "passed": true,
+          "details": ""
+        },
+        {
+          "name": "Emergency crisis condition strictly caps readiness score to &lt;= 35%",
+          "passed": true,
+          "details": "Got: 35%"
+        }
+      ]
+    },
+    {
+      "title": "4. Readiness Score, Ring Color &amp; Badge Tri-State Agreement",
+      "tests": [
+        {
+          "name": "100% readiness maps to emerald ring and \"Within expected range\" badge",
+          "passed": true,
+          "details": ""
+        },
+        {
+          "name": "74% flight surgeon state maps to ochre/alert ring and \"Surgeon Consult Flagged\" badge",
+          "passed": true,
+          "details": ""
+        },
+        {
+          "name": "Crisis state maps to vermillion ring and \"Emergency Protocol\" badge",
+          "passed": true,
+          "details": ""
+        }
+      ]
+    },
+    {
+      "title": "5. Telemetry Validation &amp; Impossible Sensor Filtering",
+      "tests": [
+        {
+          "name": "Nominal vital set validates as valid",
+          "passed": true,
+          "details": ""
+        },
+        {
+          "name": "Impossible systolic BP (320 mmHg) is rejected",
+          "passed": true,
+          "details": ""
+        },
+        {
+          "name": "Diastolic exceeding systolic BP is rejected",
+          "passed": true,
+          "details": ""
+        },
+        {
+          "name": "Impossible resting heart rate (20 bpm) is rejected",
+          "passed": true,
+          "details": ""
+        },
+        {
+          "name": "SpO2 &gt; 100% is rejected",
+          "passed": true,
+          "details": ""
+        }
+      ]
+    },
+    {
+      "title": "6. Automated Clinical Safety Scan (Zero Dosing, Zero Forbidden Protocols)",
+      "tests": [
+        {
+          "name": "Zero forbidden dosing or unverified numeric treatment protocols in sources or guidance",
+          "passed": true,
+          "details": "Clean non-pharmacologic protocols verified"
+        },
+        {
+          "name": "Tiered guidance contains zero numeric treatment units or dosing durations",
+          "passed": true,
+          "details": "Zero numeric treatment units verified"
+        },
+        {
+          "name": "Explicit regression check: 0 occurrences of previously purged numeric treatment strings",
+          "passed": true,
+          "details": "Regression test passed"
+        }
+      ]
+    },
+    {
+      "title": "7. Demo-Day Mission Timeline Consistency",
+      "tests": [
+        {
+          "name": "Days 1\u201317 evaluate strictly to all systems in-range",
+          "passed": true,
+          "details": ""
+        },
+        {
+          "name": "Day 18 (Pre-EVA shift) ocular is 308 \u00b5m and in-range",
+          "passed": true,
+          "details": ""
+        },
+        {
+          "name": "Day 19 (EVA Incident) ocular is 328 \u00b5m and escalates to flight-surgeon",
+          "passed": true,
+          "details": ""
+        },
+        {
+          "name": "Day 19 flags cardio and neuro as attention (Watch)",
+          "passed": true,
+          "details": ""
+        },
+        {
+          "name": "Days 20\u201324 recovery phase stabilizes under Watch (316 \u00b5m)",
+          "passed": true,
+          "details": ""
+        },
+        {
+          "name": "Days 25\u201330 return preparation is in-range (306 \u00b5m)",
+          "passed": true,
+          "details": ""
+        }
+      ]
+    },
+    {
+      "title": "8. Resilient In-Memory Storage Subsystem (Quota &amp; Permission Handling)",
+      "tests": [
+        {
+          "name": "Blocked localStorage falls back to in-memory store without throwing uncaught errors",
+          "passed": true,
+          "details": ""
+        },
+        {
+          "name": "In-memory cache retains persisted test key",
+          "passed": true,
+          "details": ""
+        }
+      ]
+    },
+    {
+      "title": "9. Operational Environment Constants &amp; Speed-of-Light Latency",
+      "tests": [
+        {
+          "name": "ISS environment sets 0.5s telemetry latency",
+          "passed": true,
+          "details": ""
+        },
+        {
+          "name": "Lunar Gateway sets 1.3s speed-of-light delay",
+          "passed": true,
+          "details": ""
+        },
+        {
+          "name": "Mars Transit sets 12-minute delay with illustrative notation",
+          "passed": true,
+          "details": ""
+        },
+        {
+          "name": "Surface Rover sortie sets 1.0s latency",
+          "passed": true,
+          "details": ""
+        }
+      ]
+    },
+    {
+      "title": "10. Longitudinal EWMA &amp; CUSUM Statistical Drift Detection",
+      "tests": [
+        {
+          "name": "Stable longitudinal telemetry shows zero statistical drift",
+          "passed": true,
+          "details": ""
+        },
+        {
+          "name": "Sustained upward SANS trajectory triggers statistical drift alarm",
+          "passed": true,
+          "details": ""
+        },
+        {
+          "name": "Upward drift correctly identifies direction as up",
+          "passed": true,
+          "details": ""
+        }
+      ]
+    },
+    {
+      "title": "${grp.title}",
+      "tests": []
+    }
+  ]
+}
