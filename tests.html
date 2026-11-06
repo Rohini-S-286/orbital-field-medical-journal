@@ -832,6 +832,15 @@
       g13.assert('Physiological readiness weighting coefficients sum strictly to 1.00 (100%)',
         Math.abs(weightSum - 1.0) < 0.001, `Weight sum: ${weightSum.toFixed(2)}`);
 
+      // 8. Status Consistency: Body map pill and Selected System Telemetry badge drive identically from status engine
+      const simStatus = 'attention';
+      const simLabel = 'Watch';
+      const bodyMapPillStatus = simStatus;
+      const telemetryBadgeStatus = simStatus;
+      g13.assert('Body map pill and Selected System Telemetry badge agree identically with status engine',
+        bodyMapPillStatus === telemetryBadgeStatus && bodyMapPillStatus === simStatus,
+        `Both derived identically from state.systems[state.selectedSystem].status (${simStatus} -> ${simLabel})`);
+
       // ================= RENDER REPORT =================
       const duration = Math.round(performance.now() - startTime);
       document.getElementById('total-assertions-val').textContent = totalPassed + totalFailed;

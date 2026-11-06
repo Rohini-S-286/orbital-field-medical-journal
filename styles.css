@@ -1411,42 +1411,58 @@ input:focus-visible,
   justify-content: center;
 }
 
-.status-svg-ring {
+.status-svg-ring,
+.ring-svg {
   width: 100%;
   height: 100%;
   transform: rotate(-90deg);
+  display: block;
 }
 
-.ring-bg-track {
-  fill: none;
+.ring-bg-track,
+.ring-track {
+  fill: none !important;
   stroke: var(--color-border);
   stroke-width: 10;
+  opacity: 0.35;
 }
 
 /* EXACT MATHEMATICAL CIRCUMFERENCE: 2 * PI * 76 = 477.52 */
-.ring-progress-bar {
-  fill: none;
+.ring-progress-bar,
+.ring-progress {
+  fill: none !important;
   stroke: var(--color-emerald);
   stroke-width: 10;
   stroke-linecap: round;
   stroke-dasharray: 477.52;
-  stroke-dashoffset: 62.08; /* ~87% default */
-  transition: stroke-dashoffset 1s cubic-bezier(0.16, 1, 0.3, 1), stroke 0.3s ease;
+  stroke-dashoffset: 62.08;
+  transition: stroke-dashoffset 0.8s cubic-bezier(0.16, 1, 0.3, 1), stroke 0.3s ease;
 }
 
-.ring-center-content {
+@media (prefers-reduced-motion: reduce) {
+  .ring-progress-bar,
+  .ring-progress {
+    transition: none !important;
+  }
+}
+
+.ring-center-content,
+.ring-inner-data {
   position: absolute;
+  inset: 0;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   padding: 16px;
-  max-width: 140px;
+  pointer-events: none;
   text-align: center;
   box-sizing: border-box;
+  z-index: 2;
 }
 
-.ring-score {
+.ring-score,
+.readiness-score-text {
   font-family: var(--font-serif);
   font-size: 2.35rem;
   font-weight: 700;
@@ -1454,13 +1470,20 @@ input:focus-visible,
   color: var(--color-ink);
 }
 
-.ring-score-label {
-  font-size: 0.82rem;
+.ring-score-label,
+.readiness-unit-label {
+  font-size: 13px;
   text-transform: uppercase;
   letter-spacing: 0.08em;
   color: var(--color-ink-muted);
-  font-weight: 600;
+  font-weight: 700;
   margin-top: 4px;
+}
+
+.readiness-ci-text {
+  font-size: 13px;
+  color: var(--color-ink-muted);
+  margin-top: 2px;
 }
 
 /* ================= 3. TODAY'S CHECK-IN CHECKLIST ================= */
@@ -2196,17 +2219,54 @@ input:focus-visible,
   stroke-width: 2.5px;
 }
 
-#sys-cardio path { fill: var(--color-sys-cardio-tint); stroke: var(--color-sys-cardio); }
-#sys-ocular circle, #sys-ocular ellipse { fill: var(--color-sys-ocular-tint); stroke: var(--color-sys-ocular); }
-#sys-cranial path, #sys-cranial circle { fill: var(--color-sys-cranial-tint); stroke: var(--color-sys-cranial); }
-#sys-spine rect { fill: var(--color-sys-spine); stroke: var(--color-sys-spine); }
-#sys-spine line { stroke: var(--color-sys-spine); }
-#sys-pulmonary path { fill: var(--color-sys-pulmonary-tint); stroke: var(--color-sys-pulmonary); }
-#sys-neuro path, #sys-neuro circle { fill: var(--color-sys-neuro-tint); stroke: var(--color-sys-neuro); }
-#sys-sleep path, #sys-sleep circle { fill: var(--color-sys-sleep-tint); stroke: var(--color-sys-sleep); }
-#sys-immune circle { fill: var(--color-sys-immune-tint); stroke: var(--color-sys-immune); }
-#sys-metabolic circle { fill: var(--color-sys-metabolic-tint); stroke: var(--color-sys-metabolic); }
-#sys-limbs ellipse { fill: var(--color-sys-limbs-tint); stroke: var(--color-sys-limbs); }
+/* Body Map Soft Radial Glow & Focus Rings (No yellow torso fill, non-overlapping glows) */
+.body-figure-contour {
+  fill: none !important;
+}
+
+.system-glow-bg {
+  opacity: 0.16;
+  transition: opacity 0.25s ease, r 0.25s ease;
+  pointer-events: none;
+}
+
+.body-system-region:hover .system-glow-bg {
+  opacity: 0.45;
+}
+
+.body-system-region.selected-system .system-glow-bg {
+  opacity: 0.72;
+}
+
+.system-focus-ring {
+  opacity: 0;
+  transition: opacity 0.25s ease, stroke 0.25s ease;
+  pointer-events: none;
+}
+
+.body-system-region:hover .system-focus-ring {
+  opacity: 0.6;
+}
+
+.body-system-region.selected-system .system-focus-ring {
+  opacity: 1;
+}
+
+.sys-shape-glyph {
+  transition: fill 0.25s ease;
+  pointer-events: none;
+}
+
+.body-system-region {
+  cursor: pointer;
+  outline: none;
+}
+
+.body-system-region:focus-visible .system-focus-ring {
+  opacity: 1;
+  stroke: var(--color-emerald) !important;
+  stroke-width: 2.5px;
+}
 
 /* ================= 10. TIERED GUIDANCE CARDS & STEPPER ================= */
 .tier-stepper {
@@ -3090,6 +3150,29 @@ input:focus-visible,
 
 @media (max-width: 960px) {
   .dashboard-container {
+    grid-template-columns: 1fr;
+  }
+}
+
+
+/* ================= OVERVIEW TAB BALANCED TWO-COLUMN LAYOUT ================= */
+.overview-grid-two-col {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  align-items: start;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.overview-column {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+@media (max-width: 900px) {
+  .overview-grid-two-col {
     grid-template-columns: 1fr;
   }
 }

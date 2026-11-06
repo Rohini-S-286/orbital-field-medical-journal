@@ -80,10 +80,15 @@ document.addEventListener('DOMContentLoaded', () => {
   };
 
   // ================= STATE MANAGEMENT =================
-  let savedTheme = storage.getItem('astro_theme');
-  const hasStoredTheme = savedTheme !== null;
-  if (!hasStoredTheme) {
-    savedTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+  let urlTheme = null;
+  try {
+    const params = new URLSearchParams(window.location.search);
+    if (params.has('theme')) urlTheme = params.get('theme');
+  } catch (e) {}
+
+  let savedTheme = urlTheme || storage.getItem('astro_theme') || 'light';
+  if (savedTheme !== 'dark' && savedTheme !== 'light') {
+    savedTheme = 'light';
   }
 
   const state = {
@@ -917,8 +922,35 @@ document.addEventListener('DOMContentLoaded', () => {
     // 2. Update Inspection Badge in-place via setBadge
     setBadge(inspectBadge, sys.status);
 
-    // 3. Update Flag in Card Header
+    // 3. Update Flag in Body Map Card Header
     setBadge('#current-overall-flag', sys.status, `${sys.name.split(' ')[0]}: ${STATUS_CONFIG[sys.status].label}`);
+
+    // 4. Update Flag and Live Data in Overview Selected System Telemetry Card
+    setBadge('#overview-selected-status-badge', sys.status, STATUS_CONFIG[sys.status].label);
+    const selTitle = document.getElementById('overview-selected-system-title');
+    if (selTitle) selTitle.textContent = sys.name;
+    const selM1Lab = document.getElementById('overview-selected-m1-label');
+    if (selM1Lab) selM1Lab.textContent = sys.metric1Label;
+    const selM1Val = document.getElementById('overview-selected-m1-val');
+    if (selM1Val) selM1Val.textContent = sys.metric1Val;
+    const selM1Sub = document.getElementById('overview-selected-m1-sub');
+    if (selM1Sub) {
+      selM1Sub.textContent = sys.metric1Sub;
+      selM1Sub.style.color = (sys.status === 'attention') ? 'var(--color-ochre-text)' :
+                             (sys.status === 'flight-surgeon' || sys.status === 'emergency') ? 'var(--color-vermillion-text)' :
+                             'var(--color-ink-muted)';
+    }
+    const selM2Lab = document.getElementById('overview-selected-m2-label');
+    if (selM2Lab) selM2Lab.textContent = sys.metric2Label;
+    const selM2Val = document.getElementById('overview-selected-m2-val');
+    if (selM2Val) selM2Val.textContent = sys.metric2Val;
+    const selM2Sub = document.getElementById('overview-selected-m2-sub');
+    if (selM2Sub) {
+      selM2Sub.textContent = sys.metric2Sub;
+      selM2Sub.style.color = 'var(--color-ink-muted)';
+    }
+    const selWhy = document.getElementById('overview-selected-why');
+    if (selWhy && sys.whyMeasurement) selWhy.textContent = sys.whyMeasurement;
 
     // System Accent Map for decorative identity and top borders
     const SYSTEM_ACCENT_MAP = {
@@ -1201,10 +1233,10 @@ document.addEventListener('DOMContentLoaded', () => {
   window.updateKpis = updateKpis;
 
   const STATUS_SHAPES = {
-    'in-range': { shape: '●', label: 'Nominal', color: 'var(--color-emerald)' },
-    'attention': { shape: '▲', label: 'Watch', color: 'var(--color-ochre)' },
-    'flight-surgeon': { shape: '◆', label: 'Surgeon Consult', color: 'var(--color-vermillion)' },
-    'emergency': { shape: '⬡', label: 'Emergency', color: 'var(--color-vermillion)' }
+    'in-range': { shape: '●', label: 'Nominal', color: 'var(--color-emerald)', path: 'M 0 -4 A 4 4 0 1 1 0 4 A 4 4 0 1 1 0 -4 Z' },
+    'attention': { shape: '▲', label: 'Watch', color: 'var(--color-ochre)', path: 'M 0 -5 L 4.5 4 L -4.5 4 Z' },
+    'flight-surgeon': { shape: '◆', label: 'Surgeon Consult', color: 'var(--color-vermillion)', path: 'M 0 -5.5 L 5.5 0 L 0 5.5 L -5.5 0 Z' },
+    'emergency': { shape: '⬡', label: 'Emergency', color: 'var(--color-vermillion)', path: 'M -2.5 -5 L 2.5 -5 L 5 -2.5 L 5 2.5 L 2.5 5 L -2.5 5 L -5 2.5 L -5 -2.5 Z' }
   };
 
   function updateBodyMapVisuals() {
@@ -1212,31 +1244,33 @@ document.addEventListener('DOMContentLoaded', () => {
       const cfg = STATUS_SHAPES[sys.status] || STATUS_SHAPES['in-range'];
       const el = document.getElementById(`sys-${sys.id}`);
       if (el) {
-        el.className.baseVal = `body-system-region system--${sys.status}`;
+        el.className.baseVal = `body-system-region system--${sys.status}${state.selectedSystem === sys.id ? ' selected-system' : ''}`;
         el.setAttribute('aria-label', `${sys.name}. Status: ${STATUS_CONFIG[sys.status].label}. Glyph: ${cfg.shape}.`);
         
-        // Update SVG status shape glyph
+        // Update SVG status shape glyph path and color
         const shapeGlyph = el.querySelector('.sys-shape-glyph');
         if (shapeGlyph) {
+          if (cfg.path) shapeGlyph.setAttribute('d', cfg.path);
           shapeGlyph.setAttribute('fill', cfg.color);
         }
 
-        // Pulse ring marker (Ocular / Active flagged system)
-        const pulse = el.querySelector('.pulse-ring-marker');
-        if (pulse) {
-          if (sys.status === 'emergency' || sys.status === 'flight-surgeon') {
-            pulse.setAttribute('stroke', 'var(--color-vermillion)');
-          } else if (sys.status === 'attention') {
-            pulse.setAttribute('stroke', 'var(--color-ochre)');
-          } else {
-            pulse.setAttribute('stroke', 'var(--color-emerald)');
-          }
+        // Focus ring color
+        const focusRing = el.querySelector('.system-focus-ring');
+        if (focusRing) {
+          const ringColor = (sys.status === 'emergency' || sys.status === 'flight-surgeon') ? 'var(--color-vermillion)' :
+                            (sys.status === 'attention') ? 'var(--color-ochre)' : 'var(--color-emerald)';
+          focusRing.setAttribute('stroke', ringColor);
         }
       }
 
       // Update matching legend chip shape glyph and color
       const chip = document.querySelector(`.legend-chip[data-target="${sys.id}"]`);
       if (chip) {
+        if (state.selectedSystem === sys.id) {
+          chip.classList.add('active');
+        } else {
+          chip.classList.remove('active');
+        }
         const shapeSpan = chip.querySelector('.chip-shape-indicator');
         if (shapeSpan) {
           shapeSpan.textContent = cfg.shape;
@@ -1244,6 +1278,13 @@ document.addEventListener('DOMContentLoaded', () => {
         }
       }
     });
+
+    const activeLabel = document.getElementById('body-map-active-label');
+    if (activeLabel && state.selectedSystem && state.systems[state.selectedSystem]) {
+      const curSys = state.systems[state.selectedSystem];
+      const curCfg = STATUS_SHAPES[curSys.status] || STATUS_SHAPES['in-range'];
+      activeLabel.textContent = `${curSys.name} (${curCfg.label})`;
+    }
   }
 
   // Readiness Calculation Info Popover Handler
