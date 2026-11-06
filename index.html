@@ -26,7 +26,7 @@
   <meta name="twitter:description" content="Offline-first spaceflight crew physiological monitoring and clinical telemetry logging PWA for NASA Space Apps 2026.">
   <meta name="twitter:image" content="https://rohini-s-286.github.io/orbital-field-medical-journal/og-image.png">
 
-  <link rel="stylesheet" href="./styles.css?v=11">
+  <link rel="stylesheet" href="./styles.css?v=12">
 
   <!-- Auto-clear obsolete SW caches on load -->
   <script>
@@ -439,7 +439,7 @@
             <div id="body-map-active-label" class="body-map-hover-tag" aria-live="polite">
               Ocular &amp; SANS Monitoring • In range (●)
             </div>
-            <svg class="body-map-svg" viewBox="0 0 320 540" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Interactive anatomical front-view outline of astronaut physiology">
+            <svg class="body-map-svg" viewBox="0 14 320 508" preserveAspectRatio="xMidYMid meet" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Interactive anatomical front-view outline of astronaut physiology">
               <defs>
                 <!-- Single Soft Radial Glow Filter per system -->
                 <filter id="system-soft-glow" x="-50%" y="-50%" width="200%" height="200%">
@@ -448,7 +448,7 @@
               </defs>
 
               <!-- Consistent 1.5px Front-View Figure Contour (Crisp, High-Contrast, No stray organ blocks) -->
-              <g class="body-figure-contour" stroke="var(--color-border-strong)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="none" opacity="0.9">
+              <g class="body-figure-contour" stroke="var(--color-body-figure-stroke)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="none">
                 <!-- Cranium & Jaw -->
                 <path d="M160 16 C142 16 132 28 132 46 C132 60 142 70 152 74 C140 78 122 86 112 100 C102 114 94 140 88 176 C82 212 76 250 70 276 C68 284 74 290 82 290 C90 290 94 282 100 256 C106 230 112 194 116 170 L116 258 C116 280 120 314 124 354 C128 394 130 446 130 496 C130 508 138 516 148 516 C158 516 160 504 160 484 L160 298 L160 484 C160 504 162 516 172 516 C182 516 190 508 190 496 C190 446 192 394 196 354 C200 314 204 280 204 258 L204 170 C208 194 214 230 220 256 C226 282 230 290 238 290 C246 290 252 284 250 276 C244 250 238 212 232 176 C226 140 218 114 208 100 C198 86 180 78 168 74 C178 70 188 60 188 46 C188 28 178 16 160 16 Z" />
                 <!-- Clavicle line -->
@@ -719,12 +719,12 @@
             <div class="telemetry-box" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-sm); padding: 12px;">
               <div class="card-meta" id="overview-selected-m1-label" style="font-size: 13px;">Optic Disc Thickness</div>
               <div class="num-tabular" id="overview-selected-m1-val" style="font-size: 1.45rem; font-weight: 700; color: var(--color-ink); margin: 4px 0;">302 µm</div>
-              <div class="text-faint" id="overview-selected-m1-sub" style="font-size: 13px; color: var(--color-ink-muted);">+4 µm baseline shift [Simulated]</div>
+              <div class="text-faint" id="overview-selected-m1-sub" style="font-size: 13px; color: var(--color-ink-muted);">+4 µm baseline shift</div>
             </div>
             <div class="telemetry-box" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-sm); padding: 12px;">
               <div class="card-meta" id="overview-selected-m2-label" style="font-size: 13px;">Visual Acuity (LogMAR)</div>
               <div class="num-tabular" id="overview-selected-m2-val" style="font-size: 1.45rem; font-weight: 700; color: var(--color-ink); margin: 4px 0;">0.08</div>
-              <div class="text-faint" id="overview-selected-m2-sub" style="font-size: 13px; color: var(--color-emerald);">In nominal range [Simulated]</div>
+              <div class="text-faint" id="overview-selected-m2-sub" style="font-size: 13px; color: var(--color-emerald);">In nominal range</div>
             </div>
           </div>
 
@@ -737,9 +737,29 @@
           <!-- Three-reference model inline horizontal ruler -->
           <div id="inspect-three-ruler" class="three-reference-ruler" style="margin-bottom: 12px;"></div>
 
-          <div class="card-header" style="padding: 0 0 4px 0; margin-bottom: 8px;">
-            <span class="card-meta">7-Day Trend Telemetry</span>
-            <span class="text-faint" style="font-size: 13px;">Nominal Baseline Band (Simulated)</span>
+          <!-- Longitudinal Trend Telemetry (Always renders; hides if no telemetry data) -->
+          <div id="overview-trend-section" style="margin-top: 14px; margin-bottom: 12px;">
+            <div id="overview-trend-header" class="card-header" style="padding: 0 0 6px 0; margin-bottom: 8px; display: flex; align-items: center; justify-content: space-between;">
+              <div>
+                <span class="card-meta" id="overview-trend-heading">Trend Telemetry</span>
+                <span class="text-faint" id="overview-trend-sub" style="font-size: 13.5px; display: block; color: var(--color-ink-muted);">Nominal In-Flight Band</span>
+              </div>
+              <div class="chart-range-toggle" role="group" aria-label="Trend chart time range">
+                <button class="chart-range-btn active" id="overview-chart-range-7d" data-range="7">7d</button>
+                <button class="chart-range-btn" id="overview-chart-range-14d" data-range="14">14d</button>
+                <button class="chart-range-btn" id="overview-chart-range-30d" data-range="30">30d</button>
+              </div>
+            </div>
+
+            <div class="chart-container" id="overview-chart-container" style="min-height: 285px; position: relative;">
+              <div id="overview-chart-baseline-info" style="font-size: 13.5px; font-weight: 600; color: var(--color-ink-muted); margin-bottom: 6px;">
+                Nominal Envelope: 280–325 µm • Upper Limit: 325 µm
+              </div>
+              <div id="overview-dynamic-chart-wrapper">
+                <!-- Dynamic SVG rendered by renderTrendChart() -->
+              </div>
+              <div id="overview-chart-live-tooltip" class="chart-tooltip-panel" style="display: none;"></div>
+            </div>
           </div>
 
           <div style="display: flex; gap: 10px; margin-top: 10px;">
@@ -1607,8 +1627,8 @@
   <div id="toast-container" class="toast-container" aria-live="polite" aria-atomic="true"></div>
 
   <!-- Clinical Knowledge Base Data Script -->
-  <script src="./clinical-ranges.js?v=11"></script>
+  <script src="./clinical-ranges.js?v=12"></script>
   <!-- Application Core Script -->
-  <script src="./app.js?v=11"></script>
+  <script src="./app.js?v=12"></script>
 </body>
 </html>

@@ -9,6 +9,20 @@ document.addEventListener('DOMContentLoaded', () => {
   // ================= MATHEMATICAL CONSTANTS =================
   // Radius r = 76 => Circumference = 2 * PI * 76 = 477.522...
   const RING_CIRCUMFERENCE = 477.52;
+  // ================= 10-SYSTEM DECORATIVE ACCENT COLOR MAP =================
+  const SYSTEM_ACCENT_MAP = {
+    cardio: 'var(--color-sys-cardio)',
+    ocular: 'var(--color-sys-ocular)',
+    cranial: 'var(--color-sys-cranial)',
+    spine: 'var(--color-sys-spine)',
+    pulmonary: 'var(--color-sys-pulmonary)',
+    neuro: 'var(--color-sys-neuro)',
+    sleep: 'var(--color-sys-sleep)',
+    immune: 'var(--color-sys-immune)',
+    metabolic: 'var(--color-sys-metabolic)',
+    limbs: 'var(--color-sys-limbs)'
+  };
+
 
   // ================= RED-GREEN COLORBLIND ACCESSIBLE STATUS CONFIG =================
   const STATUS_CONFIG = {
@@ -555,31 +569,31 @@ document.addEventListener('DOMContentLoaded', () => {
 
     container.innerHTML = `
       <div class="ruler-header">
-        <span class="ruler-title">Three-Reference Adaptation Model</span>
-        <span class="text-faint" style="font-size: 0.78rem;">Source: ${ind.sourceId}</span>
+        <span class="ruler-title" style="font-size: 13.5px; font-weight: 700; color: var(--color-ink-muted);">Three-Reference Adaptation Model</span>
+        <span class="text-faint" style="font-size: 13.5px; font-weight: 600; color: var(--color-ink-muted);">Source: ${ind.sourceId}</span>
       </div>
 
       <!-- 1. Earth 1g Normal Range -->
-      <div class="ruler-row">
-        <span class="ruler-label">Earth 1g</span>
+      <div class="ruler-row" style="font-size: 13.5px;">
+        <span class="ruler-label" style="font-size: 13.5px; font-weight: 700; color: var(--color-ink-muted);">Earth 1g</span>
         <div class="ruler-track-container" title="Earth Normal: ${earthMin}–${earthMax} ${unit}">
           <div class="ruler-range-bar ruler-range-bar--earth" style="left: ${earthLeft.toFixed(1)}%; width: ${earthWidth.toFixed(1)}%;"></div>
-          <span class="text-faint num-tabular" style="position: absolute; right: 8px; font-size: 0.72rem;">${earthMin}–${earthMax} ${unit}</span>
+          <span class="text-faint num-tabular" style="position: absolute; right: 8px; font-size: 13px; font-weight: 600; color: var(--color-ink-muted);">${earthMin}–${earthMax} ${unit}</span>
         </div>
       </div>
 
       <!-- 2. In-Flight Microgravity Expected Envelope -->
-      <div class="ruler-row">
-        <span class="ruler-label">In-Flight 0g</span>
+      <div class="ruler-row" style="font-size: 13.5px;">
+        <span class="ruler-label" style="font-size: 13.5px; font-weight: 700; color: var(--color-ink-muted);">In-Flight 0g</span>
         <div class="ruler-track-container" title="Expected In-Flight: ${flightMin}–${flightMax} ${unit}">
           <div class="ruler-range-bar ruler-range-bar--flight" style="left: ${flightLeft.toFixed(1)}%; width: ${flightWidth.toFixed(1)}%;"></div>
-          <span class="text-faint num-tabular" style="position: absolute; right: 8px; font-size: 0.72rem;">${flightMin}–${flightMax} ${unit}</span>
+          <span class="text-faint num-tabular" style="position: absolute; right: 8px; font-size: 13px; font-weight: 600; color: var(--color-ink-muted);">${flightMin}–${flightMax} ${unit}</span>
         </div>
       </div>
 
       <!-- 3. Personal Baseline & Current Value -->
-      <div class="ruler-row">
-        <span class="ruler-label" title="Personal Baseline and Current Telemetry">Baseline / Current</span>
+      <div class="ruler-row" style="font-size: 13.5px;">
+        <span class="ruler-label" style="font-size: 13.5px; font-weight: 700; color: var(--color-ink-muted);" title="Personal Baseline and Current Telemetry">Baseline / Current</span>
         <div class="ruler-track-container" title="Baseline: ${baseline} ${unit} (±${sd}). Current: ${currentVal} ${unit}">
           <!-- Baseline confidence band -->
           <div class="ruler-baseline-band" style="left: ${baseBandLeft.toFixed(1)}%; width: ${baseBandWidth.toFixed(1)}%;" title="Personal rolling band: ${(baseline - sd).toFixed(1)}–${(baseline + sd).toFixed(1)}"></div>
@@ -587,7 +601,7 @@ document.addEventListener('DOMContentLoaded', () => {
           <div class="ruler-baseline-pip" style="left: ${basePipLeft.toFixed(1)}%;" title="Personal baseline: ${baseline} ${unit}"></div>
           <!-- Current reading marker -->
           <div class="ruler-val-dot" style="left: ${curPipLeft.toFixed(1)}%; background-color: ${statusColor};" title="Current Reading: ${currentVal} ${unit}"></div>
-          <span class="text-faint num-tabular" style="position: absolute; right: 8px; font-size: 0.72rem;">Cur: ${currentVal} ${unit}</span>
+          <span class="text-faint num-tabular" style="position: absolute; right: 8px; font-size: 13px; font-weight: 600; color: var(--color-ink-muted);">Cur: ${currentVal} ${unit}</span>
         </div>
       </div>
 
@@ -712,13 +726,26 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // ================= ELEVATED TREND CHART (ITEM 2: >=280px Tall, Shaded Band, Limit Line, Tooltip) =================
   function renderTrendChart(trendData, systemStatus, yUnit, baselineMin, baselineMax, indKey = null) {
-    const wrapper = document.getElementById('dynamic-chart-wrapper');
-    if (!wrapper) return;
+    const wrappers = [
+      document.getElementById('overview-dynamic-chart-wrapper'),
+      document.getElementById('dynamic-chart-wrapper')
+    ].filter(Boolean);
+
+    const overviewSection = document.getElementById('overview-trend-section');
+    const overviewHeader = document.getElementById('overview-trend-header');
 
     if (!trendData || trendData.length === 0) {
-      wrapper.innerHTML = `<div class="text-muted" style="padding: 24px; text-align: center; font-size:13px;">No longitudinal telemetry available.</div>`;
+      if (overviewSection) overviewSection.style.display = 'none';
+      if (overviewHeader) overviewHeader.style.display = 'none';
+      const sansWrapper = document.getElementById('dynamic-chart-wrapper');
+      if (sansWrapper) {
+        sansWrapper.innerHTML = `<div class="text-muted" style="padding: 24px; text-align: center; font-size:13.5px;">No longitudinal telemetry available.</div>`;
+      }
       return;
     }
+
+    if (overviewSection) overviewSection.style.display = 'block';
+    if (overviewHeader) overviewHeader.style.display = 'flex';
 
     const currentDay = state.demoDay || 14;
     const rangeLimit = state.chartRange || 7;
@@ -739,7 +766,7 @@ document.addEventListener('DOMContentLoaded', () => {
       activeData = trendData.slice(-rangeLimit);
     }
 
-    // Chart Dimensions: Height >= 280px per Item 2
+    // Chart Dimensions: Height >= 280px per Item 3
     const svgWidth = 440;
     const svgHeight = 285;
     const padLeft = 60;
@@ -763,7 +790,12 @@ document.addEventListener('DOMContentLoaded', () => {
     let maxVal = 345;
     let ticks = [260, 280, 300, 320, 340];
 
-    if (indKey !== 'opticDisc' && state.selectedSystem !== 'ocular') {
+    const isOcular = (indKey === 'opticDisc' || state.selectedSystem === 'ocular');
+    const nominalMin = isOcular ? 280 : (typeof baselineMin === 'number' ? baselineMin : 280);
+    const nominalMax = isOcular ? 325 : (typeof baselineMax === 'number' ? baselineMax : 325);
+    const personalBase = isOcular ? 302 : (nominalMin + (nominalMax - nominalMin) * 0.45);
+
+    if (!isOcular) {
       const dMin = Math.min(...allVals);
       const dMax = Math.max(...allVals);
       const span = dMax - dMin || 10;
@@ -781,27 +813,27 @@ document.addEventListener('DOMContentLoaded', () => {
       return padTop + plotHeight * (1 - norm);
     }
 
-    // 1. Shaded in-flight nominal band (280-325 µm)
-    const bandYTop = Math.max(padTop, scaleY(325));
-    const bandYBottom = Math.min(padTop + plotHeight, scaleY(280));
+    // 1. Shaded in-flight nominal band
+    const bandYTop = Math.max(padTop, scaleY(nominalMax));
+    const bandYBottom = Math.min(padTop + plotHeight, scaleY(nominalMin));
     const bandH = Math.max(2, bandYBottom - bandYTop);
 
     const flightBandSvg = `
       <rect class="chart-nominal-band" x="${padLeft}" y="${bandYTop}" width="${plotWidth}" height="${bandH}" fill="var(--color-emerald-tint-soft)" opacity="0.65" />
-      <text x="${padLeft + 10}" y="${bandYTop + 16}" fill="var(--color-emerald)" font-size="13" font-weight="600">Nominal In-Flight Band (280–325 µm)</text>
+      <text x="${padLeft + 10}" y="${bandYTop + 16}" fill="var(--color-emerald)" font-size="13" font-weight="600">Nominal In-Flight Band (${nominalMin}–${nominalMax} ${yUnit})</text>
     `;
 
-    // 2. 325 µm Upper Limit Dashed Line
+    // 2. Upper Limit Dashed Line
     const limitLineSvg = `
       <line x1="${padLeft}" y1="${bandYTop}" x2="${padLeft + plotWidth}" y2="${bandYTop}" stroke="var(--color-ochre)" stroke-dasharray="6 3" stroke-width="2" />
-      <text x="${padLeft + plotWidth - 6}" y="${bandYTop - 7}" fill="var(--color-ochre-text)" font-size="13" font-weight="700" text-anchor="end">In-Flight Limit: 325 µm</text>
+      <text x="${padLeft + plotWidth - 6}" y="${bandYTop - 7}" fill="var(--color-ochre-text)" font-size="13" font-weight="700" text-anchor="end">In-Flight Limit: ${nominalMax} ${yUnit}</text>
     `;
 
-    // 3. Personal Baseline Thin Reference Line (302 µm)
-    const baseY = scaleY(302);
+    // 3. Personal Baseline Reference Line
+    const baseY = scaleY(personalBase);
     const baselineLineSvg = `
       <line x1="${padLeft}" y1="${baseY}" x2="${padLeft + plotWidth}" y2="${baseY}" stroke="var(--color-emerald)" stroke-dasharray="3 3" stroke-width="1.4" opacity="0.85" />
-      <text x="${padLeft + plotWidth - 6}" y="${baseY - 6}" fill="var(--color-emerald)" font-size="13" font-weight="600" text-anchor="end">Personal Baseline: 302 µm</text>
+      <text x="${padLeft + plotWidth - 6}" y="${baseY - 6}" fill="var(--color-emerald)" font-size="13" font-weight="600" text-anchor="end">Personal Baseline: ${personalBase} ${yUnit}</text>
     `;
 
     // 4. Grid Lines & 13px+ Y-Axis Labels
@@ -824,11 +856,11 @@ document.addEventListener('DOMContentLoaded', () => {
     activeData.forEach((d, i) => {
       const cx = scaleX(i);
       const cy = scaleY(d.observed);
-      const isBreached = d.observed > 325;
-      const isWatch = d.observed >= 320 && d.observed <= 325;
+      const isBreached = d.observed > nominalMax;
+      const isWatch = d.observed >= (nominalMax - (nominalMax - nominalMin) * 0.15) && d.observed <= nominalMax;
       const ptColor = isBreached ? 'var(--color-vermillion)' : isWatch ? 'var(--color-ochre)' : 'var(--color-emerald)';
       const statusShape = isBreached ? '◆' : isWatch ? '▲' : '●';
-      const statusText = isBreached ? 'Flight Surgeon Consult' : isWatch ? 'Watch' : 'Nominal';
+      const statusText = isBreached ? 'Flight Surgeon Review' : isWatch ? 'Watch' : 'Nominal';
 
       markersSvg += `
         <circle class="chart-point-marker" id="chart-pt-${i}" cx="${cx}" cy="${cy}" r="4.5" fill="${ptColor}" stroke="var(--color-surface)" stroke-width="2" />
@@ -839,7 +871,7 @@ document.addEventListener('DOMContentLoaded', () => {
       hitColsSvg += `
         <rect class="chart-col-hit" x="${cx - colW/2}" y="${padTop}" width="${colW}" height="${plotHeight}"
               data-day="${d.day}" data-val="${d.observed}" data-cx="${cx}" data-cy="${cy}"
-              data-diff="${d.observed - 302}" data-status="${statusText}" data-shape="${statusShape}" />
+              data-diff="${Math.round(d.observed - personalBase)}" data-status="${statusText}" data-shape="${statusShape}" data-ptcolor="${ptColor}" />
       `;
     });
 
@@ -855,23 +887,26 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     });
 
-    // 7. Axis Titles (13px+ font size per Item 5)
+    // 7. Axis Titles (13px+ font size per Item 3)
+    const metricLabel = state.systems[state.selectedSystem]?.name || 'Trajectory';
     const titlesSvg = `
-      <text class="chart-axis-title" transform="rotate(-90)" x="${-(padTop + plotHeight/2)}" y="18" fill="var(--color-ink)" font-size="13" font-weight="700" text-anchor="middle">Retinal Thickness (${yUnit})</text>
+      <text class="chart-axis-title" transform="rotate(-90)" x="${-(padTop + plotHeight/2)}" y="18" fill="var(--color-ink)" font-size="13" font-weight="700" text-anchor="middle">${metricLabel} (${yUnit})</text>
       <text class="chart-axis-title" x="${padLeft + plotWidth/2}" y="${svgHeight - 6}" fill="var(--color-ink)" font-size="13" font-weight="700" text-anchor="middle">Mission Elapsed Day</text>
     `;
 
+    const trajectoryStroke = SYSTEM_ACCENT_MAP[state.selectedSystem] || 'var(--color-sys-ocular)';
+
     // Assemble SVG
     const svgContent = `
-      <svg class="chart-svg-main" viewBox="0 0 ${svgWidth} ${svgHeight}" preserveAspectRatio="xMidYMid meet" role="img" aria-label="SANS Peripapillary Retinal Thickness Longitudinal Trajectory">
+      <svg class="chart-svg-main" viewBox="0 0 ${svgWidth} ${svgHeight}" preserveAspectRatio="xMidYMid meet" role="img" aria-label="${metricLabel} Longitudinal Trajectory">
         ${flightBandSvg}
         ${limitLineSvg}
         ${baselineLineSvg}
         ${gridSvg}
-        <path d="${pathD}" fill="none" stroke="var(--color-sys-ocular)" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round" />
+        <path d="${pathD}" fill="none" stroke="${trajectoryStroke}" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round" />
         ${markersSvg}
         <!-- Crosshair guideline -->
-        <line id="chart-crosshair" x1="0" y1="${padTop}" x2="0" y2="${padTop + plotHeight}" stroke="var(--color-ink-muted)" stroke-dasharray="3 3" stroke-width="1.2" style="display:none;" />
+        <line class="chart-crosshair" x1="0" y1="${padTop}" x2="0" y2="${padTop + plotHeight}" stroke="var(--color-ink-muted)" stroke-dasharray="3 3" stroke-width="1.2" style="display:none;" />
         <!-- Interactive Hit Area -->
         <g class="chart-interactive-overlay">${hitColsSvg}</g>
         ${xLabelsSvg}
@@ -879,54 +914,56 @@ document.addEventListener('DOMContentLoaded', () => {
       </svg>
     `;
 
-    wrapper.innerHTML = svgContent;
+    wrappers.forEach(wrapper => {
+      wrapper.innerHTML = svgContent;
 
-    // Attach Hover/Tap Tooltip Event Handlers
-    const tooltip = document.getElementById('chart-live-tooltip');
-    const crosshair = document.getElementById('chart-crosshair');
-    const hitCols = wrapper.querySelectorAll('.chart-col-hit');
+      const container = wrapper.closest('.chart-container') || wrapper.parentElement;
+      const tooltip = container ? container.querySelector('.chart-tooltip-panel') : null;
+      const crosshair = wrapper.querySelector('.chart-crosshair');
+      const hitCols = wrapper.querySelectorAll('.chart-col-hit');
 
-    hitCols.forEach(col => {
-      const showTip = (e) => {
-        const day = col.dataset.day;
-        const val = col.dataset.val;
-        const diff = parseInt(col.dataset.diff, 10);
-        const status = col.dataset.status;
-        const shape = col.dataset.shape;
-        const cx = parseFloat(col.dataset.cx);
-        const cy = parseFloat(col.dataset.cy);
+      hitCols.forEach(col => {
+        const showTip = () => {
+          const day = col.dataset.day;
+          const val = col.dataset.val;
+          const diff = parseInt(col.dataset.diff, 10);
+          const status = col.dataset.status;
+          const shape = col.dataset.shape;
+          const cx = parseFloat(col.dataset.cx);
+          const cy = parseFloat(col.dataset.cy);
+          const ptColor = col.dataset.ptcolor;
 
-        if (crosshair) {
-          crosshair.setAttribute('x1', cx);
-          crosshair.setAttribute('x2', cx);
-          crosshair.style.display = 'block';
-        }
+          if (crosshair) {
+            crosshair.setAttribute('x1', cx);
+            crosshair.setAttribute('x2', cx);
+            crosshair.style.display = 'block';
+          }
 
-        if (tooltip) {
-          tooltip.innerHTML = `
-            <div style="font-weight:700; color:var(--color-ink); margin-bottom:2px;">Mission Day ${day}</div>
-            <div style="font-size:13px; color:var(--color-ink);">Thickness: <strong class="num-tabular">${val} µm</strong></div>
-            <div style="font-size:13px; color:var(--color-ink-muted); margin-bottom:2px;">Baseline delta: <strong class="num-tabular">${diff >= 0 ? '+' : ''}${diff} µm</strong></div>
-            <div style="font-size:13px; font-weight:600; color:${val > 325 ? 'var(--color-vermillion)' : val >= 320 ? 'var(--color-ochre)' : 'var(--color-emerald)'};">
-              ${shape} ${status}
-            </div>
-          `;
-          tooltip.style.display = 'block';
-          // Convert SVG cx, cy to pixel percentages
-          const pctX = (cx / svgWidth) * 100;
-          const pctY = (cy / svgHeight) * 100;
-          tooltip.style.left = `${pctX}%`;
-          tooltip.style.top = `${pctY - 12}%`;
-        }
-      };
+          if (tooltip) {
+            tooltip.innerHTML = `
+              <div style="font-weight:700; color:var(--color-ink); margin-bottom:2px;">Mission Day ${day}</div>
+              <div style="font-size:13px; color:var(--color-ink);">Telemetry: <strong class="num-tabular">${val} ${yUnit}</strong></div>
+              <div style="font-size:13px; color:var(--color-ink-muted); margin-bottom:2px;">Baseline delta: <strong class="num-tabular">${diff >= 0 ? '+' : ''}${diff} ${yUnit}</strong></div>
+              <div style="font-size:13px; font-weight:600; color:${ptColor};">
+                ${shape} ${status}
+              </div>
+            `;
+            tooltip.style.display = 'block';
+            const pctX = (cx / svgWidth) * 100;
+            const pctY = (cy / svgHeight) * 100;
+            tooltip.style.left = `${pctX}%`;
+            tooltip.style.top = `${pctY - 12}%`;
+          }
+        };
 
-      col.addEventListener('pointerenter', showTip);
-      col.addEventListener('pointerdown', showTip);
-    });
+        col.addEventListener('pointerenter', showTip);
+        col.addEventListener('pointerdown', showTip);
+      });
 
-    wrapper.addEventListener('pointerleave', () => {
-      if (tooltip) tooltip.style.display = 'none';
-      if (crosshair) crosshair.style.display = 'none';
+      wrapper.addEventListener('pointerleave', () => {
+        if (tooltip) tooltip.style.display = 'none';
+        if (crosshair) crosshair.style.display = 'none';
+      });
     });
   }
 
@@ -974,13 +1011,15 @@ document.addEventListener('DOMContentLoaded', () => {
     const baseline = indObj ? indObj.personalBaseline : sys.baselineMin;
     const sd = indObj ? indObj.personalSd : 1.0;
     const drift = detectDrift(sys.trendData, baseline, sd);
-    if (chartBaselineInfo) {
+    const overviewBaselineInfo = document.getElementById('overview-chart-baseline-info');
+    [chartBaselineInfo, overviewBaselineInfo].forEach(infoEl => {
+      if (!infoEl) return;
       if (drift.hasDrift) {
-        chartBaselineInfo.innerHTML = `Nominal: ${sys.baselineMin}–${sys.baselineMax} ${sys.yUnit} <strong style="color:var(--color-ochre-text); margin-left:6px;" title="${drift.description}">[Drift: ${drift.direction} ${drift.delta}]</strong>`;
+        infoEl.innerHTML = `Nominal: ${sys.baselineMin}–${sys.baselineMax} ${sys.yUnit} <strong style="color:var(--color-ochre-text); margin-left:6px;" title="${drift.description}">[Drift: ${drift.direction} ${drift.delta}]</strong>`;
       } else {
-        chartBaselineInfo.textContent = `Nominal band: ${sys.baselineMin}–${sys.baselineMax} ${sys.yUnit} `;
+        infoEl.textContent = `Nominal band: ${sys.baselineMin}–${sys.baselineMax} ${sys.yUnit} • Upper Limit: ${sys.baselineMax} ${sys.yUnit}`;
       }
-    }
+    });
 
     // 2. Update Inspection Badge in-place via setBadge
     setBadge(inspectBadge, sys.status);
@@ -1015,19 +1054,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const selWhy = document.getElementById('overview-selected-why');
     if (selWhy && sys.whyMeasurement) selWhy.textContent = sys.whyMeasurement;
 
-    // System Accent Map for decorative identity and top borders
-    const SYSTEM_ACCENT_MAP = {
-      cardio: 'var(--color-sys-cardio)',
-      ocular: 'var(--color-sys-ocular)',
-      cranial: 'var(--color-sys-cranial)',
-      spine: 'var(--color-sys-spine)',
-      pulmonary: 'var(--color-sys-pulmonary)',
-      neuro: 'var(--color-sys-neuro)',
-      sleep: 'var(--color-sys-sleep)',
-      immune: 'var(--color-sys-immune)',
-      metabolic: 'var(--color-sys-metabolic)',
-      limbs: 'var(--color-sys-limbs)'
-    };
+    // System Accent Map utilized from module scope
 
     // Apply 3.5px colored accent border to focus system card
     const focusCard = document.getElementById('card-status-index');
@@ -1623,22 +1650,22 @@ document.addEventListener('DOMContentLoaded', () => {
     const stepperHtml = `
       <div class="tier-stepper" role="group" aria-label="Clinical Decision Tiers">
         <div class="tier-step ${tierKey === 'routine' ? 'tier-step--active step--routine' : ''}">
-          <span class="tier-step-num"><span class="tier-step-glyph" aria-hidden="true">●</span> 1</span>
+          <span class="tier-step-num"><span class="tier-step-glyph" style="margin-right: 7px; display: inline-block;" aria-hidden="true">●</span> 1</span>
           <span>Routine</span>
         </div>
         <div class="tier-stepper-divider"></div>
         <div class="tier-step ${tierKey === 'selfCare' ? 'tier-step--active step--selfCare' : ''}">
-          <span class="tier-step-num"><span class="tier-step-glyph" aria-hidden="true">▲</span> 2</span>
+          <span class="tier-step-num"><span class="tier-step-glyph" style="margin-right: 7px; display: inline-block;" aria-hidden="true">▲</span> 2</span>
           <span>Self-Care</span>
         </div>
         <div class="tier-stepper-divider"></div>
         <div class="tier-step ${tierKey === 'flightSurgeon' ? 'tier-step--active step--flightSurgeon' : ''}">
-          <span class="tier-step-num"><span class="tier-step-glyph" aria-hidden="true">◆</span> 3</span>
+          <span class="tier-step-num"><span class="tier-step-glyph" style="margin-right: 7px; display: inline-block;" aria-hidden="true">◆</span> 3</span>
           <span>Surgeon</span>
         </div>
         <div class="tier-stepper-divider"></div>
         <div class="tier-step ${tierKey === 'emergency' ? 'tier-step--active step--emergency' : ''}">
-          <span class="tier-step-num"><span class="tier-step-glyph" aria-hidden="true">⬡</span> 4</span>
+          <span class="tier-step-num"><span class="tier-step-glyph" style="margin-right: 7px; display: inline-block;" aria-hidden="true">⬡</span> 4</span>
           <span>Emergency</span>
         </div>
       </div>
@@ -2772,7 +2799,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const range = parseInt(btn.dataset.range, 10);
       if (!range) return;
       state.chartRange = range;
-      chartRangeBtns.forEach(b => b.classList.toggle('active', b === btn));
+      chartRangeBtns.forEach(b => b.classList.toggle('active', parseInt(b.dataset.range, 10) === range));
       const sys = state.systems[state.selectedSystem || 'ocular'];
       if (sys) {
         renderTrendChart(sys.trendData, sys.status, sys.yUnit, sys.baselineMin, sys.baselineMax, sys.primaryIndicator);

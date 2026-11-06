@@ -28,7 +28,8 @@
   --color-surface: #FFFDF9;           /* Clean raised surface for cards */
   --color-surface-hover: #F2E2CC;     /* Subtle interactive surface hover */
   --color-border: #E8D7BE;            /* Precise clinical card border */
-  --color-border-strong: #D4C0A4;     /* Accent divider border */
+  --color-border-strong: #D4C0A4;
+  --color-body-figure-stroke: #4A5F52;     /* Accent divider border */
 
   /* Text & Ink (WCAG AA & AAA compliant on #F9EBD7 and #FFFDF9) */
   --color-ink: #182820;               /* Deep green-charcoal text (contrast > 12:1) */
@@ -133,7 +134,8 @@
   --color-surface: #12211A;           /* Raised dark cabin card surface */
   --color-surface-hover: #192D23;     /* Night cabin hover state */
   --color-border: #22372C;            /* Subtle dark grid border */
-  --color-border-strong: #334F40;     /* Accent divider border */
+  --color-border-strong: #334F40;
+  --color-body-figure-stroke: #7AA88F;     /* Accent divider border */
 
   /* Text & Ink */
   --color-ink: #F9EBD7;               /* Warm Ivory text on dark per Priority 4 */
@@ -1247,19 +1249,17 @@ input:focus-visible,
   align-items: center;
   text-align: center;
   overflow: hidden;
-  height: 100%;
 }
 
 .body-map-wrapper {
   position: relative;
   width: 100%;
-  max-width: 360px;
-  margin: 10px 0 14px;
+  max-width: 320px;
+  margin: 6px auto 10px;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  flex: 1 1 auto;
 }
 
 .body-map-hover-tag {
@@ -1278,9 +1278,11 @@ input:focus-visible,
 
 .body-map-svg {
   width: 100%;
+  max-width: 310px;
+  min-height: 460px;
   height: auto;
-  max-height: 480px;
   display: block;
+  margin: 0 auto;
 }
 
 /* Thin emerald line-art (stroked, not filled) */
@@ -1629,8 +1631,8 @@ input:focus-visible,
 }
 
 .ruler-title {
-  font-size: 0.82rem;
-  font-weight: 600;
+  font-size: 13.5px;
+  font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.05em;
   color: var(--color-ink-muted);
@@ -1641,7 +1643,7 @@ input:focus-visible,
   align-items: center;
   margin-bottom: 10px;
   gap: 12px;
-  font-size: 0.82rem;
+  font-size: 13.5px;
 }
 
 .ruler-label {
@@ -1649,7 +1651,8 @@ input:focus-visible,
   min-width: 124px;
   white-space: nowrap;
   flex-shrink: 0;
-  font-weight: 600;
+  font-size: 13.5px;
+  font-weight: 700;
   color: var(--color-ink-muted);
 }
 
@@ -2203,7 +2206,7 @@ input:focus-visible,
 
 /* ================= BODY MAP SOFT ORGAN TINTS & SELECTION GLOW ================= */
 .body-map-wrapper {
-  max-width: 440px !important;
+  max-width: 320px;
 }
 
 .body-system-region {
@@ -2294,16 +2297,24 @@ input:focus-visible,
 }
 
 .tier-step-num {
-  width: 22px;
-  height: 22px;
-  border-radius: 50%;
+  min-width: 36px;
+  height: 24px;
+  padding: 0 7px;
+  border-radius: 12px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  gap: 7px;
   font-size: 0.82rem;
   background-color: var(--color-surface);
   border: 1px solid var(--color-border);
   color: var(--color-ink-muted);
+}
+
+.tier-step-glyph {
+  font-size: 0.75rem;
+  display: inline-block;
+  line-height: 1;
 }
 
 .tier-step--active {
@@ -3162,7 +3173,7 @@ input:focus-visible,
   display: grid;
   grid-template-columns: minmax(360px, 1fr) minmax(360px, 1.05fr);
   gap: 24px;
-  align-items: stretch;
+  align-items: start;
 }
 
 .overview-column {
@@ -3170,15 +3181,11 @@ input:focus-visible,
   flex-direction: column;
   gap: 20px;
 }
-.overview-column > .journal-card:last-child {
-  flex: 1;
-}
 
 @media (max-width: 900px) {
   .overview-grid-two-col {
-  display: grid;
-  grid-template-columns: minmax(360px, 1fr) minmax(360px, 1.05fr);
-  gap: 24px;
-  align-items: stretch;
-}
+    grid-template-columns: 1fr;
+    gap: 18px;
+    align-items: start;
+  }
 }
