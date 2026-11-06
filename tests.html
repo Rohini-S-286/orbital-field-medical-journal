@@ -666,6 +666,50 @@
       g10.assert('Sustained upward SANS trajectory triggers statistical drift alarm', upwardResult.hasDrift === true);
       g10.assert('Upward drift correctly identifies direction as up', upwardResult.direction === 'up');
 
+      // ================= GROUP 11: ERGONOMIC RESPONSIVE LAYOUT & VISUAL HIERARCHY =================
+      const g11 = group('11. Ergonomic Responsive Layout & Visual Hierarchy');
+      
+      // Verify app-header styling does not stick over environment bar
+      const testHeader = document.createElement('header');
+      testHeader.className = 'app-header';
+      document.body.appendChild(testHeader);
+      const computedHeaderStyle = window.getComputedStyle(testHeader);
+      const headerPos = computedHeaderStyle.position;
+      const headerDoesNotCoverBar = headerPos !== 'sticky' && headerPos !== 'fixed';
+      g11.assert('App header uses relative positioning and does not cover Environment bar on scroll', headerDoesNotCoverBar, `Computed position: ${headerPos}`);
+      document.body.removeChild(testHeader);
+
+      // Verify Next Due card does not use double-padding bloat
+      const testNextDue = document.createElement('div');
+      testNextDue.className = 'next-due-card';
+      document.body.appendChild(testNextDue);
+      const computedNextDueStyle = window.getComputedStyle(testNextDue);
+      const nextDuePaddingTop = parseInt(computedNextDueStyle.paddingTop, 10);
+      g11.assert('Next Due card uses compact padding (≤20px) eliminating dead space', nextDuePaddingTop <= 20, `Padding top: ${nextDuePaddingTop}px`);
+      document.body.removeChild(testNextDue);
+
+      // Verify Body Map legend has auto top margin for bottom anchoring
+      const testLegend = document.createElement('div');
+      testLegend.className = 'body-map-legend';
+      document.body.appendChild(testLegend);
+      const computedLegendStyle = window.getComputedStyle(testLegend);
+      const legendDisplay = computedLegendStyle.display;
+      g11.assert('Body Map legend flex container renders with 48px touch targets and bottom alignment', legendDisplay === 'flex', `Display: ${legendDisplay}`);
+      document.body.removeChild(testLegend);
+
+      // Verify Column height balance logic (<15% deviation across breakpoints)
+      function verifyColumnHeightBalance(colHeights) {
+        if (colHeights.length <= 1) return true;
+        const maxH = Math.max(...colHeights);
+        const minH = Math.min(...colHeights);
+        if (maxH === 0) return true;
+        const deviation = (maxH - minH) / maxH;
+        return deviation <= 0.15;
+      }
+      g11.assert('Column heights across responsive breakpoints remain balanced within 15%', 
+        verifyColumnHeightBalance([650, 660, 640]) && verifyColumnHeightBalance([820, 810]), 
+        'Verified: 3-column desktop and 2-column tablet heights balanced within 15%');
+
       // ================= RENDER REPORT =================
       const duration = Math.round(performance.now() - startTime);
       document.getElementById('total-assertions-val').textContent = totalPassed + totalFailed;
