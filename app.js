@@ -2339,12 +2339,46 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
+  function triggerDay19Incident() {
+    stopPlayback();
+    // Switch to Overview tab if another tab is active so all incident elements are displayed
+    const overviewTabBtn = document.getElementById('tab-btn-overview');
+    if (overviewTabBtn && !overviewTabBtn.classList.contains('active')) {
+      overviewTabBtn.click();
+    }
+    applyMissionDay(19);
+    selectSystem('ocular');
+    const incidentBanner = document.getElementById('incident-chain-banner');
+    if (incidentBanner) {
+      incidentBanner.style.display = 'block';
+      setTimeout(() => {
+        incidentBanner.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }, 50);
+    }
+    showToast('⚡ Day 19 SANS Incident: Peripapillary retinal thickness (328 µm) exceeds in-flight envelope. Autonomous Watch escalation active.', 'warning');
+  }
+
+  // Jump to Day 19 Incident button in Simulation Playback Bar
   if (demoJumpIncidentBtn) {
-    demoJumpIncidentBtn.addEventListener('click', () => {
-      stopPlayback();
-      applyMissionDay(19);
-      selectSystem('ocular');
-      showToast('Simulated Scenario (Day 19): Peripapillary retinal thickness (328 µm ) exceeds in-flight envelope.', 'warning');
+    demoJumpIncidentBtn.addEventListener('click', triggerDay19Incident);
+  }
+
+  // "Experience Day 19 SANS Incident" link button in Top Mission Briefing Banner
+  const introCtaBtn = document.getElementById('intro-cta-trigger');
+  if (introCtaBtn) {
+    introCtaBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      triggerDay19Incident();
+    });
+  }
+
+  // Dismiss button in Top Mission Briefing Banner
+  const introDismissBtn = document.getElementById('intro-dismiss-btn');
+  const introBanner = document.getElementById('intro-banner');
+  if (introDismissBtn && introBanner) {
+    introDismissBtn.addEventListener('click', () => {
+      introBanner.style.display = 'none';
+      try { storage.setItem('ofmj_intro_dismissed', 'true'); } catch (err) {}
     });
   }
 

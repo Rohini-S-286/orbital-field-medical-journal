@@ -1,6 +1,6 @@
 // Orbital Field Medical Journal - Offline-First Service Worker
 // Versioned cache name
-const CACHE_NAME = 'ofmj-v14';
+const CACHE_NAME = 'ofmj-v15';
 
 const STATIC_ASSETS = [
   './',
