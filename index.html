@@ -26,7 +26,7 @@
   <meta name="twitter:description" content="Offline-first spaceflight crew physiological monitoring and clinical telemetry logging PWA for NASA Space Apps 2026.">
   <meta name="twitter:image" content="https://rohini-s-286.github.io/orbital-field-medical-journal/og-image.png">
 
-  <link rel="stylesheet" href="./styles.css?v=13">
+  <link rel="stylesheet" href="./styles.css?v=14">
 
   <!-- Auto-clear obsolete SW caches on load -->
   <script>
@@ -439,7 +439,7 @@
             <div id="body-map-active-label" class="body-map-hover-tag" aria-live="polite">
               Ocular &amp; SANS Monitoring • In range (●)
             </div>
-            <svg class="body-map-svg" viewBox="0 14 320 508" preserveAspectRatio="xMidYMid meet" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Interactive anatomical front-view outline of astronaut physiology">
+            <svg class="body-map-svg" viewBox="50 14 220 508" preserveAspectRatio="xMidYMid meet" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Interactive anatomical front-view outline of astronaut physiology">
               <defs>
                 <!-- Single Soft Radial Glow Filter per system -->
                 <filter id="system-soft-glow" x="-50%" y="-50%" width="200%" height="200%">
@@ -650,6 +650,102 @@
             Begin Measurement
           </button>
         </section>
+
+        <!-- 3. Daily Countermeasure Schedule (Restores Balanced 3-Card Column, Zero Dead Space) -->
+<section class="journal-card" id="card-checklist" aria-labelledby="checkin-heading" >
+        <div class="card-header">
+          <div class="card-title-group">
+            <span class="card-meta">Daily Countermeasure Schedule</span>
+            <h2 id="checkin-heading">Today's Check-in</h2>
+          </div>
+          <span class="text-faint num-tabular" id="checkin-progress-counter" style="font-size: 13.5px;">2 / 4 Complete</span>
+        </div>
+
+        <!-- CHECK-IN PROTOCOL CHECKLIST -->
+        <ul class="checkin-list" role="list">
+          <!-- 1. Completed -->
+          <li class="checkin-item completed" role="listitem">
+            <div class="checkin-content">
+              <div class="checkin-icon-box" aria-label="Completed">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                  <polyline points="20 6 9 17 4 12"/>
+                </svg>
+              </div>
+              <div class="checkin-titles">
+                <span class="checkin-name">Sleep Architecture &amp; Core Temp</span>
+                <span class="checkin-meta">Logged 06:40 UTC • 7h 18m nominal </span>
+              </div>
+            </div>
+            <span class="status-badge status--in-range" style="padding: 4px 10px; font-size: 13px;">
+              In range
+            </span>
+          </li>
+
+          <!-- 2. Completed -->
+          <li class="checkin-item completed" role="listitem">
+            <div class="checkin-content">
+              <div class="checkin-icon-box" aria-label="Completed">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                  <polyline points="20 6 9 17 4 12"/>
+                </svg>
+              </div>
+              <div class="checkin-titles">
+                <span class="checkin-name">Cabin Radiation Dosimetry</span>
+                <span class="checkin-meta">Logged 08:15 UTC • 285 µGy/d </span>
+              </div>
+            </div>
+            <span class="status-badge status--in-range" style="padding: 4px 10px; font-size: 13px;">
+              In range
+            </span>
+          </li>
+
+          <!-- 3. Pending (Next Due) -->
+          <li class="checkin-item pending" id="checkin-item-cardio" role="listitem">
+            <div class="checkin-content">
+              <div class="checkin-icon-box" aria-label="Pending">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <circle cx="12" cy="12" r="10"/>
+                  <polyline points="12 6 12 12 16 14"/>
+                </svg>
+              </div>
+              <div class="checkin-titles">
+                <span class="checkin-name">Cardiovascular Vitals &amp; SpO2</span>
+                <span class="checkin-meta" id="checkin-cardio-meta">Due in 38m • Cuff, pulse oximeter &amp; HR</span>
+              </div>
+            </div>
+            <span class="status-badge status--attention" id="checkin-cardio-badge" style="padding: 4px 10px; font-size: 13px;">
+              Due Next
+            </span>
+          </li>
+
+          <!-- 4. Evening Workout -->
+          <li class="checkin-item" role="listitem">
+            <div class="checkin-content">
+              <div class="checkin-icon-box" style="background: var(--color-surface); color: var(--color-ink-muted);" aria-label="Scheduled">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M18 20V10M12 20V4M6 20v-6"/>
+                </svg>
+              </div>
+              <div class="checkin-titles">
+                <span class="checkin-name">ARED Resistive Countermeasure</span>
+                <span class="checkin-meta">Scheduled 16:30 UTC • Daily assigned session</span>
+              </div>
+            </div>
+            <span class="text-faint num-tabular" style="font-size: 13px;">16:30</span>
+          </li>
+        </ul>
+
+        <!-- Surgeon Quick Call Protocol trigger -->
+        <div style="margin-top: 24px; padding-top: 16px; border-top: 1px solid var(--color-border); display: flex; justify-content: space-between; align-items: center; gap: 8px;">
+          <div>
+            <div style="font-size: 13.5px; font-weight: 600; color: var(--color-ink);">Demo: preview all four status levels</div>
+            <div class="text-faint" style="font-size: 13px;">Cycles 4 non-color redundant levels</div>
+          </div>
+          <button class="btn-secondary" id="trigger-emergency-drill-btn" style="min-height: 48px; padding: 8px 16px; font-size: 13.5px;" title="Test and verify all 4 status states">
+            Status Drill
+          </button>
+        </div>
+      </section>
       </div>
 
       <!-- RIGHT COLUMN -->
@@ -879,98 +975,42 @@
   <!-- TAB VIEW 3: DAILY COUNTERMEASURES -->
   <div id="view-countermeasures" class="tab-view" role="tabpanel" aria-labelledby="tab-btn-countermeasures">
     <div class="dashboard-container" id="countermeasures-workspace-grid">
-      <section class="journal-card" id="card-checklist" aria-labelledby="checkin-heading" style="max-width: 900px; margin: 0 auto;">
+      <section class="journal-card" id="card-countermeasures-protocol-view" aria-labelledby="cm-protocol-heading" style="max-width: 900px; margin: 0 auto; width: 100%;">
         <div class="card-header">
           <div class="card-title-group">
-            <span class="card-meta">Daily Countermeasure Schedule</span>
-            <h2 id="checkin-heading">Today's Check-in</h2>
+            <span class="card-meta">In-Flight Countermeasure Protocols</span>
+            <h2 id="cm-protocol-heading">Daily Countermeasure Schedule &amp; Execution</h2>
           </div>
-          <span class="text-faint num-tabular" id="checkin-progress-counter" style="font-size: 13.5px;">2 / 4 Complete</span>
+          <span class="status-badge status--in-range">
+            <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+            Active In-Flight Schedule
+          </span>
         </div>
 
-        <!-- CHECK-IN PROTOCOL CHECKLIST -->
-        <ul class="checkin-list" role="list">
-          <!-- 1. Completed -->
-          <li class="checkin-item completed" role="listitem">
-            <div class="checkin-content">
-              <div class="checkin-icon-box" aria-label="Completed">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                  <polyline points="20 6 9 17 4 12"/>
-                </svg>
-              </div>
-              <div class="checkin-titles">
-                <span class="checkin-name">Sleep Architecture &amp; Core Temp</span>
-                <span class="checkin-meta">Logged 06:40 UTC • 7h 18m nominal </span>
-              </div>
-            </div>
-            <span class="status-badge status--in-range" style="padding: 4px 10px; font-size: 13px;">
-              In range
-            </span>
-          </li>
-
-          <!-- 2. Completed -->
-          <li class="checkin-item completed" role="listitem">
-            <div class="checkin-content">
-              <div class="checkin-icon-box" aria-label="Completed">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                  <polyline points="20 6 9 17 4 12"/>
-                </svg>
-              </div>
-              <div class="checkin-titles">
-                <span class="checkin-name">Cabin Radiation Dosimetry</span>
-                <span class="checkin-meta">Logged 08:15 UTC • 285 µGy/d </span>
-              </div>
-            </div>
-            <span class="status-badge status--in-range" style="padding: 4px 10px; font-size: 13px;">
-              In range
-            </span>
-          </li>
-
-          <!-- 3. Pending (Next Due) -->
-          <li class="checkin-item pending" id="checkin-item-cardio" role="listitem">
-            <div class="checkin-content">
-              <div class="checkin-icon-box" aria-label="Pending">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                  <circle cx="12" cy="12" r="10"/>
-                  <polyline points="12 6 12 12 16 14"/>
-                </svg>
-              </div>
-              <div class="checkin-titles">
-                <span class="checkin-name">Cardiovascular Vitals &amp; SpO2</span>
-                <span class="checkin-meta" id="checkin-cardio-meta">Due in 38m • Cuff, pulse oximeter &amp; HR</span>
-              </div>
-            </div>
-            <span class="status-badge status--attention" id="checkin-cardio-badge" style="padding: 4px 10px; font-size: 13px;">
-              Due Next
-            </span>
-          </li>
-
-          <!-- 4. Evening Workout -->
-          <li class="checkin-item" role="listitem">
-            <div class="checkin-content">
-              <div class="checkin-icon-box" style="background: var(--color-surface); color: var(--color-ink-muted);" aria-label="Scheduled">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                  <path d="M18 20V10M12 20V4M6 20v-6"/>
-                </svg>
-              </div>
-              <div class="checkin-titles">
-                <span class="checkin-name">ARED Resistive Countermeasure</span>
-                <span class="checkin-meta">Scheduled 16:30 UTC • Daily assigned session</span>
-              </div>
-            </div>
-            <span class="text-faint num-tabular" style="font-size: 13px;">16:30</span>
-          </li>
-        </ul>
-
-        <!-- Surgeon Quick Call Protocol trigger -->
-        <div style="margin-top: 24px; padding-top: 16px; border-top: 1px solid var(--color-border); display: flex; justify-content: space-between; align-items: center; gap: 8px;">
-          <div>
-            <div style="font-size: 13.5px; font-weight: 600; color: var(--color-ink);">Demo: preview all four status levels</div>
-            <div class="text-faint" style="font-size: 13px;">Cycles 4 non-color redundant levels</div>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px; margin-bottom: 20px;">
+          <div style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-md); padding: 16px;">
+            <div style="font-weight: 700; color: var(--color-ink); margin-bottom: 4px; font-size: 1.05rem;">ARED Resistive Exercise</div>
+            <div class="text-muted" style="font-size: 13.5px; line-height: 1.45;">Complete your scheduled resistive and cycle exercise sessions to mitigate axial deconditioning and bone mineral loss.</div>
+            <div class="simulated-tag" style="margin-top: 10px; display: inline-block;">NASA-STD-3001 • Countermeasure Compliance: 100%</div>
           </div>
-          <button class="btn-secondary" id="trigger-emergency-drill-btn" style="min-height: 48px; padding: 8px 16px; font-size: 13.5px;" title="Test and verify all 4 status states">
-            Status Drill
-          </button>
+
+          <div style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-md); padding: 16px;">
+            <div style="font-weight: 700; color: var(--color-ink); margin-bottom: 4px; font-size: 1.05rem;">SANS Fluid Redistribution Mitigation</div>
+            <div class="text-muted" style="font-size: 13.5px; line-height: 1.45;">Lower-body negative pressure (LBNP) session scheduled under autonomous self-care protocol to draw fluid caudally.</div>
+            <div class="simulated-tag" style="margin-top: 10px; display: inline-block;">HRP Evidence Report (SANS) • Autonomous Self-Care</div>
+          </div>
+
+          <div style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-md); padding: 16px;">
+            <div style="font-weight: 700; color: var(--color-ink); margin-bottom: 4px; font-size: 1.05rem;">Circadian Lighting &amp; Sleep Hygiene</div>
+            <div class="text-muted" style="font-size: 13.5px; line-height: 1.45;">Maintain circadian cabin illumination profile (480nm blue-enriched morning, amber evening). Rest duration: 7h 18m.</div>
+            <div class="simulated-tag" style="margin-top: 10px; display: inline-block;">NASA-STD-3001 Vol 2 • Sleep Architecture Nominal</div>
+          </div>
+
+          <div style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-md); padding: 16px;">
+            <div style="font-weight: 700; color: var(--color-ink); margin-bottom: 4px; font-size: 1.05rem;">Mission Nutrition &amp; Hydration</div>
+            <div class="text-muted" style="font-size: 13.5px; line-height: 1.45;">Stay hydrated as directed by your mission nutrition plan. Low-sodium intake maintained to manage intracranial pressure.</div>
+            <div class="simulated-tag" style="margin-top: 10px; display: inline-block;">JSC 65806 • Electrolyte-Balanced Hydration</div>
+          </div>
         </div>
       </section>
     </div>
@@ -1628,8 +1668,8 @@
   <div id="toast-container" class="toast-container" aria-live="polite" aria-atomic="true"></div>
 
   <!-- Clinical Knowledge Base Data Script -->
-  <script src="./clinical-ranges.js?v=13"></script>
+  <script src="./clinical-ranges.js?v=14"></script>
   <!-- Application Core Script -->
-  <script src="./app.js?v=13"></script>
+  <script src="./app.js?v=14"></script>
 </body>
 </html>

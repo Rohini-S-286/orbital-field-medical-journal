@@ -1254,8 +1254,8 @@ input:focus-visible,
 .body-map-wrapper {
   position: relative;
   width: 100%;
-  max-width: 320px;
-  margin: 6px auto 10px;
+  max-width: 260px;
+  margin: 4px auto 8px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -1278,9 +1278,8 @@ input:focus-visible,
 
 .body-map-svg {
   width: 100%;
-  max-width: 310px;
-  min-height: 460px;
-  height: auto;
+  max-width: 250px;
+  height: 480px;
   display: block;
   margin: 0 auto;
 }
@@ -3178,7 +3177,7 @@ input:focus-visible,
 .journal-card {
   display: flex;
   flex-direction: column;
-  height: 100%;
+  height: auto;
 }
 
 .journal-card .card-body-flexible {
@@ -3195,7 +3194,7 @@ input:focus-visible,
 /* ================= OVERVIEW TAB BALANCED TWO-COLUMN LAYOUT ================= */
 .overview-grid-two-col {
   display: grid;
-  grid-template-columns: minmax(360px, 1fr) minmax(360px, 1.05fr);
+  grid-template-columns: 1fr 1fr;
   gap: 24px;
   align-items: start;
   margin-bottom: 24px;

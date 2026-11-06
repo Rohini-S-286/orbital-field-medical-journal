@@ -2368,7 +2368,7 @@ document.addEventListener('DOMContentLoaded', () => {
       storage.setItem('astro_clinical_log', JSON.stringify(filtered));
       renderClinicalLogTable();
       showToast('Field note acknowledged & logged to Crew Clinical Journal.', 'success');
-      const journalCard = document.getElementById('card-clinical-journal');
+      const journalCard = document.getElementById('card-clinical-journal') || document.getElementById('card-clinical-log');
       if (journalCard) {
         journalCard.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
       }
