@@ -55,6 +55,43 @@
   --color-ochre-border: #ECD299;
   --color-ochre-text: #7A4E00;        /* Darkened text token for WCAG AA (5.8:1 on #FFFDF7) */
 
+  /* ================= SYSTEM ACCENT COLOURS (DECORATIVE IDENTITY & CHARTS ONLY) ================= */
+  --color-sys-cardio: #D6456B;
+  --color-sys-cardio-tint: rgba(214, 69, 107, 0.12);
+  --color-sys-cardio-border: #F0A4B8;
+  --color-sys-ocular: #4F46E5;
+  --color-sys-ocular-tint: rgba(79, 70, 229, 0.12);
+  --color-sys-ocular-border: #A5A1F6;
+  --color-sys-cranial: #8B5CF6;
+  --color-sys-cranial-tint: rgba(139, 92, 246, 0.12);
+  --color-sys-cranial-border: #C8B3FB;
+  --color-sys-spine: #B7791F;
+  --color-sys-spine-tint: rgba(183, 121, 31, 0.12);
+  --color-sys-spine-border: #E4BE7E;
+  --color-sys-pulmonary: #0EA5E9;
+  --color-sys-pulmonary-tint: rgba(14, 165, 233, 0.12);
+  --color-sys-pulmonary-border: #80D4FA;
+  --color-sys-neuro: #C026D3;
+  --color-sys-neuro-tint: rgba(192, 38, 211, 0.12);
+  --color-sys-neuro-border: #E88EEF;
+  --color-sys-sleep: #2563EB;
+  --color-sys-sleep-tint: rgba(37, 99, 235, 0.12);
+  --color-sys-sleep-border: #8BB0F7;
+  --color-sys-immune: #0D9488;
+  --color-sys-immune-tint: rgba(13, 148, 136, 0.12);
+  --color-sys-immune-border: #75CCC4;
+  --color-sys-metabolic: #65A30D;
+  --color-sys-metabolic-tint: rgba(101, 163, 13, 0.12);
+  --color-sys-metabolic-border: #B1D77C;
+  --color-sys-limbs: #F97316;
+  --color-sys-limbs-tint: rgba(249, 115, 22, 0.12);
+  --color-sys-limbs-border: #FBB47D;
+
+  /* Brand additions */
+  --brand-deep: #064E3B;
+  --brand-emerald: #0B7A56;
+  --brand-mint-tint: #E3F5EC;
+
   /* Tactile Paper Shadows */
   --shadow-sm: 0 1px 3px rgba(31, 42, 36, 0.05), 0 1px 2px rgba(180, 160, 120, 0.08);
   --shadow-md: 0 4px 14px rgba(31, 42, 36, 0.06), 0 2px 6px rgba(180, 160, 120, 0.12);
@@ -112,6 +149,42 @@
   --color-ochre-tint: rgba(224, 159, 43, 0.22);
   --color-ochre-border: #6B4913;
   --color-ochre-text: #F0B84A;        /* High contrast on dark (7.4:1 on #16241D) */
+
+  /* Dark Night Cabin System Accents (Vibrant & Contrast-Tuned) */
+  --color-sys-cardio: #FB7185;
+  --color-sys-cardio-tint: rgba(251, 113, 133, 0.18);
+  --color-sys-cardio-border: #9E2B43;
+  --color-sys-ocular: #818CF8;
+  --color-sys-ocular-tint: rgba(129, 140, 248, 0.18);
+  --color-sys-ocular-border: #3E3B92;
+  --color-sys-cranial: #A78BFA;
+  --color-sys-cranial-tint: rgba(167, 139, 250, 0.18);
+  --color-sys-cranial-border: #583DA8;
+  --color-sys-spine: #FBBF24;
+  --color-sys-spine-tint: rgba(251, 191, 36, 0.18);
+  --color-sys-spine-border: #8B6109;
+  --color-sys-pulmonary: #38BDF8;
+  --color-sys-pulmonary-tint: rgba(56, 189, 248, 0.18);
+  --color-sys-pulmonary-border: #0A6997;
+  --color-sys-neuro: #E879F9;
+  --color-sys-neuro-tint: rgba(232, 121, 249, 0.18);
+  --color-sys-neuro-border: #8A1599;
+  --color-sys-sleep: #60A5FA;
+  --color-sys-sleep-tint: rgba(96, 165, 250, 0.18);
+  --color-sys-sleep-border: #1B459E;
+  --color-sys-immune: #2DD4BF;
+  --color-sys-immune-tint: rgba(45, 212, 191, 0.18);
+  --color-sys-immune-border: #096B61;
+  --color-sys-metabolic: #A3E635;
+  --color-sys-metabolic-tint: rgba(163, 230, 53, 0.18);
+  --color-sys-metabolic-border: #4D7A09;
+  --color-sys-limbs: #FB923C;
+  --color-sys-limbs-tint: rgba(251, 146, 60, 0.18);
+  --color-sys-limbs-border: #9E4909;
+
+  --brand-deep: #06281E;
+  --brand-emerald: #149B6F;
+  --brand-mint-tint: rgba(20, 155, 111, 0.22);
 
   /* Night Cabin Shadows */
   --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.4);
@@ -470,14 +543,29 @@ input:focus-visible,
   font-weight: 600;
 }
 
-/* ================= HEADER & APP SHELL ================= */
+/* ================= HEADER & APP SHELL (HERO EMERALD IDENTITY) ================= */
 .app-header {
-  background-color: var(--color-surface);
-  border-bottom: 1px solid var(--color-border);
-  padding: 14px 24px;
+  background: linear-gradient(135deg, #064E3B 0%, #0B7A56 50%, #064E3B 100%);
+  background-image: 
+    radial-gradient(circle at 15% 50%, rgba(255, 255, 255, 0.08) 0%, transparent 50%),
+    radial-gradient(circle at 85% 30%, rgba(20, 184, 166, 0.16) 0%, transparent 60%),
+    linear-gradient(135deg, #064E3B 0%, #0B7A56 50%, #064E3B 100%);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+  padding: 16px 24px;
   position: relative;
   z-index: 100;
-  backdrop-filter: blur(8px);
+  color: #FFFFFF;
+  box-shadow: 0 4px 20px rgba(6, 78, 59, 0.25);
+}
+
+[data-theme="dark"] .app-header {
+  background: linear-gradient(135deg, #041F17 0%, #073827 50%, #041F17 100%);
+  background-image: 
+    radial-gradient(circle at 15% 50%, rgba(45, 212, 191, 0.08) 0%, transparent 50%),
+    radial-gradient(circle at 85% 30%, rgba(16, 185, 129, 0.12) 0%, transparent 60%),
+    linear-gradient(135deg, #041F17 0%, #073827 50%, #041F17 100%);
+  border-bottom: 1px solid rgba(45, 212, 191, 0.2);
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.55);
 }
 
 .header-inner {
@@ -500,26 +588,57 @@ input:focus-visible,
   width: 48px;
   height: 48px;
   border-radius: var(--radius-md);
-  background-color: var(--color-emerald-tint);
-  border: 1.5px solid var(--color-emerald-border);
+  background-color: rgba(255, 255, 255, 0.14);
+  border: 1.5px solid rgba(255, 255, 255, 0.35);
   display: flex;
   align-items: center;
   justify-content: center;
-  color: var(--color-emerald);
+  color: #FFFFFF;
+  box-shadow: 0 0 12px rgba(255, 255, 255, 0.15);
 }
 
 .brand-titles h1 {
   font-size: 1.35rem;
   letter-spacing: -0.01em;
+  color: #FFFFFF;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
 }
 
 .brand-titles .mission-meta {
   font-size: 0.8rem;
-  color: var(--color-ink-muted);
+  color: rgba(255, 255, 255, 0.85);
   display: flex;
   gap: 8px;
   align-items: center;
   flex-wrap: wrap;
+}
+
+.brand-titles .simulated-tag {
+  background: rgba(255, 255, 255, 0.2);
+  color: #FFFFFF;
+  border-color: rgba(255, 255, 255, 0.35);
+}
+
+.app-header .btn-secondary {
+  background: rgba(255, 255, 255, 0.14);
+  color: #FFFFFF;
+  border: 1px solid rgba(255, 255, 255, 0.28);
+}
+
+.app-header .btn-secondary:hover {
+  background: rgba(255, 255, 255, 0.24);
+  border-color: rgba(255, 255, 255, 0.45);
+}
+
+.app-header .offline-pill {
+  background: rgba(255, 255, 255, 0.14);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  color: #FFFFFF;
+}
+
+.app-header .offline-dot {
+  background: #34D399;
+  box-shadow: 0 0 6px #34D399;
 }
 
 .header-controls {
@@ -822,6 +941,161 @@ input:focus-visible,
 @media (max-width: 699px) {
   .journal-card {
     padding: 20px;
+  }
+}
+
+/* ================= TOP SUMMARY STRIP: 4 KPI CARDS ================= */
+.kpi-strip {
+  max-width: 1400px;
+  margin: 18px auto 0;
+  padding: 0 24px;
+}
+
+.kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+}
+
+.kpi-card {
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: 16px 20px;
+  box-shadow: var(--shadow-sm);
+  transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.2s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.2s ease;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  position: relative;
+  overflow: hidden;
+}
+
+.kpi-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+  border-color: var(--color-border-strong);
+}
+
+.kpi--readiness {
+  border-top: 3.5px solid var(--color-emerald);
+}
+
+.kpi--systems {
+  border-top: 3.5px solid var(--color-sys-ocular);
+}
+
+.kpi--streak {
+  border-top: 3.5px solid var(--color-sys-sleep);
+}
+
+.kpi--countdown {
+  border-top: 3.5px solid var(--color-sys-cardio);
+}
+
+.kpi-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.kpi-icon-tile {
+  width: 38px;
+  height: 38px;
+  border-radius: var(--radius-md);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.kpi--readiness .kpi-icon-tile {
+  background-color: var(--color-emerald-tint);
+  color: var(--color-emerald);
+}
+
+.kpi--systems .kpi-icon-tile {
+  background-color: var(--color-sys-ocular-tint);
+  color: var(--color-sys-ocular);
+}
+
+.kpi--streak .kpi-icon-tile {
+  background-color: var(--color-sys-sleep-tint);
+  color: var(--color-sys-sleep);
+}
+
+.kpi--countdown .kpi-icon-tile {
+  background-color: var(--color-sys-cardio-tint);
+  color: var(--color-sys-cardio);
+}
+
+.kpi-badge {
+  font-size: 0.72rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 3px 8px;
+  border-radius: var(--radius-full);
+}
+
+.kpi-badge--emerald {
+  background-color: var(--color-emerald-tint);
+  color: var(--color-emerald);
+  border: 1px solid var(--color-emerald-border);
+}
+
+.kpi-badge--indigo {
+  background-color: var(--color-sys-ocular-tint);
+  color: var(--color-sys-ocular);
+  border: 1px solid var(--color-sys-ocular-border);
+}
+
+.kpi-badge--blue {
+  background-color: var(--color-sys-sleep-tint);
+  color: var(--color-sys-sleep);
+  border: 1px solid var(--color-sys-sleep-border);
+}
+
+.kpi-badge--rose {
+  background-color: var(--color-sys-cardio-tint);
+  color: var(--color-sys-cardio);
+  border: 1px solid var(--color-sys-cardio-border);
+}
+
+.kpi-value {
+  font-family: var(--font-serif);
+  font-size: 1.85rem;
+  font-weight: 700;
+  line-height: 1.1;
+  color: var(--color-ink);
+  margin-bottom: 4px;
+}
+
+.kpi-label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--color-ink-muted);
+  margin-bottom: 4px;
+}
+
+.kpi-sub {
+  font-size: 0.76rem;
+  color: var(--color-ink-faint);
+}
+
+@media (max-width: 1099px) {
+  .kpi-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 699px) {
+  .kpi-grid {
+    grid-template-columns: 1fr;
+  }
+  .kpi-strip {
+    padding: 0 16px;
+    margin-top: 12px;
   }
 }
 
@@ -1821,16 +2095,32 @@ input:focus-visible,
   font-size: 0.88rem;
 }
 
+.telemetry-log-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
 .telemetry-log-table th {
-  background-color: var(--color-surface-hover);
+  background-color: var(--color-surface);
+  position: sticky;
+  top: 0;
+  z-index: 10;
   color: var(--color-ink-muted);
   font-weight: 600;
   text-transform: uppercase;
   font-size: 0.78rem;
   letter-spacing: 0.05em;
   padding: 12px 16px;
-  border-bottom: 1px solid var(--color-border);
+  border-bottom: 2px solid var(--color-border);
   white-space: nowrap;
+}
+
+.telemetry-log-table tbody tr:nth-child(even) {
+  background-color: var(--color-surface-hover);
+}
+
+.telemetry-log-table tbody tr:hover {
+  background-color: var(--color-emerald-tint);
 }
 
 .telemetry-log-table td {
@@ -1844,7 +2134,155 @@ input:focus-visible,
   border-bottom: none;
 }
 
-/* ================= 10. TIERED GUIDANCE CARDS ================= */
+/* ================= CONNECTED CHECK-IN TIMELINE ================= */
+.checkin-list {
+  position: relative;
+}
+
+.checkin-list::before {
+  content: '';
+  position: absolute;
+  top: 26px;
+  bottom: 26px;
+  left: 32px;
+  width: 2px;
+  background-color: var(--color-border);
+  z-index: 1;
+}
+
+.checkin-item {
+  position: relative;
+  z-index: 2;
+  transition: transform 0.15s ease;
+}
+
+.checkin-item:hover {
+  transform: translateX(2px);
+}
+
+.checkin-item.completed .checkin-icon-box {
+  background-color: var(--color-emerald);
+  color: #FFFFFF;
+  border: none;
+  box-shadow: 0 0 0 3px var(--color-emerald-tint);
+}
+
+.checkin-item.pending .checkin-icon-box {
+  background-color: var(--color-ochre);
+  color: #FFFFFF;
+  border: none;
+  box-shadow: 0 0 0 3px var(--color-ochre-tint);
+  animation: pulse-ring 2.4s infinite;
+}
+
+/* ================= BODY MAP SOFT ORGAN TINTS & SELECTION GLOW ================= */
+.body-map-wrapper {
+  max-width: 440px !important;
+}
+
+.body-system-region {
+  cursor: pointer;
+  transition: opacity 0.2s ease, filter 0.2s ease, stroke-width 0.2s ease;
+}
+
+.body-system-region:hover {
+  filter: drop-shadow(0 0 6px currentColor);
+  opacity: 0.95 !important;
+}
+
+.body-system-region.selected-system {
+  filter: drop-shadow(0 0 8px var(--color-emerald));
+  stroke-width: 2.5px;
+}
+
+#sys-cardio path { fill: var(--color-sys-cardio-tint); stroke: var(--color-sys-cardio); }
+#sys-ocular circle, #sys-ocular ellipse { fill: var(--color-sys-ocular-tint); stroke: var(--color-sys-ocular); }
+#sys-cranial path, #sys-cranial circle { fill: var(--color-sys-cranial-tint); stroke: var(--color-sys-cranial); }
+#sys-spine rect { fill: var(--color-sys-spine); stroke: var(--color-sys-spine); }
+#sys-spine line { stroke: var(--color-sys-spine); }
+#sys-pulmonary path { fill: var(--color-sys-pulmonary-tint); stroke: var(--color-sys-pulmonary); }
+#sys-neuro path, #sys-neuro circle { fill: var(--color-sys-neuro-tint); stroke: var(--color-sys-neuro); }
+#sys-sleep path, #sys-sleep circle { fill: var(--color-sys-sleep-tint); stroke: var(--color-sys-sleep); }
+#sys-immune circle { fill: var(--color-sys-immune-tint); stroke: var(--color-sys-immune); }
+#sys-metabolic circle { fill: var(--color-sys-metabolic-tint); stroke: var(--color-sys-metabolic); }
+#sys-limbs ellipse { fill: var(--color-sys-limbs-tint); stroke: var(--color-sys-limbs); }
+
+/* ================= 10. TIERED GUIDANCE CARDS & STEPPER ================= */
+.tier-stepper {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 14px;
+  padding: 8px 12px;
+  background-color: var(--color-surface-hover);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+}
+
+.tier-step {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.76rem;
+  font-weight: 600;
+  color: var(--color-ink-muted);
+  opacity: 0.65;
+  transition: all 0.2s ease;
+}
+
+.tier-step-num {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.72rem;
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  color: var(--color-ink-muted);
+}
+
+.tier-step--active {
+  opacity: 1;
+  font-weight: 700;
+  color: var(--color-ink);
+}
+
+.tier-step--active.step--routine .tier-step-num {
+  background-color: var(--color-emerald);
+  border-color: var(--color-emerald);
+  color: #FFFFFF;
+  box-shadow: 0 0 0 3px var(--color-emerald-tint);
+}
+
+.tier-step--active.step--selfCare .tier-step-num {
+  background-color: var(--color-ochre);
+  border-color: var(--color-ochre);
+  color: #FFFFFF;
+  box-shadow: 0 0 0 3px var(--color-ochre-tint);
+}
+
+.tier-step--active.step--flightSurgeon .tier-step-num {
+  background-color: var(--color-ochre);
+  border-color: var(--color-ochre);
+  color: #FFFFFF;
+  box-shadow: 0 0 0 3px var(--color-ochre-tint);
+}
+
+.tier-step--active.step--emergency .tier-step-num {
+  background-color: var(--color-vermillion);
+  border-color: var(--color-vermillion);
+  color: #FFFFFF;
+  box-shadow: 0 0 0 3px var(--color-vermillion-tint);
+}
+
+.tier-stepper-divider {
+  flex: 1;
+  height: 2px;
+  background-color: var(--color-border);
+  margin: 0 8px;
+}
 .guidance-tier-card {
   border-radius: var(--radius-md);
   border: 1px solid var(--color-border);

@@ -213,6 +213,83 @@
     </div>
   </section>
 
+  <!-- ================= TOP SUMMARY STRIP: 4 KPI CARDS ================= -->
+  <section class="kpi-strip" aria-label="Key Physiological Metrics Summary">
+    <div class="kpi-grid">
+      <!-- KPI 1: Readiness Score -->
+      <div class="kpi-card kpi--readiness">
+        <div class="kpi-header">
+          <span class="kpi-icon-tile">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M22 12h-4l-3 9L9 3l-3 9H2"/>
+            </svg>
+          </span>
+          <span class="kpi-badge kpi-badge--emerald">Composite Score</span>
+        </div>
+        <div class="kpi-body">
+          <div class="kpi-value num-tabular" id="kpi-readiness-val">100%</div>
+          <div class="kpi-label">Physiological Readiness</div>
+          <div class="kpi-sub num-tabular" id="kpi-readiness-sub">95% CI: 98%–100%</div>
+        </div>
+      </div>
+
+      <!-- KPI 2: Systems In Range -->
+      <div class="kpi-card kpi--systems">
+        <div class="kpi-header">
+          <span class="kpi-icon-tile">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+            </svg>
+          </span>
+          <span class="kpi-badge kpi-badge--indigo">Adaptation</span>
+        </div>
+        <div class="kpi-body">
+          <div class="kpi-value num-tabular" id="kpi-systems-val">10 / 10</div>
+          <div class="kpi-label">Systems Within Target</div>
+          <div class="kpi-sub" id="kpi-systems-sub">All systems nominal</div>
+        </div>
+      </div>
+
+      <!-- KPI 3: Check-in Streak -->
+      <div class="kpi-card kpi--streak">
+        <div class="kpi-header">
+          <span class="kpi-icon-tile">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+              <line x1="16" y1="2" x2="16" y2="6"/>
+              <line x1="8" y1="2" x2="8" y2="6"/>
+              <line x1="3" y1="10" x2="21" y2="10"/>
+            </svg>
+          </span>
+          <span class="kpi-badge kpi-badge--blue">Protocol Adherence</span>
+        </div>
+        <div class="kpi-body">
+          <div class="kpi-value num-tabular" id="kpi-streak-val">14 Days</div>
+          <div class="kpi-label">Continuous Logging</div>
+          <div class="kpi-sub" id="kpi-streak-sub">100% schedule compliance</div>
+        </div>
+      </div>
+
+      <!-- KPI 4: Next Due Measurement -->
+      <div class="kpi-card kpi--countdown">
+        <div class="kpi-header">
+          <span class="kpi-icon-tile">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <circle cx="12" cy="12" r="10"/>
+              <polyline points="12 6 12 12 16 14"/>
+            </svg>
+          </span>
+          <span class="kpi-badge kpi-badge--rose">Next Window</span>
+        </div>
+        <div class="kpi-body">
+          <div class="kpi-value num-tabular" id="kpi-countdown-val">38:14</div>
+          <div class="kpi-label">Resting Vitals &amp; SpO2</div>
+          <div class="kpi-sub" id="kpi-countdown-sub">Window open • 4-4-4 breathing</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <!-- ================= MAIN THREE-COLUMN WORKSPACE ================= -->
   <main class="dashboard-container" id="main-content">
 

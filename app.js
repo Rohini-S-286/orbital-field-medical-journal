@@ -838,9 +838,6 @@ document.addEventListener('DOMContentLoaded', () => {
       <p class="sr-only" aria-live="polite">Longitudinal telemetry trend for ${sysName}: ${earthMin !== null ? `Earth sea-level reference is ${earthMin} to ${earthMax} ${yUnit}; ` : ''}Expected in-flight adaptation envelope is ${baselineMin} to ${baselineMax} ${yUnit}. Current reading is ${latestPoint.observed} ${yUnit} recorded on ${latestPoint.day}. Diagnostic status: ${STATUS_CONFIG[systemStatus].label}.</p>
     `;
   }
-      <p class="sr-only" aria-live="polite">Longitudinal telemetry trend for ${sysName}: Baseline is ${baselineMin} to ${baselineMax} ${yUnit}. Current reading is ${latestPoint.observed} ${yUnit} recorded on ${latestPoint.day}. Diagnostic status: ${STATUS_CONFIG[systemStatus].label}.</p>
-    `;
-  }
 
   // ================= SYSTEM SELECTION & BODY MAP INTERACTION (REQUIREMENT 2) =================
   const inspectTitle = document.getElementById('inspect-title');
@@ -899,9 +896,44 @@ document.addEventListener('DOMContentLoaded', () => {
     // 3. Update Flag in Card Header
     setBadge('#current-overall-flag', sys.status, `${sys.name.split(' ')[0]}: ${STATUS_CONFIG[sys.status].label}`);
 
-    // 4. Update Active Legend Chip
+    // System Accent Map for decorative identity and top borders
+    const SYSTEM_ACCENT_MAP = {
+      cardio: 'var(--color-sys-cardio)',
+      ocular: 'var(--color-sys-ocular)',
+      cranial: 'var(--color-sys-cranial)',
+      spine: 'var(--color-sys-spine)',
+      pulmonary: 'var(--color-sys-pulmonary)',
+      neuro: 'var(--color-sys-neuro)',
+      sleep: 'var(--color-sys-sleep)',
+      immune: 'var(--color-sys-immune)',
+      metabolic: 'var(--color-sys-metabolic)',
+      limbs: 'var(--color-sys-limbs)'
+    };
+
+    // Apply 3.5px colored accent border to focus system card
+    const focusCard = document.getElementById('card-status-index');
+    if (focusCard) {
+      focusCard.style.borderTop = `3.5px solid ${SYSTEM_ACCENT_MAP[systemId] || 'var(--color-sys-ocular)'}`;
+    }
+
+    // 4. Update Active Legend Chip with system accent
     legendChips.forEach(chip => {
-      chip.classList.toggle('active', chip.dataset.target === systemId);
+      const isTarget = chip.dataset.target === systemId;
+      chip.classList.toggle('active', isTarget);
+      if (isTarget) {
+        chip.style.borderColor = SYSTEM_ACCENT_MAP[systemId] || 'var(--color-emerald)';
+        chip.style.backgroundColor = `var(--color-sys-${systemId}-tint, var(--color-emerald-tint))`;
+        chip.style.color = SYSTEM_ACCENT_MAP[systemId] || 'var(--color-emerald)';
+      } else {
+        chip.style.borderColor = '';
+        chip.style.backgroundColor = '';
+        chip.style.color = '';
+      }
+    });
+
+    // Highlight selected organ on SVG Body Map
+    bodyRegions.forEach(reg => {
+      reg.classList.toggle('selected-system', reg.dataset.system === systemId);
     });
 
     // 5. Update Dynamic SVG Chart
@@ -1079,7 +1111,41 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Keep SVG body map visual classes & aria-labels synchronized (Requirement 9)
     updateBodyMapVisuals();
+
+    // Keep top summary KPI strip synchronized
+    updateKpis();
   }
+
+  function updateKpis() {
+    const readinessVal = document.getElementById('kpi-readiness-val');
+    const readinessSub = document.getElementById('kpi-readiness-sub');
+    const systemsVal = document.getElementById('kpi-systems-val');
+    const systemsSub = document.getElementById('kpi-systems-sub');
+    const streakVal = document.getElementById('kpi-streak-val');
+    const countdownVal = document.getElementById('kpi-countdown-val');
+
+    if (readinessVal) readinessVal.textContent = `${state.overallReadiness}%`;
+    if (readinessSub) {
+      const uncert = calculateReadinessWithUncertainty();
+      readinessSub.textContent = uncert.ciLabel;
+    }
+
+    const allSys = Object.values(state.systems || {});
+    const inRangeCount = allSys.filter(s => s.status === 'in-range').length;
+    if (systemsVal) systemsVal.textContent = `${inRangeCount} / ${allSys.length}`;
+    if (systemsSub) {
+      systemsSub.textContent = inRangeCount === allSys.length ? 'All systems nominal' : `${allSys.length - inRangeCount} flagged for review`;
+    }
+
+    const streakDays = state.demoDay || 14;
+    if (streakVal) streakVal.textContent = `${streakDays} Days`;
+    if (countdownVal) {
+      const mins = Math.floor(state.countdownSeconds / 60);
+      const secs = state.countdownSeconds % 60;
+      countdownVal.textContent = `${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
+    }
+  }
+  window.updateKpis = updateKpis;
 
   function updateBodyMapVisuals() {
     Object.values(state.systems).forEach(sys => {
@@ -1355,7 +1421,32 @@ document.addEventListener('DOMContentLoaded', () => {
       ? `<span class="status-badge status--in-range" style="font-size: 0.70rem; padding: 1px 6px; display: inline-flex; align-items: center; gap: 3px;"><svg viewBox="0 0 24 24" width="10" height="10" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Verified</span>`
       : `<span class="status-badge status--attention" style="font-size: 0.70rem; padding: 1px 6px; display: inline-flex; align-items: center; gap: 3px;"><svg viewBox="0 0 24 24" width="10" height="10" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/></svg>Needs Verification</span>`;
 
+    const stepperHtml = `
+      <div class="tier-stepper" role="group" aria-label="Clinical Decision Tiers">
+        <div class="tier-step ${tierKey === 'routine' ? 'tier-step--active step--routine' : ''}">
+          <span class="tier-step-num">1</span>
+          <span>Routine</span>
+        </div>
+        <div class="tier-stepper-divider"></div>
+        <div class="tier-step ${tierKey === 'selfCare' ? 'tier-step--active step--selfCare' : ''}">
+          <span class="tier-step-num">2</span>
+          <span>Self-Care</span>
+        </div>
+        <div class="tier-stepper-divider"></div>
+        <div class="tier-step ${tierKey === 'flightSurgeon' ? 'tier-step--active step--flightSurgeon' : ''}">
+          <span class="tier-step-num">3</span>
+          <span>Surgeon</span>
+        </div>
+        <div class="tier-stepper-divider"></div>
+        <div class="tier-step ${tierKey === 'emergency' ? 'tier-step--active step--emergency' : ''}">
+          <span class="tier-step-num">4</span>
+          <span>Emergency</span>
+        </div>
+      </div>
+    `;
+
     preview.innerHTML = `
+      ${stepperHtml}
       <div class="guidance-tier-card tier--${tier.statusKey}" style="margin-bottom: 0;">
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
           <h4 style="font-size: 0.95rem;">${tier.level}</h4>
@@ -2326,9 +2417,14 @@ document.addEventListener('DOMContentLoaded', () => {
       state.countdownSeconds--;
       const mins = Math.floor(state.countdownSeconds / 60);
       const secs = state.countdownSeconds % 60;
-      if (countdownDisplay) countdownDisplay.textContent = `${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
-    } else if (countdownDisplay) {
-      countdownDisplay.textContent = 'DUE NOW';
+      const countStr = `${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
+      if (countdownDisplay) countdownDisplay.textContent = countStr;
+      const kpiCount = document.getElementById('kpi-countdown-val');
+      if (kpiCount) kpiCount.textContent = countStr;
+    } else {
+      if (countdownDisplay) countdownDisplay.textContent = 'DUE NOW';
+      const kpiCount = document.getElementById('kpi-countdown-val');
+      if (kpiCount) kpiCount.textContent = 'DUE NOW';
     }
   }
   setInterval(updateTimes, 1000);
@@ -2344,16 +2440,38 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
-  // ================= INITIALIZATION =================
-  populateEvidenceDrawer();
-  populateTieredGuidance();
-  renderClinicalLogTable();
-  updateOverallGauge();
-  selectSystem('ocular');
+  // Resilient Initialisation Wrapper (Part 1, Item 2)
+  function safeInitPanel(panelName, fn, fallbackElementId = null) {
+    try {
+      fn();
+    } catch (err) {
+      console.warn(`[CDSS UI Recovery] Panel '${panelName}' failed to render:`, err);
+      if (fallbackElementId) {
+        const el = document.getElementById(fallbackElementId);
+        if (el) {
+          el.innerHTML = `<div class="panel-warning" role="alert" style="padding: 16px; font-size: 0.88rem; color: var(--color-ink-muted); background: var(--color-surface); border: 1px dashed var(--color-border); border-radius: var(--radius-md); text-align: center;">
+            <strong>${panelName} Notice:</strong> Panel telemetry is operating in fallback mode.
+          </div>`;
+        }
+      }
+    }
+  }
+
+  // ================= RESILIENT INITIALIZATION =================
+  safeInitPanel('Evidence Drawer', populateEvidenceDrawer);
+  safeInitPanel('Tiered Guidance', populateTieredGuidance, 'all-tiered-guidance-cards');
+  safeInitPanel('Clinical Log', renderClinicalLogTable, 'clinical-log-tbody');
+  safeInitPanel('Overall Gauge', updateOverallGauge);
+  safeInitPanel('System Selection', () => selectSystem('ocular'));
+  safeInitPanel('Demo Synchronization', () => applyMissionDay(state.demoDay || 14));
+  safeInitPanel('KPI Strip', updateKpis);
 
   // URL search parameter deep-linking (for tests, demos & automation)
   try {
     const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.has('theme')) {
+      applyTheme(urlParams.get('theme'), true);
+    }
     if (urlParams.has('day')) {
       applyMissionDay(parseInt(urlParams.get('day'), 10));
     }
