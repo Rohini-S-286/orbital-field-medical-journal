@@ -26,7 +26,7 @@
   <meta name="twitter:description" content="Offline-first spaceflight crew physiological monitoring and clinical telemetry logging PWA for NASA Space Apps 2026.">
   <meta name="twitter:image" content="https://rohini-s-286.github.io/orbital-field-medical-journal/og-image.png">
 
-  <link rel="stylesheet" href="./styles.css?v=12">
+  <link rel="stylesheet" href="./styles.css?v=13">
 
   <!-- Auto-clear obsolete SW caches on load -->
   <script>
@@ -258,7 +258,7 @@
     <div class="incident-chain-grid">
       <div class="chain-step-card">
         <div class="chain-step-num">Step 1 • Physiological Data</div>
-        <div class="chain-step-title">337 µm (+35 µm)</div>
+        <div class="chain-step-title">328 µm (+26 µm)</div>
         <div class="chain-step-desc">Optic disc edema drifts past 325 µm microgravity upper limit under cephalad fluid redistribution.</div>
       </div>
       <div class="chain-step-card" style="border-top: 3px solid var(--color-ochre);">
@@ -266,15 +266,15 @@
         <div class="chain-step-title" style="color: var(--color-ochre-text);">Ocular System: Watch ▲</div>
         <div class="chain-step-desc">Classified as Grade 1 Frisén edema. Three-reference model flags non-linear drift.</div>
       </div>
-      <div class="chain-step-card" style="border-top: 3px solid var(--color-vermillion);">
+      <div class="chain-step-card" style="border-top: 3px solid var(--color-ochre);">
         <div class="chain-step-num">Step 3 • Decision Escalation</div>
-        <div class="chain-step-title" style="color: var(--color-vermillion-text);">Readiness: 74% / Tier 3 ◆</div>
-        <div class="chain-step-desc" id="incident-why-dropped">Why it dropped: Ocular (-18%): SANS Grade 1 drift above in-flight nominal threshold.</div>
+        <div class="chain-step-title" style="color: var(--color-ochre-text);">Readiness: 82% / Self-Care ▲</div>
+        <div class="chain-step-desc" id="incident-why-dropped">Why it dropped: Ocular (-18%): SANS Grade 1 drift (328 µm) above in-flight nominal limit (325 µm).</div>
       </div>
       <div class="chain-step-card" style="border-top: 3px solid var(--color-emerald);">
         <div class="chain-step-num">Step 4 • Recommended Action</div>
-        <div class="chain-step-title" style="color: var(--color-emerald);">Flight Surgeon Consult</div>
-        <div class="chain-step-desc">Telemetry bundled for downlink. Non-pharmacologic countermeasure: 30° head-elevation rest.</div>
+        <div class="chain-step-title" style="color: var(--color-emerald);">Self-Care Countermeasures</div>
+        <div class="chain-step-desc">Autonomous self-care countermeasure active. Scheduled resistive sessions &amp; ocular monitoring.</div>
       </div>
     </div>
 
@@ -287,17 +287,17 @@
       <span class="timeline-arrow">→</span>
       <div class="timeline-node">
         <span class="timeline-node-dot"></span>
-        <span>Day 15: First shift (+8 µm)</span>
+        <span>Day 15: First deviation (310 µm)</span>
       </div>
       <span class="timeline-arrow">→</span>
       <div class="timeline-node">
         <span class="timeline-node-dot"></span>
-        <span>Day 17: Trend flagged (320 µm)</span>
+        <span>Day 17: Trend flag (320 µm)</span>
       </div>
       <span class="timeline-arrow">→</span>
       <div class="timeline-node active">
         <span class="timeline-node-dot"></span>
-        <span>Day 19: In-flight threshold crossed (337 µm)</span>
+        <span>Day 19: Threshold crossed (328 µm)</span>
       </div>
     </div>
   </section>
@@ -772,22 +772,23 @@
           </div>
         </section>
 
-        <!-- 5. Active Clinical Guidance Tier Summary -->
-        <section class="journal-card" id="card-active-guidance" aria-labelledby="guidance-overview-heading">
-          <div class="card-header">
-            <div class="card-title-group">
-              <span class="card-meta">Tiered Decision Support</span>
-              <h2 id="guidance-overview-heading" style="font-size: 1.25rem;">Active Clinical Guidance Tier</h2>
-            </div>
-            <span class="text-faint" style="font-size: 13px;">No drug dosing</span>
-          </div>
-
-          <div id="active-guidance-preview">
-            <!-- Dynamically populated from TIERED_GUIDANCE matching current status -->
-          </div>
-        </section>
       </div>
     </div>
+
+    <!-- Active Clinical Guidance Tier (Full-Width Row Below Overview Grid) -->
+    <section class="journal-card" id="card-active-guidance" aria-labelledby="guidance-overview-heading" style="margin-top: 24px; width: 100%;">
+      <div class="card-header">
+        <div class="card-title-group">
+          <span class="card-meta">Tiered Decision Support</span>
+          <h2 id="guidance-overview-heading" style="font-size: 1.25rem;">Active Clinical Guidance Tier</h2>
+        </div>
+        <span class="text-faint" style="font-size: 13px;">No drug dosing</span>
+      </div>
+
+      <div id="active-guidance-preview">
+        <!-- Dynamically populated from TIERED_GUIDANCE matching current status -->
+      </div>
+    </section>
   </div>
 
 
@@ -1627,8 +1628,8 @@
   <div id="toast-container" class="toast-container" aria-live="polite" aria-atomic="true"></div>
 
   <!-- Clinical Knowledge Base Data Script -->
-  <script src="./clinical-ranges.js?v=12"></script>
+  <script src="./clinical-ranges.js?v=13"></script>
   <!-- Application Core Script -->
-  <script src="./app.js?v=12"></script>
+  <script src="./app.js?v=13"></script>
 </body>
 </html>

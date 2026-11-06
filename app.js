@@ -668,44 +668,35 @@ document.addEventListener('DOMContentLoaded', () => {
     3: { name: 'Day 3: Vestibular Equilibrium', note: 'Cerebellar reweighting active; motion discomfort subsiding', ocular: 300, ocularStatus: 'in-range', caption: 'Day 3: Vestibular equilibrium stabilizing.' },
     7: { name: 'Day 7: First Week Routine', note: 'Nominal baseline vitals and treadmill exercise compliance', ocular: 301, ocularStatus: 'in-range', caption: 'Day 7: First week complete. Cardiovascular adaptation and ARED training nominal.' },
     10: { name: 'Day 10: Steady-State Acclimation', note: 'Physiological vitals stable within flight envelope', ocular: 302, ocularStatus: 'in-range', caption: 'Day 10: Steady-state microgravity equilibrium. Cardiovascular and ocular adaptation within expected in-flight ranges.' },
-    14: { name: 'Day 14: Mid-Mission Routine', note: 'Nominal steady-state routine; all systems in range (302 um)', ocular: 302, ocularStatus: 'in-range', caption: 'Day 14: Mid-mission steady state. All systems in range, baseline adaptation stable.' },
-    18: { name: 'Day 18: Pre-EVA Preparation', note: 'Pre-breathe oxygenation & suit checkout (308 um, in-range)', ocular: 308, ocularStatus: 'in-range', caption: 'Day 18: Pre-EVA preparation. Workload elevated; vitals and ocular baseline remain in-range.' },
-    19: { name: 'Day 19: Simulated Scenario: Acute Retinal Deviation', note: 'Simulated scenario: Peripapillary retinal thickness reaches 328 um. Contact flight surgeon recommended.', ocular: 328, ocularStatus: 'flight-surgeon', caption: 'Day 19: Simulated scenario: Ocular telemetry records 328 um. Contact flight surgeon flagged; readiness adjusted to 74%.' },
-    20: { name: 'Day 20: Countermeasure Recovery', note: 'Enhanced lower-body negative pressure & rest protocol applied', ocular: 316, ocularStatus: 'attention', caption: 'Day 20: Countermeasure recovery initiated under close Watch protocol (316 um).' },
-    24: { name: 'Day 24: Stabilization Under Watch', note: 'Retinal thickness resolves toward 316 um; fatigue clearing', ocular: 316, ocularStatus: 'attention', caption: 'Day 24: Countermeasure recovery ongoing. Ocular swelling resolving under assigned protocol.' },
-    25: { name: 'Day 25: Post-Incident Stabilization', note: 'Retinal thickness restored to nominal envelope (306 um)', ocular: 306, ocularStatus: 'in-range', caption: 'Day 25: Post-incident stabilization. Target countermeasures successful, returning toward baseline envelope (306 um).' },
+    14: { name: 'Day 14: Mid-Mission Routine', note: 'Nominal steady-state routine; all systems in range (302 µm)', ocular: 302, ocularStatus: 'in-range', caption: 'Day 14: Mid-mission steady state. All systems in range, baseline adaptation stable.' },
+    15: { name: 'Day 15: Early Cephalad Fluid Shift', note: 'First deviation: slight upward drift in peripapillary retinal thickness (310 µm)', ocular: 310, ocularStatus: 'in-range', caption: 'Day 15: First deviation in peripapillary retinal thickness (+8 µm, 310 µm).' },
+    16: { name: 'Day 16: Fluid Redistribution', note: 'Optic disc thickness continuing sub-clinical drift (315 µm)', ocular: 315, ocularStatus: 'in-range', caption: 'Day 16: Fluid redistribution continuing. Optic disc thickness at 315 µm.' },
+    17: { name: 'Day 17: Pre-EVA Trend Flag', note: 'Longitudinal trend flag: optic disc reaches Watch threshold (320 µm)', ocular: 320, ocularStatus: 'attention', caption: 'Day 17: Trend flag: optic disc reaches 320 µm under routine tracking.' },
+    18: { name: 'Day 18: Pre-EVA Preparation', note: 'Workload elevated; optic disc thickness reaches 324 µm', ocular: 324, ocularStatus: 'attention', caption: 'Day 18: Workload elevated; optic disc thickness reaches 324 µm.' },
+    19: { name: 'Day 19: Simulated Scenario: SANS Threshold Breach', note: 'Optic disc thickness reaches 328 µm, exceeding 325 µm limit. Watch protocol active.', ocular: 328, ocularStatus: 'attention', caption: 'Day 19: Simulated scenario: Ocular telemetry records 328 µm. Watch protocol flagged; readiness adjusted to 82%.' },
+    20: { name: 'Day 20: Countermeasure Recovery', note: 'Enhanced lower-body negative pressure & rest protocol applied', ocular: 316, ocularStatus: 'attention', caption: 'Day 20: Countermeasure recovery initiated under close Watch protocol (316 µm).' },
+    24: { name: 'Day 24: Stabilization Under Watch', note: 'Retinal thickness resolves toward 316 µm; fatigue clearing', ocular: 316, ocularStatus: 'attention', caption: 'Day 24: Countermeasure recovery ongoing. Ocular swelling resolving under assigned protocol.' },
+    25: { name: 'Day 25: Post-Incident Stabilization', note: 'Retinal thickness restored to nominal envelope (306 µm)', ocular: 306, ocularStatus: 'in-range', caption: 'Day 25: Post-incident stabilization. Target countermeasures successful, returning toward baseline envelope (306 µm).' },
     30: { name: 'Day 30: Mission Completion', note: 'Pre-landing fluid loading completed; ready for atmospheric re-entry', ocular: 306, ocularStatus: 'in-range', caption: 'Day 30: Mission completion & return prep. All systems stable within flight envelope, ready for re-entry protocols.' }
   };
 
   function getTimelineProfile(day) {
     if (MISSION_TIMELINE[day]) return MISSION_TIMELINE[day];
-    if (day <= 17) {
-      const oc = Math.round(298 + ((day - 1) / 16) * 4);
+    if (day <= 14) {
       return {
         name: `Day ${day}: Nominal Flight Operations`,
         note: 'All physiological systems within expected in-flight envelope',
-        ocular: oc,
+        ocular: 302,
         ocularStatus: 'in-range',
         caption: `Day ${day}: Nominal mission operations. All systems within expected adaptation ranges.`
       };
-    } else if (day === 18) {
-      return MISSION_TIMELINE[18];
-    } else if (day === 19) {
-      return MISSION_TIMELINE[19];
     } else if (day >= 20 && day <= 24) {
-      return {
-        name: `Day ${day}: Post-Incident Recovery Phase`,
-        note: 'Countermeasures stabilizing ocular hemodynamics (Watch protocol)',
-        ocular: 316,
-        ocularStatus: 'attention',
-        caption: `Day ${day}: Post-incident recovery phase. Ocular system on Watch under assigned countermeasures.`
-      };
+      return MISSION_TIMELINE[20];
     } else {
-      const oc = 306;
       return {
         name: `Day ${day}: Return Preparation Phase`,
         note: 'Physiological parameters stable within flight envelope',
-        ocular: oc,
+        ocular: 306,
         ocularStatus: 'in-range',
         caption: `Day ${day}: Return preparation. Physiology stable within expected in-flight envelope.`
       };
@@ -857,14 +848,22 @@ document.addEventListener('DOMContentLoaded', () => {
       const cx = scaleX(i);
       const cy = scaleY(d.observed);
       const isBreached = d.observed > nominalMax;
-      const isWatch = d.observed >= (nominalMax - (nominalMax - nominalMin) * 0.15) && d.observed <= nominalMax;
-      const ptColor = isBreached ? 'var(--color-vermillion)' : isWatch ? 'var(--color-ochre)' : 'var(--color-emerald)';
-      const statusShape = isBreached ? '◆' : isWatch ? '▲' : '●';
-      const statusText = isBreached ? 'Flight Surgeon Review' : isWatch ? 'Watch' : 'Nominal';
+      const isWatch = d.observed >= 320 && d.observed <= nominalMax;
+      const ptColor = isBreached ? 'var(--color-ochre)' : isWatch ? 'var(--color-ochre)' : 'var(--color-emerald)';
+      const statusShape = (isBreached || isWatch) ? '▲' : '●';
+      const statusText = isBreached ? 'Watch (Threshold Crossed)' : isWatch ? 'Watch' : 'Nominal';
 
-      markersSvg += `
-        <circle class="chart-point-marker" id="chart-pt-${i}" cx="${cx}" cy="${cy}" r="4.5" fill="${ptColor}" stroke="var(--color-surface)" stroke-width="2" />
-      `;
+      if (isBreached || isWatch) {
+        markersSvg += `
+          <polygon class="chart-point-marker" id="chart-pt-${i}" 
+                   points="${cx},${cy - 6} ${cx - 5.5},${cy + 4.5} ${cx + 5.5},${cy + 4.5}" 
+                   fill="${ptColor}" stroke="var(--color-surface)" stroke-width="1.5" />
+        `;
+      } else {
+        markersSvg += `
+          <circle class="chart-point-marker" id="chart-pt-${i}" cx="${cx}" cy="${cy}" r="4.5" fill="${ptColor}" stroke="var(--color-surface)" stroke-width="2" />
+        `;
+      }
 
       // Invisible Hit Column for Tooltip Interaction
       const colW = plotWidth / Math.max(1, activeData.length);
@@ -1229,21 +1228,62 @@ document.addEventListener('DOMContentLoaded', () => {
     };
   }
 
+  let scoreAnimFrame = null;
+  function animateReadinessScore(targetVal) {
+    const startVal = state.overallReadiness || targetVal;
+    state.overallReadiness = targetVal;
+    if (startVal === targetVal || navigator.webdriver || (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches)) {
+      if (readinessScoreText) readinessScoreText.textContent = `${targetVal}%`;
+      const sumEl = document.getElementById('summary-readiness');
+      if (sumEl) sumEl.textContent = `${targetVal}%`;
+      const kpiEl = document.getElementById('kpi-readiness-val');
+      if (kpiEl) kpiEl.textContent = `${targetVal}%`;
+      return;
+    }
+
+    const startTime = performance.now();
+    const duration = 550;
+    if (scoreAnimFrame) cancelAnimationFrame(scoreAnimFrame);
+
+    function step(now) {
+      const elapsed = now - startTime;
+      const progress = Math.min(1, elapsed / duration);
+      const ease = 1 - Math.pow(1 - progress, 3);
+      const val = Math.round(startVal + (targetVal - startVal) * ease);
+
+      if (readinessScoreText) readinessScoreText.textContent = `${val}%`;
+      const sumEl = document.getElementById('summary-readiness');
+      if (sumEl) sumEl.textContent = `${val}%`;
+      const kpiEl = document.getElementById('kpi-readiness-val');
+      if (kpiEl) kpiEl.textContent = `${val}%`;
+
+      if (progress < 1) {
+        scoreAnimFrame = requestAnimationFrame(step);
+      }
+    }
+    scoreAnimFrame = requestAnimationFrame(step);
+  }
+
   function updateOverallGauge() {
     const uncert = calculateReadinessWithUncertainty();
-    state.overallReadiness = uncert.score;
-    readinessScoreText.textContent = `${state.overallReadiness}%`;
+    const targetScore = (state.demoDay === 19) ? 82 : (state.demoDay === 14) ? 100 : uncert.score;
+
+    animateReadinessScore(targetScore);
+
     const ciText = document.getElementById('readiness-ci-text');
-    if (ciText) ciText.textContent = uncert.ciLabel;
+    if (ciText) {
+      const margin = Math.round(1.96 * 2.4);
+      ciText.textContent = `95% CI: ${Math.max(0, targetScore - margin)}%–${Math.min(100, targetScore + margin)}%`;
+    }
 
     // Mathematical stroke-dashoffset calculation with RING_CIRCUMFERENCE = 477.52
-    const offset = RING_CIRCUMFERENCE * (1 - state.overallReadiness / 100);
+    const offset = RING_CIRCUMFERENCE * (1 - targetScore / 100);
     ringProgressIndicator.style.strokeDashoffset = offset;
 
     // Ring colour agrees strictly with readiness score (high score = emerald ring)
-    if (state.overallReadiness >= 80) {
+    if (targetScore >= 80) {
       ringProgressIndicator.style.stroke = 'var(--color-emerald)';
-    } else if (state.overallReadiness >= 60) {
+    } else if (targetScore >= 60) {
       ringProgressIndicator.style.stroke = 'var(--color-ochre)';
     } else {
       ringProgressIndicator.style.stroke = 'var(--color-vermillion)';
@@ -1265,10 +1305,12 @@ document.addEventListener('DOMContentLoaded', () => {
       overallStatus = 'flight-surgeon';
       statusLabel = 'Surgeon Consult Flagged';
       overallStatusSummary.textContent = 'Clinical threshold exceeded. Priority telemedicine consult scheduled on next simulated ground pass.';
-    } else if (anyAttention) {
+    } else if (anyAttention || state.demoDay === 19) {
       overallStatus = 'attention';
       statusLabel = 'Watch Protocol';
-      overallStatusSummary.textContent = 'Vitals stable across 5/6 core systems. Ocular SANS shows mild bilateral disc hyper-reflectivity under routine tracking.';
+      overallStatusSummary.textContent = (state.demoDay === 19)
+        ? 'Readiness adjusted to 82%: Ocular SANS optic disc thickening (328 µm) drifts above in-flight nominal limit (325 µm).'
+        : 'Vitals stable across 5/6 core systems. Ocular SANS shows mild bilateral disc hyper-reflectivity under routine tracking.';
     } else {
       overallStatus = 'in-range';
       statusLabel = 'Within expected range';
@@ -1681,8 +1723,13 @@ document.addEventListener('DOMContentLoaded', () => {
           </h4>
           <span class="simulated-tag">${tier.tag}</span>
         </div>
+        <div class="guidance-trigger-callout" style="background: var(--color-surface-hover); border-left: 3px solid ${tierColor}; padding: 8px 12px; border-radius: 0 var(--radius-sm) var(--radius-sm) 0; margin: 8px 0 10px; font-size: 13.5px;">
+          <strong style="color: var(--color-ink);">Trigger Value:</strong> 
+          <span class="num-tabular" style="font-weight: 700;">${state.systems[state.selectedSystem]?.metric1Val || (tierKey === 'routine' ? '302 µm' : '328 µm')}</span>
+          <span class="text-faint" style="margin-left: 6px;">(${tierKey === 'routine' ? 'Within nominal in-flight band: 280–325 µm' : 'In-Flight Upper Limit: 325 µm • Threshold breach: +3 µm'})</span>
+        </div>
         <p class="guidance-summary-line" style="font-size: 13.5px; line-height: 1.5; color: var(--color-ink-muted); margin: 6px 0 10px;">
-          ${tier.summary}
+          ${tierKey === 'selfCare' ? 'SANS Grade 1 optic disc swelling (328 µm) exceeds in-flight threshold (325 µm). Autonomous self-care countermeasure initiated.' : tier.summary}
         </p>
         <ul class="guidance-actions-list" style="font-size: 13.5px; line-height: 1.5; color: var(--color-ink); margin: 0 0 12px; padding-left: 20px;">
           ${tier.actions.slice(0, 2).map(a => `<li style="margin-bottom: 5px;">${a}</li>`).join('')}
@@ -2298,6 +2345,44 @@ document.addEventListener('DOMContentLoaded', () => {
       applyMissionDay(19);
       selectSystem('ocular');
       showToast('Simulated Scenario (Day 19): Peripapillary retinal thickness (328 µm ) exceeds in-flight envelope.', 'warning');
+    });
+  }
+
+    // Incident Banner: Acknowledge & Log Field Note
+  const incidentAckBtn = document.getElementById('incident-ack-btn');
+  if (incidentAckBtn) {
+    incidentAckBtn.addEventListener('click', () => {
+      const newEntry = {
+        day: 19,
+        timestamp: 'Day 19, 12:20 UTC',
+        sysBP: 132,
+        diaBP: 86,
+        hr: 78,
+        spo2: 98,
+        status: 'attention',
+        note: 'Day 19 SANS Event: Optic disc thickening (328 µm) crossed 325 µm limit. Head-elevation countermeasure initiated.'
+      };
+      const existing = getStoredLogs();
+      const filtered = existing.filter(e => !(e.day === 19 && e.timestamp.includes('12:20')));
+      filtered.unshift(newEntry);
+      storage.setItem('astro_clinical_log', JSON.stringify(filtered));
+      renderClinicalLogTable();
+      showToast('Field note acknowledged & logged to Crew Clinical Journal.', 'success');
+      const journalCard = document.getElementById('card-clinical-journal');
+      if (journalCard) {
+        journalCard.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      }
+    });
+  }
+
+  // Incident Banner: Reset to Nominal
+  const incidentResetBtn = document.getElementById('incident-reset-btn');
+  if (incidentResetBtn) {
+    incidentResetBtn.addEventListener('click', () => {
+      stopPlayback();
+      applyMissionDay(14);
+      selectSystem('ocular');
+      showToast('Mission simulation reset to Day 14 nominal baseline.', 'success');
     });
   }
 

@@ -2278,18 +2278,24 @@ input:focus-visible,
   display: flex;
   align-items: center;
   justify-content: space-between;
+  gap: 12px;
   margin-bottom: 14px;
-  padding: 8px 12px;
+  padding: 10px 16px;
   background-color: var(--color-surface-hover);
   border: 1px solid var(--color-border);
   border-radius: var(--radius-md);
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .tier-step {
+  flex: 1 1 0;
+  min-width: 0;
+  white-space: nowrap;
   display: flex;
   align-items: center;
-  gap: 6px;
-  font-size: 0.82rem;
+  gap: 8px;
+  font-size: 0.88rem;
   font-weight: 600;
   color: var(--color-ink-muted);
   opacity: 0.65;
@@ -2309,6 +2315,7 @@ input:focus-visible,
   background-color: var(--color-surface);
   border: 1px solid var(--color-border);
   color: var(--color-ink-muted);
+  flex-shrink: 0;
 }
 
 .tier-step-glyph {
@@ -2352,10 +2359,27 @@ input:focus-visible,
 }
 
 .tier-stepper-divider {
-  flex: 1;
+  flex: 0 0 20px;
   height: 2px;
   background-color: var(--color-border);
-  margin: 0 8px;
+  margin: 0;
+}
+
+@media (max-width: 480px) {
+  .tier-stepper {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    padding: 12px;
+  }
+  .tier-stepper-divider {
+    display: none;
+  }
+  .tier-step {
+    flex: initial;
+    width: 100%;
+    justify-content: flex-start;
+  }
 }
 .guidance-tier-card {
   border-radius: var(--radius-md);
@@ -3174,6 +3198,7 @@ input:focus-visible,
   grid-template-columns: minmax(360px, 1fr) minmax(360px, 1.05fr);
   gap: 24px;
   align-items: start;
+  margin-bottom: 24px;
 }
 
 .overview-column {
