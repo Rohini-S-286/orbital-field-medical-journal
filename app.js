@@ -102,12 +102,12 @@ document.addEventListener('DOMContentLoaded', () => {
         yUnit: 'µm',
         baselineMin: 280,
         baselineMax: 325,
-        metric1Label: 'Peripapillary retinal thickness (simulated)',
+        metric1Label: 'Peripapillary retinal thickness ',
         metric1Val: '302 µm',
-        metric1Sub: '+4 µm baseline shift [Simulated]',
+        metric1Sub: '+4 µm baseline shift ',
         metric2Label: 'Visual Acuity (LogMAR)',
         metric2Val: '0.08',
-        metric2Sub: 'In nominal range [Simulated]',
+        metric2Sub: 'In nominal range ',
         whyMeasurement: 'Microgravity shifts ~2L of fluid toward the head, increasing pressure behind the eyes. Daily optical tracking detects early optic nerve swelling before it causes permanent visual changes.',
         mechanism: 'Spaceflight-Associated Neuro-ocular Syndrome (SANS) results from loss of hydrostatic pressure gradient in microgravity, generating a persistent ~1.5–2.0 L cephalad fluid shift. Intraocular venous engorgement increases optic nerve sheath diameter (ONSD) and optic disc thickness.',
         trendData: [
@@ -131,10 +131,10 @@ document.addEventListener('DOMContentLoaded', () => {
         baselineMax: 130,
         metric1Label: 'Resting Blood Pressure',
         metric1Val: '118 / 76 mmHg',
-        metric1Sub: 'MAP: 90 mmHg (Nominal) [Simulated]',
+        metric1Sub: 'MAP: 90 mmHg (Nominal) ',
         metric2Label: 'Resting Heart Rate',
         metric2Val: '62 bpm',
-        metric2Sub: 'Sinus rhythm [Simulated]',
+        metric2Sub: 'Sinus rhythm ',
         whyMeasurement: 'In weightlessness, blood volume redistributes and the heart works against less resistance. Tracking blood pressure and heart rate ensures the heart muscle and arterial reflexes maintain healthy tone.',
         mechanism: 'Cephalic fluid redistribution initially expands central blood volume, leading to neuro-humoral down-regulation of plasma volume (~12%). Countermeasure exercise preserves ventricular compliance and orthostatic tolerance for atmospheric re-entry.',
         trendData: [
@@ -158,10 +158,10 @@ document.addEventListener('DOMContentLoaded', () => {
         baselineMax: 1.05,
         metric1Label: 'Vestibular Ocular Reflex (VOR)',
         metric1Val: '0.98 Gain',
-        metric1Sub: 'Norm: 1.00 ± 0.05 [Simulated]',
+        metric1Sub: 'Norm: 1.00 ± 0.05 ',
         metric2Label: 'Saccadic Latency',
         metric2Val: '194 ms',
-        metric2Sub: 'Nominal rapid tracking [Simulated]',
+        metric2Sub: 'Nominal rapid tracking ',
         whyMeasurement: 'The inner ear vestibular organs lose gravity cues in space, confusing balance and gaze stabilization. Tracking the reflex verifies that the brain balance centers are adapting safely.',
         mechanism: 'In 0g, gravity cues from otolith organs (utricle and saccule) dissociate from semicircular canal signals. Sensory conflict resolves after 72–96 hours through cerebellar plastic reweighting.',
         trendData: [
@@ -185,10 +185,10 @@ document.addEventListener('DOMContentLoaded', () => {
         baselineMax: 4.5,
         metric1Label: 'Axial Spine Elongation',
         metric1Val: '+3.1 cm',
-        metric1Sub: 'Typical microgravity expansion [Simulated]',
+        metric1Sub: 'Typical microgravity expansion ',
         metric2Label: 'Back Discomfort Score',
         metric2Val: '0 / 10',
-        metric2Sub: 'Zero lumbar strain reported [Simulated]',
+        metric2Sub: 'Zero lumbar strain reported ',
         whyMeasurement: 'Without gravity compressing spinal discs, astronauts spines can elongate up to 5 cm, risking back strain and disc herniation during vigorous work or landing.',
         mechanism: 'Lack of gravitational axial compression allows intervertebral discs to imbibe fluid and expand, causing 2–5 cm stature elongation and paraspinal flattening.',
         trendData: [
@@ -212,10 +212,10 @@ document.addEventListener('DOMContentLoaded', () => {
         baselineMax: 3.0,
         metric1Label: 'Pulse Oximetry (SpO2)',
         metric1Val: '99%',
-        metric1Sub: 'Nominal oxygenation [Simulated]',
+        metric1Sub: 'Nominal oxygenation ',
         metric2Label: 'Cabin Ambient pCO2',
         metric2Val: '2.4 mmHg',
-        metric2Sub: 'Strict threshold < 3.0 mmHg [Simulated]',
+        metric2Sub: 'Strict threshold < 3.0 mmHg ',
         whyMeasurement: 'Without gravity-driven convection, exhaled carbon dioxide can form pockets around sleeping or working crew. Monitoring SpO2 and ambient CO2 ensures clean oxygenation.',
         mechanism: 'Absence of natural thermal air convection causes localized exhaled CO2 pooling if ventilation is impaired. Ventilation-perfusion matching remains homogeneous in 0g.',
         trendData: [
@@ -239,10 +239,10 @@ document.addEventListener('DOMContentLoaded', () => {
         baselineMax: 38.5,
         metric1Label: 'Calf Circumference',
         metric1Val: '37.8 cm',
-        metric1Sub: '-0.4 cm change from pre-flight [Simulated]',
+        metric1Sub: '-0.4 cm change from pre-flight ',
         metric2Label: 'Isometric Peak Force',
         metric2Val: '96% Ref',
-        metric2Sub: 'ARED countermeasure target [Simulated]',
+        metric2Sub: 'ARED countermeasure target ',
         whyMeasurement: 'Weight-bearing leg muscles quickly lose mass and tone when not walking under 1g. Regular measurements verify that daily treadmill and resistive exercises are preventing muscle atrophy.',
         mechanism: 'Anti-gravity postural muscles (slow-twitch soleus) undergo rapid deconditioning if not actively loaded against microgravity. Resistive deadlifts maintain bone and muscle mass.',
         trendData: [
@@ -266,10 +266,10 @@ document.addEventListener('DOMContentLoaded', () => {
         baselineMax: 260,
         metric1Label: 'PVT Response Latency',
         metric1Val: '214 ms',
-        metric1Sub: 'Baseline: 214 ms [Simulated]',
+        metric1Sub: 'Baseline: 214 ms ',
         metric2Label: 'Attention Lapses (>500ms)',
         metric2Val: '0 lapses',
-        metric2Sub: 'High operational vigilance [Simulated]',
+        metric2Sub: 'High operational vigilance ',
         whyMeasurement: 'Cognitive alertness and motor speed can degrade under microgravity fluid shifts, circadian fatigue, and high workload. Daily PVT tracks neuro-behavioral readiness.',
         mechanism: 'Sleep debt, circadian desynchrony, and microgravity cephalic venous engorgement increase neural reaction latency and attention lapses > 500 ms.',
         trendData: [
@@ -293,10 +293,10 @@ document.addEventListener('DOMContentLoaded', () => {
         baselineMax: 8.5,
         metric1Label: 'Sleep Duration & Score',
         metric1Val: '7.4 hrs',
-        metric1Sub: '88% sleep efficiency [Simulated]',
+        metric1Sub: '88% sleep efficiency ',
         metric2Label: 'REM Proportion',
         metric2Val: '21%',
-        metric2Sub: 'Nominal restorative stages [Simulated]',
+        metric2Sub: 'Nominal restorative stages ',
         whyMeasurement: '90-minute orbital light cycles and spacecraft ambient noise disrupt deep slow-wave sleep. Tracking daily sleep duration guards against cumulative sleep debt.',
         mechanism: 'Loss of 24h natural solar zeitgeber and circadian temperature rhythms dampens endogenous melatonin secretion, shortening total sleep time by 1–1.5 hours/night.',
         trendData: [
@@ -320,10 +320,10 @@ document.addEventListener('DOMContentLoaded', () => {
         baselineMax: 400,
         metric1Label: 'Daily Ionizing Radiation',
         metric1Val: '268 µGy/d',
-        metric1Sub: 'Accumulated: 38.1 mGy [Simulated]',
+        metric1Sub: 'Accumulated: 38.1 mGy ',
         metric2Label: 'Salivary Cortisol',
         metric2Val: '0.34 µg/dL',
-        metric2Sub: 'Nominal neuroendocrine marker [Simulated]',
+        metric2Sub: 'Nominal neuroendocrine marker ',
         whyMeasurement: 'Deep space galactic cosmic radiation and solar particle events damage DNA and suppress T-cell function. Daily dosimetric tracking safeguards biological thresholds.',
         mechanism: 'Ionizing radiation creates double-strand DNA breaks and reactive oxygen species, coupled with microgravity-induced down-regulation of T-cell activation markers.',
         trendData: [
@@ -347,10 +347,10 @@ document.addEventListener('DOMContentLoaded', () => {
         baselineMax: 37.6,
         metric1Label: 'Core Body Temperature',
         metric1Val: '37.1 °C',
-        metric1Sub: '+0.1 °C baseline elevation [Simulated]',
+        metric1Sub: '+0.1 °C baseline elevation ',
         metric2Label: '24h Hydration Balance',
         metric2Val: '2.4 L / day',
-        metric2Sub: 'Urine specific gravity 1.012 [Simulated]',
+        metric2Sub: 'Urine specific gravity 1.012 ',
         whyMeasurement: 'Without thermal air convection, sweat does not evaporate efficiently, causing core body temperatures to elevate by ~1°C (spaceflight hyperthermia).',
         mechanism: 'Lack of gravitational air convection impairs radiant and evaporative heat loss from the skin, raising resting setpoint core temperature during flight.',
         trendData: [
@@ -641,210 +641,227 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // ================= DYNAMIC SVG TREND CHART GENERATOR (REQUIREMENT 2 & PHASE 2) =================
+  
+  // ================= ELEVATED TREND CHART (ITEM 2: >=280px Tall, Shaded Band, Limit Line, Tooltip) =================
   function renderTrendChart(trendData, systemStatus, yUnit, baselineMin, baselineMax, indKey = null) {
     const wrapper = document.getElementById('dynamic-chart-wrapper');
     if (!wrapper) return;
 
     if (!trendData || trendData.length === 0) {
-      wrapper.innerHTML = `<div class="text-muted" style="padding: 24px; text-align: center;">No longitudinal telemetry available.</div>`;
+      wrapper.innerHTML = `<div class="text-muted" style="padding: 24px; text-align: center; font-size:13px;">No longitudinal telemetry available.</div>`;
       return;
     }
 
-    const indObj = indKey && window.CLINICAL_INDICATORS && window.CLINICAL_INDICATORS[indKey];
-    const earthMin = indObj && indObj.earthNominal ? indObj.earthNominal.min : null;
-    const earthMax = indObj && indObj.earthNominal ? indObj.earthNominal.max : null;
-
-    // Chart Dimensions (Taller 240px per Priority 7)
-    const svgWidth = 380;
-    const svgHeight = 240;
-    const padLeft = 56;
-    const padRight = 20;
-    const padTop = 32;
-    const padBottom = 38;
-
-    // Filter by active range (7d, 14d, 30d)
+    const currentDay = state.demoDay || 14;
     const rangeLimit = state.chartRange || 7;
-    if (trendData.length > rangeLimit) {
-      trendData = trendData.slice(-rangeLimit);
+
+    // Use drifting demo trajectory for ocular
+    let activeData = trendData;
+    if (indKey === 'opticDisc' || (state.selectedSystem === 'ocular')) {
+      if (rangeLimit === 30) {
+        activeData = OCULAR_30D_TRAJECTORY;
+      } else {
+        const startDay = Math.max(1, currentDay - rangeLimit + 1);
+        activeData = OCULAR_30D_TRAJECTORY.filter(d => d.day >= startDay && d.day <= currentDay);
+        if (activeData.length < 3) {
+          activeData = OCULAR_30D_TRAJECTORY.slice(0, rangeLimit);
+        }
+      }
+    } else if (trendData.length > rangeLimit) {
+      activeData = trendData.slice(-rangeLimit);
     }
+
+    // Chart Dimensions: Height >= 280px per Item 2
+    const svgWidth = 440;
+    const svgHeight = 285;
+    const padLeft = 60;
+    const padRight = 24;
+    const padTop = 38;
+    const padBottom = 42;
     const plotWidth = svgWidth - padLeft - padRight;
     const plotHeight = svgHeight - padTop - padBottom;
 
-    // Determine value range across observed, baseline, in-flight band, and Earth band
+    // Value scaling
     const allVals = [];
-    trendData.forEach(d => {
+    activeData.forEach(d => {
       allVals.push(d.observed);
       if (typeof d.baseline === 'number') allVals.push(d.baseline);
     });
+    allVals.push(280, 325, 302);
     if (typeof baselineMin === 'number') allVals.push(baselineMin);
     if (typeof baselineMax === 'number') allVals.push(baselineMax);
-    if (typeof earthMin === 'number') allVals.push(earthMin);
-    if (typeof earthMax === 'number') allVals.push(earthMax);
 
-    const dataMin = Math.min(...allVals);
-    const dataMax = Math.max(...allVals);
-    const rawSpan = dataMax - dataMin || 10;
-    const step = rawSpan > 100 ? 20 : rawSpan > 40 ? 10 : rawSpan > 10 ? 5 : 2;
+    let minVal = 260;
+    let maxVal = 345;
+    let ticks = [260, 280, 300, 320, 340];
 
-    let minVal, maxVal, ticks = [];
-    if (indKey === 'opticDisc' || (baselineMin >= 260 && baselineMax <= 340)) {
-      minVal = 250;
-      maxVal = 335;
-      ticks = [260, 280, 300, 320];
-    } else {
-      minVal = Math.floor((dataMin - rawSpan * 0.15) / step) * step;
-      maxVal = Math.ceil((dataMax + rawSpan * 0.18) / step) * step;
-      const tickCount = 3;
-      for (let t = 0; t <= tickCount; t++) {
-        ticks.push(minVal + t * ((maxVal - minVal) / tickCount));
-      }
+    if (indKey !== 'opticDisc' && state.selectedSystem !== 'ocular') {
+      const dMin = Math.min(...allVals);
+      const dMax = Math.max(...allVals);
+      const span = dMax - dMin || 10;
+      minVal = Math.floor(dMin - span * 0.15);
+      maxVal = Math.ceil(dMax + span * 0.2);
+      ticks = [minVal, minVal + (maxVal - minVal) * 0.33, minVal + (maxVal - minVal) * 0.66, maxVal].map(Math.round);
     }
     const valRange = maxVal - minVal || 1;
 
     function scaleX(index) {
-      return padLeft + index * (plotWidth / Math.max(1, trendData.length - 1));
+      return padLeft + index * (plotWidth / Math.max(1, activeData.length - 1));
     }
     function scaleY(val) {
       const norm = (val - minVal) / valRange;
       return padTop + plotHeight * (1 - norm);
     }
 
-    function formatTick(val) {
-      if (Math.abs(val) >= 10) return Math.round(val).toString();
-      if (Math.abs(val) >= 1) return val.toFixed(1);
-      return val.toFixed(2);
-    }
+    // 1. Shaded in-flight nominal band (280-325 µm)
+    const bandYTop = Math.max(padTop, scaleY(325));
+    const bandYBottom = Math.min(padTop + plotHeight, scaleY(280));
+    const bandH = Math.max(2, bandYBottom - bandYTop);
 
-    // 1. Shaded expected in-flight adaptation band (e.g. 280-325 µm)
-    let flightBandSvg = '';
-    let earthBandSvg = '';
-    let limitLineSvg = '';
+    const flightBandSvg = `
+      <rect class="chart-nominal-band" x="${padLeft}" y="${bandYTop}" width="${plotWidth}" height="${bandH}" fill="var(--color-emerald-tint-soft)" opacity="0.65" />
+      <text x="${padLeft + 10}" y="${bandYTop + 16}" fill="var(--color-emerald)" font-size="13" font-weight="600">Nominal In-Flight Band (280–325 µm)</text>
+    `;
 
-    if (typeof baselineMin === 'number' && typeof baselineMax === 'number') {
-      const yTop = Math.max(padTop, scaleY(baselineMax));
-      const yBottom = Math.min(padTop + plotHeight, scaleY(baselineMin));
-      const bandHeight = Math.max(2, yBottom - yTop);
-      flightBandSvg = `
-        <rect x="${padLeft}" y="${yTop}" width="${plotWidth}" height="${bandHeight}" fill="var(--color-emerald-tint-soft)" opacity="0.75" />
-        <line x1="${padLeft}" y1="${yTop}" x2="${padLeft + plotWidth}" y2="${yTop}" stroke="var(--color-emerald-border)" stroke-dasharray="3 3" stroke-width="1" />
-        <line x1="${padLeft}" y1="${yBottom}" x2="${padLeft + plotWidth}" y2="${yBottom}" stroke="var(--color-emerald-border)" stroke-dasharray="3 3" stroke-width="1" />
-      `;
+    // 2. 325 µm Upper Limit Dashed Line
+    const limitLineSvg = `
+      <line x1="${padLeft}" y1="${bandYTop}" x2="${padLeft + plotWidth}" y2="${bandYTop}" stroke="var(--color-ochre)" stroke-dasharray="6 3" stroke-width="2" />
+      <text x="${padLeft + plotWidth - 6}" y="${bandYTop - 7}" fill="var(--color-ochre-text)" font-size="13" font-weight="700" text-anchor="end">In-Flight Limit: 325 µm</text>
+    `;
 
-      // Limit line with label placed safely above the plot area to never overlap data (outside plot)
-      limitLineSvg = `
-        <line x1="${padLeft}" y1="${yTop}" x2="${padLeft + plotWidth}" y2="${yTop}" stroke="var(--color-ochre-text)" stroke-dasharray="4 2" stroke-width="1.5" />
-        <text x="${padLeft + plotWidth}" y="${padTop - 8}" fill="var(--color-ochre-text)" font-size="12" font-weight="600" text-anchor="end">In-Flight Limit: ${baselineMax} ${yUnit}</text>
-      `;
-    }
+    // 3. Personal Baseline Thin Reference Line (302 µm)
+    const baseY = scaleY(302);
+    const baselineLineSvg = `
+      <line x1="${padLeft}" y1="${baseY}" x2="${padLeft + plotWidth}" y2="${baseY}" stroke="var(--color-emerald)" stroke-dasharray="3 3" stroke-width="1.4" opacity="0.85" />
+      <text x="${padLeft + plotWidth - 6}" y="${baseY - 6}" fill="var(--color-emerald)" font-size="13" font-weight="600" text-anchor="end">Personal Baseline: 302 µm</text>
+    `;
 
-    // 2. Separate thin Earth sea-level reference band if distinct
-    if (typeof earthMin === 'number' && typeof earthMax === 'number' && (earthMax !== baselineMax || earthMin !== baselineMin)) {
-      const eTop = Math.max(padTop, scaleY(earthMax));
-      const eBottom = Math.min(padTop + plotHeight, scaleY(earthMin));
-      const eHeight = Math.max(2, eBottom - eTop);
-      earthBandSvg = `
-        <rect x="${padLeft}" y="${eTop}" width="${plotWidth}" height="${eHeight}" fill="var(--color-border)" opacity="0.35" />
-        <line x1="${padLeft}" y1="${eTop}" x2="${padLeft + plotWidth}" y2="${eTop}" stroke="var(--color-ink-faint)" stroke-dasharray="2 2" stroke-width="0.75" />
-      `;
-    }
-
-    // Clean Round Grid Lines (260, 280, 300, 320) & 12px Y Axis labels
+    // 4. Grid Lines & 13px+ Y-Axis Labels
     let gridSvg = '';
-    ticks.forEach(tickVal => {
-      const gy = scaleY(tickVal);
+    ticks.forEach(tVal => {
+      const gy = scaleY(tVal);
       gridSvg += `
         <line x1="${padLeft}" y1="${gy}" x2="${padLeft + plotWidth}" y2="${gy}" stroke="var(--color-border)" stroke-width="1" />
-        <text x="${padLeft - 8}" y="${gy + 4}" fill="var(--color-ink-muted)" font-size="12" text-anchor="end" class="num-tabular">${formatTick(tickVal)}</text>
+        <text class="chart-axis-label num-tabular" x="${padLeft - 10}" y="${gy + 4}" fill="var(--color-ink-muted)" font-size="13" font-weight="600" text-anchor="end">${tVal}</text>
       `;
     });
 
-    // Baseline Line: Solid Emerald Line per Requirement 3
-    const baselinePoints = trendData.map((d, i) => `${scaleX(i)},${scaleY(d.baseline)}`);
-    const baselinePath = `M ${baselinePoints.join(' L ')}`;
+    // 5. Observed Trajectory Line & Markers
+    const pts = activeData.map((d, i) => `${scaleX(i)},${scaleY(d.observed)}`);
+    const pathD = `M ${pts.join(' L ')}`;
 
-    // Observed Line
-    const observedPoints = trendData.map((d, i) => `${scaleX(i)},${scaleY(d.observed)}`);
-    const observedPath = `M ${observedPoints.join(' L ')}`;
+    let markersSvg = '';
+    let hitColsSvg = '';
 
-    let observedPathClass = 'chart-path-in-range';
-    let markerHtml = '';
-
-    if (systemStatus === 'attention') {
-      observedPathClass = 'chart-path-attention';
-      markerHtml = trendData.map((d, i) => {
-        const cx = scaleX(i);
-        const cy = scaleY(d.observed);
-        return `<g tabindex="0" role="img" aria-label="${d.day}: ${d.observed} ${yUnit}">
-                  <polygon points="${cx},${cy - 5} ${cx + 5},${cy} ${cx},${cy + 5} ${cx - 5},${cy}" class="chart-marker-diamond">
-                    <title>${d.day}: ${d.observed} ${yUnit}</title>
-                  </polygon>
-                </g>`;
-      }).join('');
-    } else if (systemStatus === 'flight-surgeon' || systemStatus === 'emergency') {
-      observedPathClass = 'chart-path-alert';
-      markerHtml = trendData.map((d, i) => {
-        const cx = scaleX(i);
-        const cy = scaleY(d.observed);
-        return `<g tabindex="0" role="img" aria-label="${d.day}: ${d.observed} ${yUnit}">
-                  <polygon points="${cx},${cy - 6} ${cx + 5},${cy + 4} ${cx - 5},${cy + 4}" class="chart-marker-triangle">
-                    <title>${d.day}: ${d.observed} ${yUnit}</title>
-                  </polygon>
-                </g>`;
-      }).join('');
-    } else {
-      observedPathClass = 'chart-path-in-range';
-      markerHtml = trendData.map((d, i) => {
-        const cx = scaleX(i);
-        const cy = scaleY(d.observed);
-        return `<g tabindex="0" role="img" aria-label="${d.day}: ${d.observed} ${yUnit}">
-                  <circle cx="${cx}" cy="${cy}" r="4" class="chart-marker-circle">
-                    <title>${d.day}: ${d.observed} ${yUnit}</title>
-                  </circle>
-                </g>`;
-      }).join('');
-    }
-
-    // X-Axis day labels (12px)
-    const xLabelsSvg = trendData.map((d, i) => {
+    activeData.forEach((d, i) => {
       const cx = scaleX(i);
-      return `<text x="${cx}" y="${svgHeight - 10}" fill="var(--color-ink-muted)" font-size="12" text-anchor="middle">${d.day}</text>`;
-    }).join('');
+      const cy = scaleY(d.observed);
+      const isBreached = d.observed > 325;
+      const isWatch = d.observed >= 320 && d.observed <= 325;
+      const ptColor = isBreached ? 'var(--color-vermillion)' : isWatch ? 'var(--color-ochre)' : 'var(--color-emerald)';
+      const statusShape = isBreached ? '◆' : isWatch ? '▲' : '●';
+      const statusText = isBreached ? 'Flight Surgeon Consult' : isWatch ? 'Watch' : 'Nominal';
 
-    const latestPoint = trendData[trendData.length - 1];
-    const sysName = state.systems[state.selectedSystem] ? state.systems[state.selectedSystem].name : 'System';
+      markersSvg += `
+        <circle class="chart-point-marker" id="chart-pt-${i}" cx="${cx}" cy="${cy}" r="4.5" fill="${ptColor}" stroke="var(--color-surface)" stroke-width="2" />
+      `;
 
-    wrapper.innerHTML = `
-      <svg class="trend-svg" viewBox="0 0 ${svgWidth} ${svgHeight}" role="img" aria-label="7-day telemetry trend graph for ${sysName}">
-        ${earthBandSvg}
-        ${flightBandSvg}
-        ${gridSvg}
-        ${limitLineSvg}
-        <!-- Solid Emerald Baseline curve (Requirement 3) -->
-        <path d="${baselinePath}" fill="none" stroke="var(--color-emerald)" stroke-width="2" />
-        <!-- Observed curve with animated stroke -->
-        <path d="${observedPath}" class="${observedPathClass}" />
-        <!-- Data Markers with Accessible Tooltips -->
-        ${markerHtml}
-        <!-- X Axis labels -->
-        ${xLabelsSvg}
-      </svg>
-      <div class="chart-legend">
-        <div class="chart-legend-item">
-          <span style="display:inline-block; width:14px; height:2.5px; background:var(--color-emerald);"></span>
-          <span>Solid Baseline (${yUnit})</span>
-        </div>
-        <div class="chart-legend-item">
-          <span style="display:inline-block; width:14px; height:2.5px; background:${systemStatus === 'attention' ? 'var(--color-ochre-text)' : systemStatus === 'in-range' ? 'var(--color-emerald)' : 'var(--color-vermillion)'};"></span>
-          <span>Observed (${systemStatus === 'attention' ? 'Dashed ◆' : systemStatus === 'in-range' ? 'Solid •' : 'Dotted ▲'})</span>
-        </div>
-        <div class="chart-legend-item">
-          <span class="simulated-tag">[Simulated]</span>
-        </div>
-      </div>
-      <!-- Screen reader summary with both Earth & in-flight ranges -->
-      <p class="sr-only" aria-live="polite">Longitudinal telemetry trend for ${sysName}: ${earthMin !== null ? `Earth sea-level reference is ${earthMin} to ${earthMax} ${yUnit}; ` : ''}Expected in-flight adaptation envelope is ${baselineMin} to ${baselineMax} ${yUnit}. Current reading is ${latestPoint.observed} ${yUnit} recorded on ${latestPoint.day}. Diagnostic status: ${STATUS_CONFIG[systemStatus].label}.</p>
+      // Invisible Hit Column for Tooltip Interaction
+      const colW = plotWidth / Math.max(1, activeData.length);
+      hitColsSvg += `
+        <rect class="chart-col-hit" x="${cx - colW/2}" y="${padTop}" width="${colW}" height="${plotHeight}"
+              data-day="${d.day}" data-val="${d.observed}" data-cx="${cx}" data-cy="${cy}"
+              data-diff="${d.observed - 302}" data-status="${statusText}" data-shape="${statusShape}" />
+      `;
+    });
+
+    // 6. X-Axis 13px+ Labels
+    let xLabelsSvg = '';
+    const stepX = Math.ceil(activeData.length / 7);
+    activeData.forEach((d, i) => {
+      if (i % stepX === 0 || i === activeData.length - 1) {
+        const cx = scaleX(i);
+        xLabelsSvg += `
+          <text class="chart-axis-label num-tabular" x="${cx}" y="${padTop + plotHeight + 20}" fill="var(--color-ink-muted)" font-size="13" font-weight="600" text-anchor="middle">D${d.day}</text>
+        `;
+      }
+    });
+
+    // 7. Axis Titles (13px+ font size per Item 5)
+    const titlesSvg = `
+      <text class="chart-axis-title" transform="rotate(-90)" x="${-(padTop + plotHeight/2)}" y="18" fill="var(--color-ink)" font-size="13" font-weight="700" text-anchor="middle">Retinal Thickness (${yUnit})</text>
+      <text class="chart-axis-title" x="${padLeft + plotWidth/2}" y="${svgHeight - 6}" fill="var(--color-ink)" font-size="13" font-weight="700" text-anchor="middle">Mission Elapsed Day</text>
     `;
+
+    // Assemble SVG
+    const svgContent = `
+      <svg class="chart-svg-main" viewBox="0 0 ${svgWidth} ${svgHeight}" preserveAspectRatio="xMidYMid meet" role="img" aria-label="SANS Peripapillary Retinal Thickness Longitudinal Trajectory">
+        ${flightBandSvg}
+        ${limitLineSvg}
+        ${baselineLineSvg}
+        ${gridSvg}
+        <path d="${pathD}" fill="none" stroke="var(--color-sys-ocular)" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round" />
+        ${markersSvg}
+        <!-- Crosshair guideline -->
+        <line id="chart-crosshair" x1="0" y1="${padTop}" x2="0" y2="${padTop + plotHeight}" stroke="var(--color-ink-muted)" stroke-dasharray="3 3" stroke-width="1.2" style="display:none;" />
+        <!-- Interactive Hit Area -->
+        <g class="chart-interactive-overlay">${hitColsSvg}</g>
+        ${xLabelsSvg}
+        ${titlesSvg}
+      </svg>
+    `;
+
+    wrapper.innerHTML = svgContent;
+
+    // Attach Hover/Tap Tooltip Event Handlers
+    const tooltip = document.getElementById('chart-live-tooltip');
+    const crosshair = document.getElementById('chart-crosshair');
+    const hitCols = wrapper.querySelectorAll('.chart-col-hit');
+
+    hitCols.forEach(col => {
+      const showTip = (e) => {
+        const day = col.dataset.day;
+        const val = col.dataset.val;
+        const diff = parseInt(col.dataset.diff, 10);
+        const status = col.dataset.status;
+        const shape = col.dataset.shape;
+        const cx = parseFloat(col.dataset.cx);
+        const cy = parseFloat(col.dataset.cy);
+
+        if (crosshair) {
+          crosshair.setAttribute('x1', cx);
+          crosshair.setAttribute('x2', cx);
+          crosshair.style.display = 'block';
+        }
+
+        if (tooltip) {
+          tooltip.innerHTML = `
+            <div style="font-weight:700; color:var(--color-ink); margin-bottom:2px;">Mission Day ${day}</div>
+            <div style="font-size:13px; color:var(--color-ink);">Thickness: <strong class="num-tabular">${val} µm</strong></div>
+            <div style="font-size:13px; color:var(--color-ink-muted); margin-bottom:2px;">Baseline delta: <strong class="num-tabular">${diff >= 0 ? '+' : ''}${diff} µm</strong></div>
+            <div style="font-size:13px; font-weight:600; color:${val > 325 ? 'var(--color-vermillion)' : val >= 320 ? 'var(--color-ochre)' : 'var(--color-emerald)'};">
+              ${shape} ${status}
+            </div>
+          `;
+          tooltip.style.display = 'block';
+          // Convert SVG cx, cy to pixel percentages
+          const pctX = (cx / svgWidth) * 100;
+          const pctY = (cy / svgHeight) * 100;
+          tooltip.style.left = `${pctX}%`;
+          tooltip.style.top = `${pctY - 12}%`;
+        }
+      };
+
+      col.addEventListener('pointerenter', showTip);
+      col.addEventListener('pointerdown', showTip);
+    });
+
+    wrapper.addEventListener('pointerleave', () => {
+      if (tooltip) tooltip.style.display = 'none';
+      if (crosshair) crosshair.style.display = 'none';
+    });
   }
+
 
   // ================= SYSTEM SELECTION & BODY MAP INTERACTION (REQUIREMENT 2) =================
   const inspectTitle = document.getElementById('inspect-title');
@@ -893,7 +910,7 @@ document.addEventListener('DOMContentLoaded', () => {
       if (drift.hasDrift) {
         chartBaselineInfo.innerHTML = `Nominal: ${sys.baselineMin}–${sys.baselineMax} ${sys.yUnit} <strong style="color:var(--color-ochre-text); margin-left:6px;" title="${drift.description}">[Drift: ${drift.direction} ${drift.delta}]</strong>`;
       } else {
-        chartBaselineInfo.textContent = `Nominal band: ${sys.baselineMin}–${sys.baselineMax} ${sys.yUnit} [Simulated]`;
+        chartBaselineInfo.textContent = `Nominal band: ${sys.baselineMin}–${sys.baselineMax} ${sys.yUnit} `;
       }
     }
 
@@ -990,17 +1007,30 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
-  // SVG Region Click, Hover & Keydown listeners (Requirement 4)
+  // SVG Region Click, Hover, Focus & Synchronization with Chips (Item 1)
   bodyRegions.forEach(region => {
     const sysId = region.dataset.system;
+    const matchingChip = document.querySelector(`.legend-chip[data-target="${sysId}"]`);
+
+    const onEnter = () => {
+      region.classList.add('synced-hover');
+      if (matchingChip) matchingChip.classList.add('synced-hover');
+      updateHoverLabel(sysId);
+    };
+    const onLeave = () => {
+      region.classList.remove('synced-hover');
+      if (matchingChip) matchingChip.classList.remove('synced-hover');
+      updateHoverLabel(state.selectedSystem);
+    };
+
     region.addEventListener('click', () => {
       selectSystem(sysId);
       updateHoverLabel(sysId);
     });
-    region.addEventListener('mouseenter', () => updateHoverLabel(sysId));
-    region.addEventListener('focus', () => updateHoverLabel(sysId));
-    region.addEventListener('mouseleave', () => updateHoverLabel(state.selectedSystem));
-    region.addEventListener('blur', () => updateHoverLabel(state.selectedSystem));
+    region.addEventListener('mouseenter', onEnter);
+    region.addEventListener('focus', onEnter);
+    region.addEventListener('mouseleave', onLeave);
+    region.addEventListener('blur', onLeave);
     region.addEventListener('keydown', (e) => {
       if (e.key === 'Enter' || e.key === ' ') {
         e.preventDefault();
@@ -1009,13 +1039,29 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  // Legend Chips click
+  // Legend Chips Click & Synchronized Hover with SVG Body Map (Item 1)
   legendChips.forEach(chip => {
+    const sysId = chip.dataset.target;
+    const matchingRegion = document.getElementById(`sys-${sysId}`);
+
+    const onEnter = () => {
+      chip.classList.add('synced-hover');
+      if (matchingRegion) matchingRegion.classList.add('synced-hover');
+      updateHoverLabel(sysId);
+    };
+    const onLeave = () => {
+      chip.classList.remove('synced-hover');
+      if (matchingRegion) matchingRegion.classList.remove('synced-hover');
+      updateHoverLabel(state.selectedSystem);
+    };
+
     chip.addEventListener('click', () => {
-      selectSystem(chip.dataset.target);
+      selectSystem(sysId);
     });
-    chip.addEventListener('mouseenter', () => updateHoverLabel(chip.dataset.target));
-    chip.addEventListener('mouseleave', () => updateHoverLabel(state.selectedSystem));
+    chip.addEventListener('mouseenter', onEnter);
+    chip.addEventListener('focus', onEnter);
+    chip.addEventListener('mouseleave', onLeave);
+    chip.addEventListener('blur', onLeave);
   });
 
   // ================= READINESS SCORE ENGINE & RING GAUGE (REQUIREMENT 3 & 7) =================
@@ -1154,12 +1200,28 @@ document.addEventListener('DOMContentLoaded', () => {
   }
   window.updateKpis = updateKpis;
 
+  const STATUS_SHAPES = {
+    'in-range': { shape: '●', label: 'Nominal', color: 'var(--color-emerald)' },
+    'attention': { shape: '▲', label: 'Watch', color: 'var(--color-ochre)' },
+    'flight-surgeon': { shape: '◆', label: 'Surgeon Consult', color: 'var(--color-vermillion)' },
+    'emergency': { shape: '⬡', label: 'Emergency', color: 'var(--color-vermillion)' }
+  };
+
   function updateBodyMapVisuals() {
     Object.values(state.systems).forEach(sys => {
+      const cfg = STATUS_SHAPES[sys.status] || STATUS_SHAPES['in-range'];
       const el = document.getElementById(`sys-${sys.id}`);
       if (el) {
         el.className.baseVal = `body-system-region system--${sys.status}`;
-        el.setAttribute('aria-label', `${sys.name}. Status: ${STATUS_CONFIG[sys.status].label}.`);
+        el.setAttribute('aria-label', `${sys.name}. Status: ${STATUS_CONFIG[sys.status].label}. Glyph: ${cfg.shape}.`);
+        
+        // Update SVG status shape glyph
+        const shapeGlyph = el.querySelector('.sys-shape-glyph');
+        if (shapeGlyph) {
+          shapeGlyph.setAttribute('fill', cfg.color);
+        }
+
+        // Pulse ring marker (Ocular / Active flagged system)
         const pulse = el.querySelector('.pulse-ring-marker');
         if (pulse) {
           if (sys.status === 'emergency' || sys.status === 'flight-surgeon') {
@@ -1169,6 +1231,16 @@ document.addEventListener('DOMContentLoaded', () => {
           } else {
             pulse.setAttribute('stroke', 'var(--color-emerald)');
           }
+        }
+      }
+
+      // Update matching legend chip shape glyph and color
+      const chip = document.querySelector(`.legend-chip[data-target="${sys.id}"]`);
+      if (chip) {
+        const shapeSpan = chip.querySelector('.chip-shape-indicator');
+        if (shapeSpan) {
+          shapeSpan.textContent = cfg.shape;
+          shapeSpan.style.color = (sys.status === 'attention') ? 'var(--color-ochre-text)' : cfg.color;
         }
       }
     });
@@ -1943,7 +2015,7 @@ document.addEventListener('DOMContentLoaded', () => {
     10: { name: 'Day 10: Steady-State Acclimation', note: 'Physiological vitals stable within flight envelope', ocular: 302, ocularStatus: 'in-range', caption: 'Day 10: Steady-state microgravity equilibrium. Cardiovascular and ocular adaptation within expected in-flight ranges.' },
     14: { name: 'Day 14: Mid-Mission Routine', note: 'Nominal steady-state routine; all systems in range (302 µm)', ocular: 302, ocularStatus: 'in-range', caption: 'Day 14: Mid-mission steady state. All systems in range, baseline adaptation stable.' },
     18: { name: 'Day 18: Pre-EVA Preparation', note: 'Pre-breathe oxygenation & suit checkout (308 µm, in-range)', ocular: 308, ocularStatus: 'in-range', caption: 'Day 18: Pre-EVA preparation. Workload elevated; vitals and ocular baseline remain in-range.' },
-    19: { name: 'Day 19: Simulated Scenario: Acute Retinal Deviation', note: 'Simulated scenario: Peripapillary retinal thickness reaches 328 µm [Simulated]. Contact flight surgeon recommended.', ocular: 328, ocularStatus: 'flight-surgeon', caption: 'Day 19: Simulated scenario: Ocular telemetry records 328 µm [Simulated]. Contact flight surgeon flagged; readiness adjusted to 74%.' },
+    19: { name: 'Day 19: Simulated Scenario: Acute Retinal Deviation', note: 'Simulated scenario: Peripapillary retinal thickness reaches 328 µm . Contact flight surgeon recommended.', ocular: 328, ocularStatus: 'flight-surgeon', caption: 'Day 19: Simulated scenario: Ocular telemetry records 328 µm . Contact flight surgeon flagged; readiness adjusted to 74%.' },
     20: { name: 'Day 20: Countermeasure Recovery', note: 'Enhanced lower-body negative pressure & rest protocol applied', ocular: 316, ocularStatus: 'attention', caption: 'Day 20: Countermeasure recovery initiated under close Watch protocol (316 µm).' },
     24: { name: 'Day 24: Stabilization Under Watch', note: 'Retinal thickness resolves toward 316 µm; fatigue clearing', ocular: 316, ocularStatus: 'attention', caption: 'Day 24: Countermeasure recovery ongoing. Ocular swelling resolving under assigned protocol.' },
     25: { name: 'Day 25: Post-Incident Stabilization', note: 'Retinal thickness restored to nominal envelope (306 µm)', ocular: 306, ocularStatus: 'in-range', caption: 'Day 25: Post-incident stabilization. Target countermeasures successful, returning toward baseline envelope (306 µm).' },
@@ -2013,7 +2085,7 @@ document.addEventListener('DOMContentLoaded', () => {
     state.systems.ocular.metric1Val = `${profile.ocular} µm`;
     state.systems.ocular.status = profile.ocularStatus;
     const diff = profile.ocular - 298;
-    state.systems.ocular.metric1Sub = `${diff >= 0 ? '+' : ''}${diff} µm baseline shift [Simulated]`;
+    state.systems.ocular.metric1Sub = `${diff >= 0 ? '+' : ''}${diff} µm baseline shift `;
     const td = state.systems.ocular.trendData;
     if (td && td.length > 0) {
       td[td.length - 1].observed = profile.ocular;
@@ -2113,7 +2185,7 @@ document.addEventListener('DOMContentLoaded', () => {
       stopPlayback();
       applyMissionDay(19);
       selectSystem('ocular');
-      showToast('Simulated Scenario (Day 19): Peripapillary retinal thickness (328 µm [Simulated]) exceeds in-flight envelope.', 'warning');
+      showToast('Simulated Scenario (Day 19): Peripapillary retinal thickness (328 µm ) exceeds in-flight envelope.', 'warning');
     });
   }
 
@@ -2462,6 +2534,163 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
+
+  // ================= TAB NAVIGATION & ARIA CONTROLS (ITEM 3) =================
+  const tabButtons = Array.from(document.querySelectorAll('.workspace-tab-btn'));
+  const tabViews = Array.from(document.querySelectorAll('.tab-view'));
+
+  function switchTab(targetHash) {
+    if (!targetHash) targetHash = '#overview';
+    if (!targetHash.startsWith('#')) targetHash = '#' + targetHash;
+
+    let activeBtn = tabButtons.find(btn => btn.dataset.hash === targetHash);
+    if (!activeBtn) {
+      activeBtn = document.getElementById('tab-btn-overview') || tabButtons[0];
+      if (activeBtn) targetHash = activeBtn.dataset.hash;
+    }
+
+    if (!activeBtn) return;
+
+    tabButtons.forEach(btn => {
+      const isSelected = btn === activeBtn;
+      btn.classList.toggle('active', isSelected);
+      btn.setAttribute('aria-selected', isSelected ? 'true' : 'false');
+      btn.setAttribute('tabindex', isSelected ? '0' : '-1');
+    });
+
+    const targetViewId = activeBtn.getAttribute('aria-controls');
+    tabViews.forEach(view => {
+      const isTarget = view.id === targetViewId;
+      view.classList.toggle('active', isTarget);
+      if (isTarget) {
+        view.removeAttribute('hidden');
+      } else {
+        view.setAttribute('hidden', '');
+      }
+    });
+
+    // Sync URL hash
+    if (window.location.hash !== targetHash) {
+      try {
+        history.replaceState(null, '', targetHash);
+      } catch (e) {
+        window.location.hash = targetHash;
+      }
+    }
+
+    // If SANS view is opened, re-render chart to ensure proper SVG painting
+    if (targetHash === '#sans') {
+      const sys = state.systems[state.selectedSystem || 'ocular'];
+      if (sys) {
+        renderTrendChart(sys.trendData, sys.status, sys.yUnit, sys.baselineMin, sys.baselineMax, sys.primaryIndicator);
+      }
+    }
+  }
+  window.switchTab = switchTab;
+
+  tabButtons.forEach(btn => {
+    btn.addEventListener('click', () => {
+      switchTab(btn.dataset.hash);
+    });
+  });
+
+  // WAI-ARIA Tablist Keyboard Navigation (Left/Right/Home/End)
+  const tabList = document.querySelector('.workspace-tabs-bar[role="tablist"]');
+  if (tabList) {
+    tabList.addEventListener('keydown', (e) => {
+      const focusedIndex = tabButtons.indexOf(document.activeElement);
+      if (focusedIndex === -1) return;
+
+      let nextIndex = focusedIndex;
+      if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
+        e.preventDefault();
+        nextIndex = (focusedIndex + 1) % tabButtons.length;
+      } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
+        e.preventDefault();
+        nextIndex = (focusedIndex - 1 + tabButtons.length) % tabButtons.length;
+      } else if (e.key === 'Home') {
+        e.preventDefault();
+        nextIndex = 0;
+      } else if (e.key === 'End') {
+        e.preventDefault();
+        nextIndex = tabButtons.length - 1;
+      }
+
+      if (nextIndex !== focusedIndex) {
+        tabButtons[nextIndex].focus();
+        switchTab(tabButtons[nextIndex].dataset.hash);
+      }
+    });
+  }
+
+  window.addEventListener('hashchange', () => {
+    if (window.location.hash) {
+      switchTab(window.location.hash);
+    }
+  });
+
+  const btnGotoSans = document.getElementById('btn-goto-sans');
+  if (btnGotoSans) {
+    btnGotoSans.addEventListener('click', () => {
+      switchTab('#sans');
+    });
+  }
+
+  // ================= MORE MENU DROPDOWN (ITEM 6) =================
+  const headerMoreBtn = document.getElementById('header-more-btn');
+  const headerMoreDropdown = document.getElementById('header-more-dropdown');
+
+  if (headerMoreBtn && headerMoreDropdown) {
+    headerMoreBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const isExpanded = headerMoreDropdown.classList.contains('show');
+      if (isExpanded) {
+        headerMoreDropdown.classList.remove('show');
+        headerMoreBtn.setAttribute('aria-expanded', 'false');
+      } else {
+        headerMoreDropdown.classList.add('show');
+        headerMoreBtn.setAttribute('aria-expanded', 'true');
+      }
+    });
+
+    document.addEventListener('click', (e) => {
+      if (!headerMoreDropdown.contains(e.target) && e.target !== headerMoreBtn) {
+        headerMoreDropdown.classList.remove('show');
+        headerMoreBtn.setAttribute('aria-expanded', 'false');
+      }
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && headerMoreDropdown.classList.contains('show')) {
+        headerMoreDropdown.classList.remove('show');
+        headerMoreBtn.setAttribute('aria-expanded', 'false');
+        headerMoreBtn.focus();
+      }
+    });
+
+    headerMoreDropdown.querySelectorAll('.more-menu-item').forEach(item => {
+      item.addEventListener('click', () => {
+        headerMoreDropdown.classList.remove('show');
+        headerMoreBtn.setAttribute('aria-expanded', 'false');
+      });
+    });
+  }
+
+  // ================= CHART RANGE TOGGLES (7d / 14d / 30d) (ITEM 2) =================
+  const chartRangeBtns = document.querySelectorAll('.chart-range-btn');
+  chartRangeBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const range = parseInt(btn.dataset.range, 10);
+      if (!range) return;
+      state.chartRange = range;
+      chartRangeBtns.forEach(b => b.classList.toggle('active', b === btn));
+      const sys = state.systems[state.selectedSystem || 'ocular'];
+      if (sys) {
+        renderTrendChart(sys.trendData, sys.status, sys.yUnit, sys.baselineMin, sys.baselineMax, sys.primaryIndicator);
+      }
+    });
+  });
+
   // Resilient Initialisation Wrapper (Part 1, Item 2)
   function safeInitPanel(panelName, fn, fallbackElementId = null) {
     try {
@@ -2499,6 +2728,9 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     if (urlParams.has('env')) {
       setEnvironment(urlParams.get('env'));
+    }
+    if (urlParams.has('tab')) {
+      switchTab('#' + urlParams.get('tab'));
     }
   } catch (e) {
     console.warn('URL params parsing note:', e);

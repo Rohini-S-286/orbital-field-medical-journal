@@ -32,9 +32,12 @@
 
   /* Text & Ink (WCAG AA & AAA compliant on #F9EBD7 and #FFFDF9) */
   --color-ink: #182820;               /* Deep green-charcoal text (contrast > 12:1) */
-  --color-ink-muted: #3B4E43;         /* Clinical labels (contrast > 6.5:1) */
-  --color-ink-faint: #4E6356;         /* Secondary metadata (contrast > 4.8:1) */
-  --color-ivory-heading: #F9EBD7;     /* Warm Ivory token for headings on dark emerald */
+  --color-ink-muted: #2E4136;         /* Clinical labels (contrast > 6.5:1) */
+  --color-ink-faint: #3F5347;         /* Secondary metadata (contrast > 4.8:1) */
+  --color-ivory-heading: #F9EBD7;
+  --color-chart-surface: #FFFEFA;
+  --color-table-alt: #F6EEE0;
+     /* Warm Ivory token for headings on dark emerald */
 
   /* Emerald Green (Single Brand Accent, Primary Actions & In-Range Status) */
   --brand-emerald: #046A38;           /* Single brand accent per Priority 4 */
@@ -135,8 +138,11 @@
   /* Text & Ink */
   --color-ink: #F9EBD7;               /* Warm Ivory text on dark per Priority 4 */
   --color-ink-muted: #A3B8AC;         /* Muted cabin telemetry (WCAG AA 5.4:1) */
-  --color-ink-faint: #8EAA9B;         /* Contrast > 4.6:1 on #12211A */
+  --color-ink-faint: #92A79B;         /* Contrast > 4.6:1 on #12211A */
   --color-ivory-heading: #F9EBD7;
+  --color-chart-surface: #FFFEFA;
+  --color-table-alt: #F6EEE0;
+
 
   /* Emerald (Single Brand Accent) */
   --brand-deep: #073827;
@@ -304,7 +310,7 @@ p, span, li, button, input {
 .simulated-tag {
   display: inline-flex;
   align-items: center;
-  font-size: 0.72rem;
+  font-size: 0.82rem;
   font-weight: 600;
   letter-spacing: 0.05em;
   text-transform: uppercase;
@@ -549,7 +555,7 @@ input:focus-visible,
 }
 
 .card-meta {
-  font-size: 0.8rem;
+  font-size: 0.82rem;
   text-transform: uppercase;
   letter-spacing: 0.08em;
   color: var(--color-ink-muted);
@@ -618,7 +624,7 @@ input:focus-visible,
 }
 
 .brand-titles .mission-meta {
-  font-size: 0.8rem;
+  font-size: 0.82rem;
   color: rgba(255, 255, 255, 0.85);
   display: flex;
   gap: 8px;
@@ -672,7 +678,7 @@ input:focus-visible,
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  font-size: 0.78rem;
+  font-size: 0.82rem;
   font-weight: 600;
   padding: 6px 12px;
   min-height: 36px;
@@ -760,7 +766,7 @@ input:focus-visible,
   border: none;
   border-radius: var(--radius-full);
   padding: 4px 12px;
-  font-size: 0.8rem;
+  font-size: 0.82rem;
   font-weight: 500;
   color: var(--color-ink-muted);
   cursor: pointer;
@@ -790,7 +796,7 @@ input:focus-visible,
   border-radius: var(--radius-full);
   background: var(--color-surface-hover);
   border: 1px solid var(--color-border);
-  font-size: 0.78rem;
+  font-size: 0.82rem;
   font-weight: 500;
   color: var(--color-ink);
   min-height: 32px;
@@ -825,7 +831,7 @@ input:focus-visible,
 }
 
 .hazard-lens-label {
-  font-size: 0.8rem;
+  font-size: 0.82rem;
   font-weight: 600;
   color: var(--color-ink-muted);
   text-transform: uppercase;
@@ -845,7 +851,7 @@ input:focus-visible,
   border: 1px solid var(--color-border);
   border-radius: var(--radius-full);
   padding: 4px 12px;
-  font-size: 0.78rem;
+  font-size: 0.82rem;
   font-weight: 500;
   color: var(--color-ink-muted);
   cursor: pointer;
@@ -1033,7 +1039,7 @@ input:focus-visible,
 }
 
 .kpi-badge {
-  font-size: 0.72rem;
+  font-size: 0.82rem;
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.05em;
@@ -1074,7 +1080,7 @@ input:focus-visible,
 }
 
 .kpi-sub {
-  font-size: 0.76rem;
+  font-size: 0.82rem;
   color: var(--color-ink-faint);
 }
 
@@ -1449,7 +1455,7 @@ input:focus-visible,
 }
 
 .ring-score-label {
-  font-size: 0.8rem;
+  font-size: 0.82rem;
   text-transform: uppercase;
   letter-spacing: 0.08em;
   color: var(--color-ink-muted);
@@ -1529,7 +1535,7 @@ input:focus-visible,
 }
 
 .checkin-meta {
-  font-size: 0.8rem;
+  font-size: 0.82rem;
   color: var(--color-ink-muted);
 }
 
@@ -1598,7 +1604,7 @@ input:focus-visible,
 }
 
 .ruler-title {
-  font-size: 0.8rem;
+  font-size: 0.82rem;
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.05em;
@@ -1610,7 +1616,7 @@ input:focus-visible,
   align-items: center;
   margin-bottom: 10px;
   gap: 12px;
-  font-size: 0.8rem;
+  font-size: 0.82rem;
 }
 
 .ruler-label {
@@ -1792,7 +1798,7 @@ input:focus-visible,
   display: flex;
   gap: 16px;
   flex-wrap: wrap;
-  font-size: 0.8rem;
+  font-size: 0.82rem;
   color: var(--color-ink-muted);
   margin-top: 10px;
 }
@@ -2103,7 +2109,7 @@ input:focus-visible,
   color: var(--color-ink-muted);
   font-weight: 600;
   text-transform: uppercase;
-  font-size: 0.78rem;
+  font-size: 0.82rem;
   letter-spacing: 0.05em;
   padding: 12px 16px;
   border-bottom: 2px solid var(--color-border);
@@ -2218,7 +2224,7 @@ input:focus-visible,
   display: flex;
   align-items: center;
   gap: 6px;
-  font-size: 0.76rem;
+  font-size: 0.82rem;
   font-weight: 600;
   color: var(--color-ink-muted);
   opacity: 0.65;
@@ -2232,7 +2238,7 @@ input:focus-visible,
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  font-size: 0.72rem;
+  font-size: 0.82rem;
   background-color: var(--color-surface);
   border: 1px solid var(--color-border);
   color: var(--color-ink-muted);
@@ -2439,7 +2445,7 @@ input:focus-visible,
 
 .intro-badge {
   display: inline-block;
-  font-size: 0.72rem;
+  font-size: 0.82rem;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.08em;
@@ -2605,7 +2611,7 @@ input:focus-visible,
 }
 
 .incident-badge-pill {
-  font-size: 0.72rem;
+  font-size: 0.82rem;
   font-weight: 700;
   letter-spacing: 0.06em;
   text-transform: uppercase;
@@ -2638,7 +2644,7 @@ input:focus-visible,
 }
 
 .chain-step-num {
-  font-size: 0.7rem;
+  font-size: 0.82rem;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.05em;
@@ -2654,7 +2660,7 @@ input:focus-visible,
 }
 
 .chain-step-desc {
-  font-size: 0.8rem;
+  font-size: 0.82rem;
   line-height: 1.45;
   color: var(--color-ink-muted);
 }
@@ -2677,7 +2683,7 @@ input:focus-visible,
   align-items: center;
   gap: 6px;
   white-space: nowrap;
-  font-size: 0.8rem;
+  font-size: 0.82rem;
   color: var(--color-ink-muted);
 }
 
@@ -2700,7 +2706,7 @@ input:focus-visible,
 
 .timeline-arrow {
   color: var(--color-border-strong);
-  font-size: 0.75rem;
+  font-size: 0.82rem;
 }
 
 /* Priority 6: Non-Color Redundancy Legend Bar */
@@ -2746,7 +2752,7 @@ input:focus-visible,
   border: none;
   border-radius: var(--radius-sm);
   padding: 3px 8px;
-  font-size: 0.75rem;
+  font-size: 0.82rem;
   font-weight: 600;
   color: var(--color-ink-muted);
   cursor: pointer;
@@ -2765,7 +2771,7 @@ input:focus-visible,
   grid-template-columns: 140px repeat(30, 1fr);
   gap: 4px;
   align-items: center;
-  font-size: 0.75rem;
+  font-size: 0.82rem;
   overflow-x: auto;
   padding: 12px 0;
 }
@@ -2774,7 +2780,7 @@ input:focus-visible,
   font-weight: 600;
   text-align: center;
   color: var(--color-ink-muted);
-  font-size: 0.68rem;
+  font-size: 0.82rem;
 }
 
 .matrix-row-label {
@@ -2851,5 +2857,239 @@ input:focus-visible,
   .telemetry-log-table td {
     border: 1px solid #DDD !important;
     padding: 8px !important;
+  }
+}
+
+/* ================= 14. MORE MENU & REDESIGN REFINEMENTS ================= */
+
+/* Header More Menu Dropdown */
+.header-menu-container {
+  position: relative;
+  display: inline-block;
+}
+
+.header-more-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 38px;
+  padding: 6px 14px;
+  font-size: 0.88rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.header-more-dropdown {
+  display: none;
+  position: absolute;
+  top: calc(100% + 6px);
+  right: 0;
+  min-width: 260px;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border-strong);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-lg);
+  padding: 6px;
+  z-index: 1000;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.header-more-dropdown.show {
+  display: flex !important;
+  animation: fadeIn 0.15s ease-out;
+}
+
+.more-menu-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 10px 14px;
+  font-family: var(--font-sans);
+  font-size: 0.88rem;
+  font-weight: 500;
+  color: var(--color-ink);
+  background: transparent;
+  border: none;
+  border-radius: var(--radius-sm);
+  text-align: left;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.more-menu-item:hover,
+.more-menu-item:focus-visible {
+  background: var(--color-surface-hover);
+  color: var(--color-emerald);
+}
+
+.more-menu-item.item--surgeon {
+  color: var(--color-vermillion);
+}
+
+.more-menu-item.item--surgeon:hover {
+  background: var(--color-vermillion-tint);
+}
+
+/* Body Map Refined Line-Art & Glow */
+.body-silhouette {
+  fill: none !important;
+  stroke: var(--color-border-strong) !important;
+  stroke-width: 1.5 !important;
+  stroke-dasharray: none !important;
+  opacity: 0.6 !important;
+}
+
+.body-system-region {
+  cursor: pointer;
+  transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), filter 0.2s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.2s ease;
+  outline: none;
+}
+
+.body-system-region:hover {
+  filter: drop-shadow(0 0 10px var(--color-emerald)) brightness(1.1);
+  transform: scale(1.02);
+}
+
+.body-system-region.selected-system {
+  filter: drop-shadow(0 0 12px var(--color-emerald)) drop-shadow(0 0 3px #FFF) !important;
+  stroke-width: 2.2 !important;
+}
+
+.body-system-region:focus-visible {
+  outline: 2px solid var(--color-emerald);
+  outline-offset: 4px;
+}
+
+/* System Soft Glow Regions */
+.system-glow-bg {
+  transition: opacity 0.25s ease, filter 0.25s ease;
+  opacity: 0.25;
+}
+
+.body-system-region:hover .system-glow-bg,
+.body-system-region.selected-system .system-glow-bg {
+  opacity: 0.65;
+  filter: drop-shadow(0 0 8px currentColor);
+}
+
+/* Synchronized Legend Chip Hover State */
+.legend-chip {
+  transition: all 0.2s ease !important;
+  min-height: 36px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.82rem;
+  font-weight: 600;
+}
+
+.legend-chip:hover,
+.legend-chip.synced-hover {
+  border-color: var(--color-emerald) !important;
+  background-color: var(--color-emerald-tint) !important;
+  transform: translateY(-1px);
+}
+
+.legend-chip.active {
+  box-shadow: 0 0 0 2px var(--color-surface), 0 0 0 4px var(--color-emerald) !important;
+}
+
+/* Dynamic SVG Trend Chart Elevation (Item 2) */
+.chart-container {
+  background: var(--color-chart-surface) !important;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: 16px 18px;
+  position: relative;
+  min-height: 310px;
+}
+
+.chart-svg-main {
+  width: 100%;
+  height: 285px;
+  overflow: visible;
+}
+
+.chart-axis-label {
+  font-size: 13px !important;
+  font-weight: 600;
+  fill: var(--color-ink-muted);
+}
+
+.chart-axis-title {
+  font-size: 13px !important;
+  font-weight: 700;
+  fill: var(--color-ink);
+  letter-spacing: 0.02em;
+}
+
+.chart-nominal-band {
+  fill: var(--color-emerald-tint-soft);
+  opacity: 0.7;
+}
+
+/* Interactive Chart Tooltip */
+.chart-interactive-overlay {
+  pointer-events: all;
+}
+
+.chart-col-hit {
+  fill: transparent;
+  cursor: crosshair;
+}
+
+.chart-col-hit:hover + .chart-hover-marker,
+.chart-col-hit:hover ~ .chart-crosshair-line {
+  opacity: 1;
+}
+
+.chart-tooltip-panel {
+  position: absolute;
+  pointer-events: none;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border-strong);
+  border-radius: var(--radius-sm);
+  padding: 8px 12px;
+  box-shadow: var(--shadow-md);
+  font-size: 0.82rem;
+  line-height: 1.4;
+  z-index: 100;
+  transform: translate(-50%, -100%);
+  transition: opacity 0.15s ease, transform 0.15s ease;
+  white-space: nowrap;
+}
+
+/* Alternate Table Row Striping (Item 6) */
+.telemetry-log-table tbody tr:nth-child(even) {
+  background-color: var(--color-table-alt) !important;
+}
+
+.telemetry-log-table tbody tr:hover {
+  background-color: var(--color-surface-hover) !important;
+}
+
+/* Two-Column Alignment & Gap Removal (Item 6) */
+.dashboard-container {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+  align-items: stretch;
+}
+
+.journal-card {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.journal-card .card-body-flexible {
+  flex: 1;
+}
+
+@media (max-width: 960px) {
+  .dashboard-container {
+    grid-template-columns: 1fr;
   }
 }
