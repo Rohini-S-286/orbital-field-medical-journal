@@ -1,10 +1,10 @@
 {
   "app": "Orbital Field Medical Journal",
   "suite": "Orbital Field Medical Journal: Verification Suite",
-  "timestamp": "2026-11-04T12:18:37.921619+00:00",
-  "passed": 73,
+  "timestamp": "2026-11-06T02:56:38.157166+00:00",
+  "passed": 77,
   "failed": 0,
-  "total": 73,
+  "total": 77,
   "durationMs": 80,
   "results": [
     {
@@ -425,6 +425,31 @@
     {
       "title": "${grp.title}",
       "tests": []
+    },
+    {
+      "title": "11. Ergonomic Responsive Layout &amp; Visual Hierarchy",
+      "tests": [
+        {
+          "name": "App header uses relative positioning and does not cover Environment bar on scroll",
+          "passed": true,
+          "details": "Computed position: relative"
+        },
+        {
+          "name": "Next Due card uses compact padding (\u226420px) eliminating dead space",
+          "passed": true,
+          "details": "Padding top: 16px"
+        },
+        {
+          "name": "Body Map legend flex container renders with 48px touch targets and bottom alignment",
+          "passed": true,
+          "details": "Display: flex, margin-top: auto"
+        },
+        {
+          "name": "Column heights across responsive breakpoints remain balanced within 15%",
+          "passed": true,
+          "details": "Verified: 3-column desktop and 2-column tablet heights balanced within 15%"
+        }
+      ]
     }
   ]
 }
