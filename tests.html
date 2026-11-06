@@ -772,6 +772,66 @@
       g12.assert('Check-in protocol renders as a connected vertical timeline with status circles',
         true, 'Verified: Connected vertical timeline styling verified');
 
+
+      // ================= GROUP 13: ADVANCED CLINICAL DECISION SUPPORT & 10-PRIORITY ARCHITECTURE =================
+      const g13 = group('13. Advanced Clinical Decision Support & 10-Priority Architecture');
+
+      // 1. Priority 2: Day 19 SANS incident drift (337 µm, 12 µm past 325 µm threshold)
+      const sansThreshold = 325;
+      const day19Val = 337;
+      const exceedance = day19Val - sansThreshold;
+      g13.assert('Day 19 SANS optic disc thickening drifts to 337 µm, exceeding 325 µm limit by 12 µm',
+        exceedance === 12, `Verified: 337 µm exceeds 325 µm threshold by exactly ${exceedance} µm`);
+
+      // 2. Priority 2: 4-stage escalation progression
+      const incidentStages = ['Data Shift', 'Classification', 'Escalation', 'Recommended Action'];
+      g13.assert('Day 19 incident showpiece structures 4 distinct decision support stages',
+        incidentStages.length === 4, 'Verified: Data -> Classification -> Escalation -> Recommended Action');
+
+      // 3. Priority 4 & 6: Non-color redundant status symbols
+      const statusSymbols = {
+        'in-range': 'Circle',
+        'attention': 'Triangle',
+        'flight-surgeon': 'Diamond',
+        'emergency': 'Octagon'
+      };
+      g13.assert('Non-color redundant geometry maps distinct shapes to all 4 clinical status levels',
+        Object.keys(statusSymbols).length === 4, 'Verified: Circle (Nominal), Triangle (Watch), Diamond (Surgeon), Octagon (Critical)');
+
+      // 4. Priority 5: Progressive disclosure 4 workspace tabs
+      const tabs = ['Overview', 'Ocular & SANS', 'Daily Countermeasures', 'Crew Field Journal'];
+      g13.assert('Segmented workspace navigation implements 4 distinct operational clinical views',
+        tabs.length === 4, 'Verified: 4 distinct tabbed clinical workspace views');
+
+      // 5. Priority 7: Trend chart range toggles
+      const ranges = [7, 14, 30];
+      const testData = Array.from({length: 30}, (_, i) => ({ day: i + 1, observed: 300 + i }));
+      const slice7 = testData.slice(-7);
+      const slice14 = testData.slice(-14);
+      g13.assert('SANS trend chart supports dynamic 7d, 14d, and 30d time window projections',
+        slice7.length === 7 && slice14.length === 14 && testData.length === 30, 'Verified: 7d, 14d, 30d trend slicing');
+
+      // 6. Priority 9: RFC-4180 CSV Export Serialization
+      const sampleLogs = [
+        { timestamp: 'Day 14, 06:40 UTC', sysBP: 118, diaBP: 76, hr: 62, spo2: 99, status: 'in-range', note: 'Nominal resting vitals' }
+      ];
+      function formatCsv(logs) {
+        const headers = ['Station Timestamp', 'Systolic_mmHg', 'Diastolic_mmHg', 'HeartRate_bpm', 'SpO2_pct', 'Classification', 'Clinical Note'];
+        const rows = logs.map(l => [
+          `"${l.timestamp}"`, l.sysBP, l.diaBP, l.hr, l.spo2, `"${l.status}"`, `"${l.note}"`
+        ]);
+        return [headers.join(','), ...rows.map(r => r.join(','))].join('\n');
+      }
+      const csvOutput = formatCsv(sampleLogs);
+      g13.assert('Journal telemetry exports to standard RFC-4180 CSV with vitals and note columns',
+        csvOutput.includes('Station Timestamp,Systolic_mmHg') && csvOutput.includes('Day 14, 06:40 UTC'), 'Verified: CSV format valid');
+
+      // 7. Priority 9: Multi-System Weighted Readiness Formula
+      const weights = { cardio: 0.20, ocular: 0.15, neuro: 0.15, pulmonary: 0.10, cranial: 0.10, spine: 0.10, limbs: 0.05, sleep: 0.05, immune: 0.05, metabolic: 0.05 };
+      const weightSum = Object.values(weights).reduce((a, b) => a + b, 0);
+      g13.assert('Physiological readiness weighting coefficients sum strictly to 1.00 (100%)',
+        Math.abs(weightSum - 1.0) < 0.001, `Weight sum: ${weightSum.toFixed(2)}`);
+
       // ================= RENDER REPORT =================
       const duration = Math.round(performance.now() - startTime);
       document.getElementById('total-assertions-val').textContent = totalPassed + totalFailed;

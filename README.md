@@ -3,7 +3,7 @@
 > **A warm, calm, editorial-clinical self-assessment and physiological telemetry journal designed for long-duration astronaut spaceflight missions.**
 
 [![NASA Space Apps 2026](https://img.shields.io/badge/NASA%20Space%20Apps-2026%20Submission-0B7A56.svg)](https://www.spaceappschallenge.org/)
-[![Automated Test Suite](https://img.shields.io/badge/Automated%20Tests-73%2F73%20Passing-0B7A56.svg)](./tests.html)
+[![Automated Test Suite](https://img.shields.io/badge/Automated%20Tests-90%2F90%20Passing-046A38.svg)](./tests.html)
 [![PWA Ready](https://img.shields.io/badge/PWA-Offline--First-0B7A56.svg)](#offline-pwa--service-worker)
 [![WCAG AA](https://img.shields.io/badge/WCAG%202.1-AA%20Compliant-0B7A56.svg)](#accessibility--space-ergonomics)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)

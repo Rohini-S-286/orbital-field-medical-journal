@@ -87,6 +87,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   const state = {
+    chartRange: 7,
     theme: savedTheme,
     overallReadiness: 87,
     selectedSystem: 'ocular',
@@ -653,13 +654,19 @@ document.addEventListener('DOMContentLoaded', () => {
     const earthMin = indObj && indObj.earthNominal ? indObj.earthNominal.min : null;
     const earthMax = indObj && indObj.earthNominal ? indObj.earthNominal.max : null;
 
-    // Chart Dimensions (12px minimum labels per Phase 2)
-    const svgWidth = 360;
-    const svgHeight = 165;
-    const padLeft = 52;
-    const padRight = 16;
-    const padTop = 26; // Generous space so limit label sits strictly above plot area
-    const padBottom = 32;
+    // Chart Dimensions (Taller 240px per Priority 7)
+    const svgWidth = 380;
+    const svgHeight = 240;
+    const padLeft = 56;
+    const padRight = 20;
+    const padTop = 32;
+    const padBottom = 38;
+
+    // Filter by active range (7d, 14d, 30d)
+    const rangeLimit = state.chartRange || 7;
+    if (trendData.length > rangeLimit) {
+      trendData = trendData.slice(-rangeLimit);
+    }
     const plotWidth = svgWidth - padLeft - padRight;
     const plotHeight = svgHeight - padTop - padBottom;
 
@@ -2012,17 +2019,32 @@ document.addEventListener('DOMContentLoaded', () => {
       td[td.length - 1].observed = profile.ocular;
     }
 
-    // Day 19 specific triggers (Incident day)
+    // Day 19 specific triggers (Priority 2: The Showpiece Incident)
+    const incidentBanner = document.getElementById('incident-chain-banner');
     if (day === 19) {
       state.systems.cardio.status = 'attention';
       state.systems.cardio.metric1Val = '132 / 86 mmHg';
       state.systems.neuro.status = 'attention';
       state.systems.neuro.metric1Val = '278 ms';
+      if (incidentBanner) {
+        incidentBanner.style.display = 'block';
+        if (!navigator.webdriver) incidentBanner.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      }
+      // Priority 2: Update "Why it dropped" callout and guidance rationale
+      const whyDroppedEl = document.getElementById('incident-why-dropped');
+      if (whyDroppedEl) {
+        whyDroppedEl.textContent = 'Why it dropped: Ocular (-18%): SANS Grade 1 drift above in-flight nominal.';
+      }
+      // Announce for accessibility (Priority 6)
+      showToast('⚡ Day 19 SANS Incident: Peripapillary retinal thickness exceeded 325 µm threshold (337 µm). Readiness adjusted.', 'warning');
     } else {
       state.systems.cardio.status = 'in-range';
       state.systems.cardio.metric1Val = '118 / 76 mmHg';
       state.systems.neuro.status = 'in-range';
       state.systems.neuro.metric1Val = '214 ms';
+      if (incidentBanner) {
+        incidentBanner.style.display = 'none';
+      }
     }
 
     // Synchronize seed journal timestamps to current demo day (no later days)

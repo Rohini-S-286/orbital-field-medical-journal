@@ -23,37 +23,45 @@
 }
 
 :root {
-  /* ================= LIGHT THEME (WARM IVORY - DEFAULT) ================= */
-  --color-bg: #FBF6EA;                /* Warm Ivory background / paper */
-  --color-surface: #FFFDF7;           /* Raised surface / cards */
-  --color-surface-hover: #F5EED9;     /* Subtle interactive surface hover */
-  --color-border: #E8DFC9;            /* Subtle card/journal border */
-  --color-border-strong: #D5C7A9;     /* Accent divider border */
+  /* ================= LIGHT THEME (WARM IVORY - DAY CABIN) ================= */
+  --color-bg: #F9EBD7;                /* Warm Ivory background per Priority 4 */
+  --color-surface: #FFFDF9;           /* Clean raised surface for cards */
+  --color-surface-hover: #F2E2CC;     /* Subtle interactive surface hover */
+  --color-border: #E8D7BE;            /* Precise clinical card border */
+  --color-border-strong: #D4C0A4;     /* Accent divider border */
 
-  /* Text & Ink */
-  --color-ink: #1F2A24;               /* Deep green-black text (WCAG AAA > 13:1) */
-  --color-ink-muted: #4B5A51;         /* Muted clinical notes / labels (WCAG AA 5.8:1) */
-  --color-ink-faint: #566860;         /* Darkened metadata token to meet WCAG AA (4.8:1 on #FFFDF7) */
+  /* Text & Ink (WCAG AA & AAA compliant on #F9EBD7 and #FFFDF9) */
+  --color-ink: #182820;               /* Deep green-charcoal text (contrast > 12:1) */
+  --color-ink-muted: #3B4E43;         /* Clinical labels (contrast > 6.5:1) */
+  --color-ink-faint: #4E6356;         /* Secondary metadata (contrast > 4.8:1) */
+  --color-ivory-heading: #F9EBD7;     /* Warm Ivory token for headings on dark emerald */
 
-  /* Emerald Green (Primary Brand, "Healthy / In-range", Primary Actions) */
-  --color-emerald: #0B7A56;
-  --color-emerald-hover: #095F43;
-  --color-emerald-tint: #DDF1E8;
-  --color-emerald-tint-soft: #EEF8F3;
-  --color-emerald-border: #9FD3BF;
+  /* Emerald Green (Single Brand Accent, Primary Actions & In-Range Status) */
+  --brand-emerald: #046A38;           /* Single brand accent per Priority 4 */
+  --brand-deep: #034826;
+  --color-emerald: #046A38;
+  --color-emerald-hover: #03532C;
+  --color-emerald-tint: rgba(4, 106, 56, 0.12);
+  --color-emerald-tint-soft: rgba(4, 106, 56, 0.06);
+  --color-emerald-border: #8DC7A8;
 
-  /* Vermillion (Accent, Alerts, "Critical / Contact Flight Surgeon / Emergency") */
-  --color-vermillion: #E34234;
-  --color-vermillion-hover: #C2352A;
-  --color-vermillion-tint: #FCE3DF;
-  --color-vermillion-border: #F6ABA2;
-  --color-vermillion-text: #A8281D;   /* Darkened text token for WCAG AA (5.9:1 on #FFFDF7) */
+  /* Status Colors (Reserved strictly for physiological status, never decorative) */
+  --color-status-nominal: #046A38;
+  --color-status-watch: #B45309;      /* Amber / Ochre for Watch only */
+  --color-status-alert: #B91C1C;      /* Red strictly for Critical / Emergency */
 
-  /* Caution / Ochre (ONLY for "Attention / Watch" Status Scale) */
-  --color-ochre: #C98A1B;
-  --color-ochre-tint: #F7EBCF;
-  --color-ochre-border: #ECD299;
-  --color-ochre-text: #7A4E00;        /* Darkened text token for WCAG AA (5.8:1 on #FFFDF7) */
+  /* Ochre / Caution (Strictly for Watch / Attention) */
+  --color-ochre: #B45309;
+  --color-ochre-tint: rgba(180, 83, 9, 0.12);
+  --color-ochre-border: #FCD34D;
+  --color-ochre-text: #92400E;        /* Contrast > 5.2:1 */
+
+  /* Vermillion / Alert (Strictly for Critical Alerts & Emergency) */
+  --color-vermillion: #B91C1C;
+  --color-vermillion-hover: #991B1B;
+  --color-vermillion-tint: rgba(185, 28, 28, 0.12);
+  --color-vermillion-border: #FCA5A5;
+  --color-vermillion-text: #7F1D1D;   /* Contrast > 6.0:1 */
 
   /* ================= SYSTEM ACCENT COLOURS (DECORATIVE IDENTITY & CHARTS ONLY) ================= */
   --color-sys-cardio: #D6456B;
@@ -87,10 +95,9 @@
   --color-sys-limbs-tint: rgba(249, 115, 22, 0.12);
   --color-sys-limbs-border: #FBB47D;
 
-  /* Brand additions */
-  --brand-deep: #064E3B;
-  --brand-emerald: #0B7A56;
-  --brand-mint-tint: #E3F5EC;
+  --brand-deep: #034826;
+  --brand-emerald: #046A38;
+  --brand-mint-tint: rgba(4, 106, 56, 0.12);
 
   /* Tactile Paper Shadows */
   --shadow-sm: 0 1px 3px rgba(31, 42, 36, 0.05), 0 1px 2px rgba(180, 160, 120, 0.08);
@@ -119,36 +126,44 @@
 
 /* ================= DARK THEME (NIGHT CABIN LIGHTING) ================= */
 [data-theme="dark"] {
-  --color-bg: #0F1A15;                /* Night cabin deep green-black background */
-  --color-surface: #16241D;           /* Raised dark cabin card surface */
-  --color-surface-hover: #1E3329;     /* Night cabin hover state */
-  --color-border: #273A30;            /* Subtle dark grid border */
-  --color-border-strong: #3B5748;     /* Accent divider border */
+  --color-bg: #0B1612;                /* Night cabin deep green-black background */
+  --color-surface: #12211A;           /* Raised dark cabin card surface */
+  --color-surface-hover: #192D23;     /* Night cabin hover state */
+  --color-border: #22372C;            /* Subtle dark grid border */
+  --color-border-strong: #334F40;     /* Accent divider border */
 
   /* Text & Ink */
-  --color-ink: #F4EEDD;               /* Warm Ivory text on dark (WCAG AAA 14.2:1) */
-  --color-ink-muted: #9BB0A3;         /* Muted cabin telemetry (WCAG AA 5.2:1) */
-  --color-ink-faint: #8CA396;         /* Lightened for dark WCAG AA (5.1:1 on #16241D) */
+  --color-ink: #F9EBD7;               /* Warm Ivory text on dark per Priority 4 */
+  --color-ink-muted: #A3B8AC;         /* Muted cabin telemetry (WCAG AA 5.4:1) */
+  --color-ink-faint: #8EAA9B;         /* Contrast > 4.6:1 on #12211A */
+  --color-ivory-heading: #F9EBD7;
 
-  /* Emerald (Lightened slightly for dark contrast) */
+  /* Emerald (Single Brand Accent) */
+  --brand-deep: #073827;
+  --brand-emerald: #149B6F;
   --color-emerald: #149B6F;
   --color-emerald-hover: #17B280;
-  --color-emerald-tint: rgba(20, 155, 111, 0.22);
-  --color-emerald-tint-soft: rgba(20, 155, 111, 0.12);
+  --color-emerald-tint: rgba(20, 155, 111, 0.20);
+  --color-emerald-tint-soft: rgba(20, 155, 111, 0.10);
   --color-emerald-border: #1E664B;
 
-  /* Vermillion (Lightened slightly for dark contrast) */
-  --color-vermillion: #F05A4D;
-  --color-vermillion-hover: #FF6F63;
-  --color-vermillion-tint: rgba(240, 90, 77, 0.24);
-  --color-vermillion-border: #7A2821;
-  --color-vermillion-text: #FF8A7F;   /* High contrast on dark (5.9:1 on #16241D) */
+  /* Status Colors */
+  --color-status-nominal: #149B6F;
+  --color-status-watch: #F59E0B;
+  --color-status-alert: #EF4444;
 
-  /* Caution / Ochre (Lightened for night cabin) */
-  --color-ochre: #E09F2B;
-  --color-ochre-tint: rgba(224, 159, 43, 0.22);
-  --color-ochre-border: #6B4913;
-  --color-ochre-text: #F0B84A;        /* High contrast on dark (7.4:1 on #16241D) */
+  /* Vermillion (Strictly for Emergency & Critical Alerts) */
+  --color-vermillion: #EF4444;
+  --color-vermillion-hover: #F87171;
+  --color-vermillion-tint: rgba(239, 68, 68, 0.20);
+  --color-vermillion-border: #7F1D1D;
+  --color-vermillion-text: #FCA5A5;   /* High contrast on dark */
+
+  /* Caution / Ochre (Strictly for Watch / Attention) */
+  --color-ochre: #F59E0B;
+  --color-ochre-tint: rgba(245, 158, 11, 0.18);
+  --color-ochre-border: #78350F;
+  --color-ochre-text: #FBBF24;        /* High contrast on dark (7.4:1 on #12211A) */
 
   /* Dark Night Cabin System Accents (Vibrant & Contrast-Tuned) */
   --color-sys-cardio: #FB7185;
@@ -182,8 +197,6 @@
   --color-sys-limbs-tint: rgba(251, 146, 60, 0.18);
   --color-sys-limbs-border: #9E4909;
 
-  --brand-deep: #06281E;
-  --brand-emerald: #149B6F;
   --brand-mint-tint: rgba(20, 155, 111, 0.22);
 
   /* Night Cabin Shadows */
@@ -960,6 +973,7 @@ input:focus-visible,
 .kpi-card {
   background-color: var(--color-surface);
   border: 1px solid var(--color-border);
+  border-top: 3px solid var(--color-border-strong); /* Unified neutral/brand border per Priority 4 */
   border-radius: var(--radius-lg);
   padding: 16px 20px;
   box-shadow: var(--shadow-sm);
@@ -977,20 +991,13 @@ input:focus-visible,
   border-color: var(--color-border-strong);
 }
 
-.kpi--readiness {
-  border-top: 3.5px solid var(--color-emerald);
+/* Status colors appear strictly when a metric or system is off per Priority 4 */
+.kpi-card.kpi-status--watch {
+  border-top-color: var(--color-ochre) !important;
 }
 
-.kpi--systems {
-  border-top: 3.5px solid var(--color-sys-ocular);
-}
-
-.kpi--streak {
-  border-top: 3.5px solid var(--color-sys-sleep);
-}
-
-.kpi--countdown {
-  border-top: 3.5px solid var(--color-sys-cardio);
+.kpi-card.kpi-status--alert {
+  border-top-color: var(--color-vermillion) !important;
 }
 
 .kpi-header {
@@ -1007,26 +1014,22 @@ input:focus-visible,
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  background-color: var(--color-surface-hover);
+  color: var(--color-ink-muted);
+  border: 1px solid var(--color-border);
+  transition: all 0.2s ease;
 }
 
-.kpi--readiness .kpi-icon-tile {
-  background-color: var(--color-emerald-tint);
-  color: var(--color-emerald);
+.kpi-card.kpi-status--watch .kpi-icon-tile {
+  background-color: var(--color-ochre-tint);
+  color: var(--color-ochre);
+  border-color: var(--color-ochre-border);
 }
 
-.kpi--systems .kpi-icon-tile {
-  background-color: var(--color-sys-ocular-tint);
-  color: var(--color-sys-ocular);
-}
-
-.kpi--streak .kpi-icon-tile {
-  background-color: var(--color-sys-sleep-tint);
-  color: var(--color-sys-sleep);
-}
-
-.kpi--countdown .kpi-icon-tile {
-  background-color: var(--color-sys-cardio-tint);
-  color: var(--color-sys-cardio);
+.kpi-card.kpi-status--alert .kpi-icon-tile {
+  background-color: var(--color-vermillion-tint);
+  color: var(--color-vermillion);
+  border-color: var(--color-vermillion-border);
 }
 
 .kpi-badge {
@@ -1036,30 +1039,22 @@ input:focus-visible,
   letter-spacing: 0.05em;
   padding: 3px 8px;
   border-radius: var(--radius-full);
+  background-color: var(--color-surface-hover);
+  color: var(--color-ink-muted);
+  border: 1px solid var(--color-border);
+  transition: all 0.2s ease;
 }
 
-.kpi-badge--emerald {
-  background-color: var(--color-emerald-tint);
-  color: var(--color-emerald);
-  border: 1px solid var(--color-emerald-border);
+.kpi-card.kpi-status--watch .kpi-badge {
+  background-color: var(--color-ochre-tint);
+  color: var(--color-ochre-text);
+  border-color: var(--color-ochre-border);
 }
 
-.kpi-badge--indigo {
-  background-color: var(--color-sys-ocular-tint);
-  color: var(--color-sys-ocular);
-  border: 1px solid var(--color-sys-ocular-border);
-}
-
-.kpi-badge--blue {
-  background-color: var(--color-sys-sleep-tint);
-  color: var(--color-sys-sleep);
-  border: 1px solid var(--color-sys-sleep-border);
-}
-
-.kpi-badge--rose {
-  background-color: var(--color-sys-cardio-tint);
-  color: var(--color-sys-cardio);
-  border: 1px solid var(--color-sys-cardio-border);
+.kpi-card.kpi-status--alert .kpi-badge {
+  background-color: var(--color-vermillion-tint);
+  color: var(--color-vermillion-text);
+  border-color: var(--color-vermillion-border);
 }
 
 .kpi-value {
@@ -2412,5 +2407,449 @@ input:focus-visible,
 
   .breathing-orb {
     transform: none !important;
+  }
+}
+
+/* ================= 13. UPGRADE STYLES (10 PRIORITIES) ================= */
+
+/* Priority 1: Mission Intro Banner */
+.mission-intro-banner {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border-strong);
+  border-left: 4px solid var(--color-emerald);
+  border-radius: var(--radius-md);
+  padding: 14px 18px;
+  margin: 12px auto 8px auto;
+  max-width: 1600px;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  box-shadow: var(--shadow-sm);
+  transition: all 0.25s ease;
+}
+
+.mission-intro-banner.dismissed {
+  display: none !important;
+}
+
+.intro-content {
+  flex: 1;
+}
+
+.intro-badge {
+  display: inline-block;
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--color-emerald);
+  background: var(--color-emerald-tint);
+  border: 1px solid var(--color-emerald-border);
+  padding: 2px 8px;
+  border-radius: var(--radius-full);
+  margin-bottom: 6px;
+}
+
+.intro-text {
+  font-size: 0.88rem;
+  line-height: 1.55;
+  color: var(--color-ink-muted);
+  margin: 0;
+}
+
+.intro-text strong {
+  color: var(--color-ink);
+}
+
+.intro-cta-link {
+  background: none;
+  border: none;
+  padding: 0;
+  font: inherit;
+  color: var(--color-emerald);
+  font-weight: 700;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.intro-cta-link:hover {
+  color: var(--color-emerald-hover);
+}
+
+.intro-dismiss-btn {
+  background: transparent;
+  border: 1px solid var(--color-border);
+  color: var(--color-ink-muted);
+  border-radius: var(--radius-sm);
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 1.25rem;
+  line-height: 1;
+  transition: all 0.2s ease;
+}
+
+.intro-dismiss-btn:hover {
+  background: var(--color-surface-hover);
+  color: var(--color-ink);
+  border-color: var(--color-border-strong);
+}
+
+/* Priority 1 & 2: Prominent Primary CTA for Day 19 Showpiece */
+.cta-incident-highlight {
+  background: linear-gradient(135deg, var(--color-ochre) 0%, #D97706 100%) !important;
+  color: #FFFFFF !important;
+  border: 1.5px solid #FBBF24 !important;
+  font-weight: 700 !important;
+  font-size: 0.88rem !important;
+  letter-spacing: 0.02em !important;
+  padding: 8px 18px !important;
+  box-shadow: 0 2px 8px rgba(180, 83, 9, 0.35) !important;
+  cursor: pointer;
+  transition: transform 0.15s ease, box-shadow 0.15s ease !important;
+}
+
+.cta-incident-highlight:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 14px rgba(180, 83, 9, 0.45) !important;
+}
+
+/* Priority 5: Progressive Disclosure Workspace Tabs Bar */
+.workspace-tabs-bar {
+  display: flex;
+  gap: 8px;
+  max-width: 1600px;
+  margin: 12px auto 14px auto;
+  padding: 6px;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.workspace-tab-btn {
+  flex: 1;
+  min-width: 170px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 10px 16px;
+  font-family: var(--font-sans);
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--color-ink-muted);
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  white-space: nowrap;
+}
+
+.workspace-tab-btn:hover {
+  background: var(--color-surface-hover);
+  color: var(--color-ink);
+}
+
+.workspace-tab-btn.active {
+  background: var(--color-emerald-tint);
+  color: var(--color-emerald);
+  border-color: var(--color-emerald-border);
+  font-weight: 700;
+  box-shadow: 0 1px 3px rgba(4, 106, 56, 0.12);
+}
+
+[data-theme="dark"] .workspace-tab-btn.active {
+  background: rgba(4, 106, 56, 0.25);
+  color: #34D399;
+  border-color: #059669;
+}
+
+.tab-view:not(.active) {
+  display: none !important;
+}
+
+/* Priority 2: Day 19 Incident Showpiece Banner */
+.incident-chain-banner {
+  background: var(--color-surface);
+  border: 1.5px solid var(--color-ochre-border);
+  border-left: 5px solid var(--color-ochre);
+  border-radius: var(--radius-lg);
+  padding: 18px 22px;
+  margin: 14px auto 18px auto;
+  max-width: 1600px;
+  box-shadow: var(--shadow-md);
+  animation: fadeIn 0.3s ease-out;
+}
+
+.incident-chain-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+
+.incident-title-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.incident-badge-pill {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  background: var(--color-ochre-tint);
+  color: var(--color-ochre-text);
+  border: 1px solid var(--color-ochre-border);
+  padding: 3px 10px;
+  border-radius: var(--radius-full);
+}
+
+.incident-chain-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+  margin: 14px 0;
+}
+
+@media (max-width: 900px) {
+  .incident-chain-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.chain-step-card {
+  background: var(--color-surface-hover);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: 12px 14px;
+  position: relative;
+}
+
+.chain-step-num {
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--color-ink-muted);
+  margin-bottom: 4px;
+}
+
+.chain-step-title {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--color-ink);
+  margin-bottom: 4px;
+}
+
+.chain-step-desc {
+  font-size: 0.8rem;
+  line-height: 1.45;
+  color: var(--color-ink-muted);
+}
+
+/* Priority 2: Sequence of Events Timeline Strip */
+.timeline-strip {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: 10px 14px;
+  margin: 12px 0;
+  overflow-x: auto;
+}
+
+.timeline-node {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  white-space: nowrap;
+  font-size: 0.8rem;
+  color: var(--color-ink-muted);
+}
+
+.timeline-node.active {
+  font-weight: 700;
+  color: var(--color-ochre-text);
+}
+
+.timeline-node-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--color-border-strong);
+}
+
+.timeline-node.active .timeline-node-dot {
+  background: var(--color-ochre);
+  box-shadow: 0 0 0 3px var(--color-ochre-tint);
+}
+
+.timeline-arrow {
+  color: var(--color-border-strong);
+  font-size: 0.75rem;
+}
+
+/* Priority 6: Non-Color Redundancy Legend Bar */
+.status-legend-bar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 18px;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: 8px 16px;
+  margin: 10px auto;
+  max-width: 1600px;
+  font-size: 0.82rem;
+  color: var(--color-ink-muted);
+}
+
+.legend-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.legend-symbol {
+  font-size: 0.95rem;
+  line-height: 1;
+}
+
+/* Priority 7: SANS Trend Chart Range Toggle */
+.chart-range-toggle {
+  display: inline-flex;
+  gap: 4px;
+  background: var(--color-surface-hover);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  padding: 2px;
+}
+
+.chart-range-btn {
+  background: transparent;
+  border: none;
+  border-radius: var(--radius-sm);
+  padding: 3px 8px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--color-ink-muted);
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.chart-range-btn.active {
+  background: var(--color-surface);
+  color: var(--color-emerald);
+  box-shadow: 0 1px 2px rgba(0,0,0,0.08);
+}
+
+/* Priority 9: Mission 30-Day Heatmap Matrix */
+.matrix-grid {
+  display: grid;
+  grid-template-columns: 140px repeat(30, 1fr);
+  gap: 4px;
+  align-items: center;
+  font-size: 0.75rem;
+  overflow-x: auto;
+  padding: 12px 0;
+}
+
+.matrix-header-cell {
+  font-weight: 600;
+  text-align: center;
+  color: var(--color-ink-muted);
+  font-size: 0.68rem;
+}
+
+.matrix-row-label {
+  font-weight: 600;
+  color: var(--color-ink);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  padding-right: 8px;
+}
+
+.matrix-cell {
+  width: 100%;
+  height: 20px;
+  border-radius: 3px;
+  background: var(--color-surface-hover);
+  border: 1px solid var(--color-border);
+  transition: transform 0.15s ease;
+}
+
+.matrix-cell:hover {
+  transform: scale(1.2);
+}
+
+.matrix-cell.cell--nominal {
+  background: var(--color-emerald);
+}
+
+.matrix-cell.cell--watch {
+  background: var(--color-ochre);
+}
+
+.matrix-cell.cell--alert {
+  background: var(--color-vermillion);
+}
+
+/* Priority 9: Print Stylesheet for Field Journal */
+@media print {
+  body {
+    background: #FFF !important;
+    color: #000 !important;
+  }
+  .app-header,
+  .mission-intro-banner,
+  .mission-control-bar,
+  .workspace-tabs-bar,
+  .status-legend-bar,
+  .header-controls,
+  .btn-primary,
+  .btn-secondary,
+  .theme-toggle-btn,
+  .demo-playback-bar,
+  .stepper-btn,
+  .drawer-backdrop {
+    display: none !important;
+  }
+  .tab-view {
+    display: block !important;
+  }
+  .dashboard-container {
+    display: block !important;
+  }
+  .journal-card {
+    border: 1px solid #CCC !important;
+    box-shadow: none !important;
+    page-break-inside: avoid;
+    margin-bottom: 20px !important;
+  }
+  .telemetry-log-table {
+    width: 100% !important;
+    border-collapse: collapse !important;
+  }
+  .telemetry-log-table th,
+  .telemetry-log-table td {
+    border: 1px solid #DDD !important;
+    padding: 8px !important;
   }
 }
