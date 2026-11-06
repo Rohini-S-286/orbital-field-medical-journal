@@ -2493,7 +2493,14 @@ document.addEventListener('DOMContentLoaded', () => {
         })
         .catch(err => console.log('SW registration note:', err));
     });
-    navigator.serviceWorker.addEventListener('controllerchange', updateServiceWorkerStatus);
+    let hasRefreshed = false;
+    navigator.serviceWorker.addEventListener('controllerchange', () => {
+      updateServiceWorkerStatus();
+      if (!hasRefreshed) {
+        hasRefreshed = true;
+        window.location.reload();
+      }
+    });
     updateServiceWorkerStatus();
   }
 });
