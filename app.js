@@ -647,6 +647,69 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // ================= DYNAMIC SVG TREND CHART GENERATOR (REQUIREMENT 2 & PHASE 2) =================
   
+  // ================= 30-DAY DRIFTING DEMO TRAJECTORY & MISSION TIMELINE =================
+  const MISSION_TIMELINE = {
+    1: { name: 'Day 1: Launch & Orbital Insertion', note: 'Neuro-vestibular adaptation onset; slight ataxia', ocular: 298, ocularStatus: 'in-range', caption: 'Day 1: Launch & orbital insertion. All systems nominal, initial neuro-vestibular adaptation onset.' },
+    2: { name: 'Day 2: Microgravity Acclimation', note: 'Cephalad fluid redistribution begins (~1.5L shift)', ocular: 299, ocularStatus: 'in-range', caption: 'Day 2: Early microgravity acclimation. Cephalad fluid shift commencing.' },
+    3: { name: 'Day 3: Vestibular Equilibrium', note: 'Cerebellar reweighting active; motion discomfort subsiding', ocular: 300, ocularStatus: 'in-range', caption: 'Day 3: Vestibular equilibrium stabilizing.' },
+    7: { name: 'Day 7: First Week Routine', note: 'Nominal baseline vitals and treadmill exercise compliance', ocular: 301, ocularStatus: 'in-range', caption: 'Day 7: First week complete. Cardiovascular adaptation and ARED training nominal.' },
+    10: { name: 'Day 10: Steady-State Acclimation', note: 'Physiological vitals stable within flight envelope', ocular: 302, ocularStatus: 'in-range', caption: 'Day 10: Steady-state microgravity equilibrium. Cardiovascular and ocular adaptation within expected in-flight ranges.' },
+    14: { name: 'Day 14: Mid-Mission Routine', note: 'Nominal steady-state routine; all systems in range (302 um)', ocular: 302, ocularStatus: 'in-range', caption: 'Day 14: Mid-mission steady state. All systems in range, baseline adaptation stable.' },
+    18: { name: 'Day 18: Pre-EVA Preparation', note: 'Pre-breathe oxygenation & suit checkout (308 um, in-range)', ocular: 308, ocularStatus: 'in-range', caption: 'Day 18: Pre-EVA preparation. Workload elevated; vitals and ocular baseline remain in-range.' },
+    19: { name: 'Day 19: Simulated Scenario: Acute Retinal Deviation', note: 'Simulated scenario: Peripapillary retinal thickness reaches 328 um. Contact flight surgeon recommended.', ocular: 328, ocularStatus: 'flight-surgeon', caption: 'Day 19: Simulated scenario: Ocular telemetry records 328 um. Contact flight surgeon flagged; readiness adjusted to 74%.' },
+    20: { name: 'Day 20: Countermeasure Recovery', note: 'Enhanced lower-body negative pressure & rest protocol applied', ocular: 316, ocularStatus: 'attention', caption: 'Day 20: Countermeasure recovery initiated under close Watch protocol (316 um).' },
+    24: { name: 'Day 24: Stabilization Under Watch', note: 'Retinal thickness resolves toward 316 um; fatigue clearing', ocular: 316, ocularStatus: 'attention', caption: 'Day 24: Countermeasure recovery ongoing. Ocular swelling resolving under assigned protocol.' },
+    25: { name: 'Day 25: Post-Incident Stabilization', note: 'Retinal thickness restored to nominal envelope (306 um)', ocular: 306, ocularStatus: 'in-range', caption: 'Day 25: Post-incident stabilization. Target countermeasures successful, returning toward baseline envelope (306 um).' },
+    30: { name: 'Day 30: Mission Completion', note: 'Pre-landing fluid loading completed; ready for atmospheric re-entry', ocular: 306, ocularStatus: 'in-range', caption: 'Day 30: Mission completion & return prep. All systems stable within flight envelope, ready for re-entry protocols.' }
+  };
+
+  function getTimelineProfile(day) {
+    if (MISSION_TIMELINE[day]) return MISSION_TIMELINE[day];
+    if (day <= 17) {
+      const oc = Math.round(298 + ((day - 1) / 16) * 4);
+      return {
+        name: `Day ${day}: Nominal Flight Operations`,
+        note: 'All physiological systems within expected in-flight envelope',
+        ocular: oc,
+        ocularStatus: 'in-range',
+        caption: `Day ${day}: Nominal mission operations. All systems within expected adaptation ranges.`
+      };
+    } else if (day === 18) {
+      return MISSION_TIMELINE[18];
+    } else if (day === 19) {
+      return MISSION_TIMELINE[19];
+    } else if (day >= 20 && day <= 24) {
+      return {
+        name: `Day ${day}: Post-Incident Recovery Phase`,
+        note: 'Countermeasures stabilizing ocular hemodynamics (Watch protocol)',
+        ocular: 316,
+        ocularStatus: 'attention',
+        caption: `Day ${day}: Post-incident recovery phase. Ocular system on Watch under assigned countermeasures.`
+      };
+    } else {
+      const oc = 306;
+      return {
+        name: `Day ${day}: Return Preparation Phase`,
+        note: 'Physiological parameters stable within flight envelope',
+        ocular: oc,
+        ocularStatus: 'in-range',
+        caption: `Day ${day}: Return preparation. Physiology stable within expected in-flight envelope.`
+      };
+    }
+  }
+
+  const OCULAR_30D_TRAJECTORY = Array.from({ length: 30 }, (_, i) => {
+    const day = i + 1;
+    const prof = getTimelineProfile(day);
+    return {
+      day: day,
+      dayLabel: `Day ${day}`,
+      baseline: 298,
+      observed: prof.ocular,
+      status: prof.ocularStatus
+    };
+  });
+
   // ================= ELEVATED TREND CHART (ITEM 2: >=280px Tall, Shaded Band, Limit Line, Tooltip) =================
   function renderTrendChart(trendData, systemStatus, yUnit, baselineMin, baselineMax, indKey = null) {
     const wrapper = document.getElementById('dynamic-chart-wrapper');
@@ -1526,40 +1589,56 @@ document.addEventListener('DOMContentLoaded', () => {
 
   function updateActiveGuidancePreview(status) {
     const preview = document.getElementById('active-guidance-preview');
-    if (!preview || typeof TIERED_GUIDANCE === 'undefined') return;
+    const guidanceData = window.TIERED_GUIDANCE || (typeof TIERED_GUIDANCE !== 'undefined' ? TIERED_GUIDANCE : null);
+    if (!preview || !guidanceData) return;
 
     let tierKey = 'routine';
-    if (status === 'attention') tierKey = 'selfCare';
-    else if (status === 'flight-surgeon') tierKey = 'flightSurgeon';
-    else if (status === 'emergency') tierKey = 'emergency';
+    let tierGlyph = '●';
+    let tierColor = 'var(--color-emerald)';
+    if (status === 'attention') {
+      tierKey = 'selfCare';
+      tierGlyph = '▲';
+      tierColor = 'var(--color-ochre)';
+    } else if (status === 'flight-surgeon') {
+      tierKey = 'flightSurgeon';
+      tierGlyph = '◆';
+      tierColor = 'var(--color-vermillion)';
+    } else if (status === 'emergency') {
+      tierKey = 'emergency';
+      tierGlyph = '⬡';
+      tierColor = 'var(--color-vermillion)';
+    }
 
-    const tier = TIERED_GUIDANCE[tierKey];
-    const srcObj = (typeof CLINICAL_SOURCES !== 'undefined' && CLINICAL_SOURCES[tier.sourceId]) || null;
+    const tier = guidanceData[tierKey];
+    if (!tier) return;
+
+    const sourcesData = window.CLINICAL_SOURCES || (typeof CLINICAL_SOURCES !== 'undefined' ? CLINICAL_SOURCES : {});
+    const srcObj = sourcesData[tier.sourceId] || null;
     const srcTitle = srcObj ? srcObj.title : tier.source;
     const isVerified = (tier.sourceVerification === 'verified') || (srcObj && srcObj.verification === 'verified');
     const badgeHtml = isVerified
-      ? `<span class="status-badge status--in-range" style="font-size: 0.70rem; padding: 1px 6px; display: inline-flex; align-items: center; gap: 3px;"><svg viewBox="0 0 24 24" width="10" height="10" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Verified</span>`
-      : `<span class="status-badge status--attention" style="font-size: 0.70rem; padding: 1px 6px; display: inline-flex; align-items: center; gap: 3px;"><svg viewBox="0 0 24 24" width="10" height="10" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/></svg>Needs Verification</span>`;
+      ? `<span class="status-badge status--in-range" style="font-size: 12px; padding: 2px 7px; display: inline-flex; align-items: center; gap: 4px;"><svg viewBox="0 0 24 24" width="10" height="10" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Verified</span>`
+      : `<span class="status-badge status--attention" style="font-size: 12px; padding: 2px 7px; display: inline-flex; align-items: center; gap: 4px;"><svg viewBox="0 0 24 24" width="10" height="10" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/></svg>Needs Verification</span>`;
 
     const stepperHtml = `
       <div class="tier-stepper" role="group" aria-label="Clinical Decision Tiers">
         <div class="tier-step ${tierKey === 'routine' ? 'tier-step--active step--routine' : ''}">
-          <span class="tier-step-num">1</span>
+          <span class="tier-step-num"><span class="tier-step-glyph" aria-hidden="true">●</span> 1</span>
           <span>Routine</span>
         </div>
         <div class="tier-stepper-divider"></div>
         <div class="tier-step ${tierKey === 'selfCare' ? 'tier-step--active step--selfCare' : ''}">
-          <span class="tier-step-num">2</span>
+          <span class="tier-step-num"><span class="tier-step-glyph" aria-hidden="true">▲</span> 2</span>
           <span>Self-Care</span>
         </div>
         <div class="tier-stepper-divider"></div>
         <div class="tier-step ${tierKey === 'flightSurgeon' ? 'tier-step--active step--flightSurgeon' : ''}">
-          <span class="tier-step-num">3</span>
+          <span class="tier-step-num"><span class="tier-step-glyph" aria-hidden="true">◆</span> 3</span>
           <span>Surgeon</span>
         </div>
         <div class="tier-stepper-divider"></div>
         <div class="tier-step ${tierKey === 'emergency' ? 'tier-step--active step--emergency' : ''}">
-          <span class="tier-step-num">4</span>
+          <span class="tier-step-num"><span class="tier-step-glyph" aria-hidden="true">⬡</span> 4</span>
           <span>Emergency</span>
         </div>
       </div>
@@ -1568,23 +1647,29 @@ document.addEventListener('DOMContentLoaded', () => {
     preview.innerHTML = `
       ${stepperHtml}
       <div class="guidance-tier-card tier--${tier.statusKey}" style="margin-bottom: 0;">
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
-          <h4 style="font-size: 0.95rem;">${tier.level}</h4>
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+          <h4 style="font-size: 1.02rem; font-weight: 700; margin: 0; display: flex; align-items: center; gap: 8px;">
+            <span class="active-tier-marker" style="color: ${tierColor}; font-size: 1.15rem;" aria-hidden="true">${tierGlyph}</span>
+            ${tier.level}
+          </h4>
           <span class="simulated-tag">${tier.tag}</span>
         </div>
-        <p class="text-muted" style="font-size: 0.86rem; margin-bottom: 8px;">${tier.summary}</p>
-        <ul class="guidance-actions-list" style="font-size: 0.85rem;">
-          ${tier.actions.slice(0, 3).map(a => `<li>${a}</li>`).join('')}
+        <p class="guidance-summary-line" style="font-size: 13.5px; line-height: 1.5; color: var(--color-ink-muted); margin: 6px 0 10px;">
+          ${tier.summary}
+        </p>
+        <ul class="guidance-actions-list" style="font-size: 13.5px; line-height: 1.5; color: var(--color-ink); margin: 0 0 12px; padding-left: 20px;">
+          ${tier.actions.slice(0, 2).map(a => `<li style="margin-bottom: 5px;">${a}</li>`).join('')}
         </ul>
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 10px; padding-top: 8px; border-top: 1px solid var(--color-border); gap: 8px; flex-wrap: wrap;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 10px; padding-top: 10px; border-top: 1px solid var(--color-border); gap: 8px; flex-wrap: wrap;">
           <div style="display: flex; align-items: center; gap: 6px;">
-            <span class="text-faint">Ref: ${srcTitle}</span>
+            <span class="text-faint" style="font-size: 13px;">Ref: ${srcTitle}</span>
             ${badgeHtml}
           </div>
-          <button class="btn-secondary" id="preview-open-guidance-btn" style="min-height: 36px; padding: 4px 12px; font-size: 0.8rem;">Full Protocol</button>
+          <button class="btn-secondary" id="preview-open-guidance-btn" style="min-height: 34px; padding: 4px 14px; font-size: 13px; font-weight: 600;">Full Protocol</button>
         </div>
       </div>
     `;
+
     const fullBtn = document.getElementById('preview-open-guidance-btn');
     if (fullBtn) {
       fullBtn.addEventListener('click', () => openModal(document.getElementById('guidance-drawer-backdrop'), '#close-guidance-drawer'));
@@ -1685,37 +1770,46 @@ document.addEventListener('DOMContentLoaded', () => {
     stageBreathing.classList.remove('breathing-active');
   }
 
-  startMeasurementBtn.addEventListener('click', () => {
-    openModal(measurementBackdrop, '#skip-to-record-btn');
-    stageBreathing.style.display = 'flex';
-    stageInput.style.display = 'none';
-    validationErrorBox.style.display = 'none';
-    startBreathingGuide();
-  });
+  const startBtn = document.getElementById('start-measurement-btn') || document.getElementById('begin-measurement-action-btn');
+  if (startBtn) {
+    startBtn.addEventListener('click', () => {
+      openModal(measurementBackdrop, '#skip-to-record-btn');
+      if (stageBreathing) stageBreathing.style.display = 'flex';
+      if (stageInput) stageInput.style.display = 'none';
+      if (validationErrorBox) validationErrorBox.style.display = 'none';
+      startBreathingGuide();
+    });
+  }
 
-  closeMeasurementModal.addEventListener('click', () => {
-    closeModal(measurementBackdrop);
-    stopBreathingGuide();
-  });
+  if (closeMeasurementModal) {
+    closeMeasurementModal.addEventListener('click', () => {
+      closeModal(measurementBackdrop);
+      stopBreathingGuide();
+    });
+  }
 
   const stepLabel = document.getElementById('measurement-step-label');
 
-  skipToRecordBtn.addEventListener('click', () => {
-    stopBreathingGuide();
-    stageBreathing.style.display = 'none';
-    stageInput.style.display = 'block';
-    if (stepLabel) stepLabel.textContent = 'Step 2 of 2: Telemetry Recording';
-    const firstInput = document.getElementById('bp-sys-val');
-    if (firstInput) setTimeout(() => firstInput.focus(), 60);
-  });
+  if (skipToRecordBtn) {
+    skipToRecordBtn.addEventListener('click', () => {
+      stopBreathingGuide();
+      if (stageBreathing) stageBreathing.style.display = 'none';
+      if (stageInput) stageInput.style.display = 'block';
+      if (stepLabel) stepLabel.textContent = 'Step 2 of 2: Telemetry Recording';
+      const firstInput = document.getElementById('bp-sys-val');
+      if (firstInput) setTimeout(() => firstInput.focus(), 60);
+    });
+  }
 
-  backToBreathingBtn.addEventListener('click', () => {
-    stageInput.style.display = 'none';
-    stageBreathing.style.display = 'flex';
-    validationErrorBox.style.display = 'none';
-    if (stepLabel) stepLabel.textContent = 'Step 1 of 2: Breathing Stabilization';
-    startBreathingGuide();
-  });
+  if (backToBreathingBtn) {
+    backToBreathingBtn.addEventListener('click', () => {
+      if (stageInput) stageInput.style.display = 'none';
+      if (stageBreathing) stageBreathing.style.display = 'flex';
+      if (validationErrorBox) validationErrorBox.style.display = 'none';
+      if (stepLabel) stepLabel.textContent = 'Step 1 of 2: Breathing Stabilization';
+      startBreathingGuide();
+    });
+  }
 
   // Gloved Hand Stepper Controls with Press-and-Hold Auto-Repeat & Direct Typing (Requirement 8)
   function setupStepper(inputId, downBtnId, upBtnId, min, max, stateProp) {
@@ -2047,56 +2141,6 @@ document.addEventListener('DOMContentLoaded', () => {
   const missionElapsedDays = document.getElementById('mission-elapsed-days');
 
   let playbackTimer = null;
-
-  const MISSION_TIMELINE = {
-    1: { name: 'Day 1: Launch & Orbital Insertion', note: 'Neuro-vestibular adaptation onset; slight ataxia', ocular: 298, ocularStatus: 'in-range', caption: 'Day 1: Launch & orbital insertion. All systems nominal, initial neuro-vestibular adaptation onset.' },
-    2: { name: 'Day 2: Microgravity Acclimation', note: 'Cephalad fluid redistribution begins (~1.5L shift)', ocular: 299, ocularStatus: 'in-range', caption: 'Day 2: Early microgravity acclimation. Cephalad fluid shift commencing.' },
-    3: { name: 'Day 3: Vestibular Equilibrium', note: 'Cerebellar reweighting active; motion discomfort subsiding', ocular: 300, ocularStatus: 'in-range', caption: 'Day 3: Vestibular equilibrium stabilizing.' },
-    7: { name: 'Day 7: First Week Routine', note: 'Nominal baseline vitals and treadmill exercise compliance', ocular: 301, ocularStatus: 'in-range', caption: 'Day 7: First week complete. Cardiovascular adaptation and ARED training nominal.' },
-    10: { name: 'Day 10: Steady-State Acclimation', note: 'Physiological vitals stable within flight envelope', ocular: 302, ocularStatus: 'in-range', caption: 'Day 10: Steady-state microgravity equilibrium. Cardiovascular and ocular adaptation within expected in-flight ranges.' },
-    14: { name: 'Day 14: Mid-Mission Routine', note: 'Nominal steady-state routine; all systems in range (302 µm)', ocular: 302, ocularStatus: 'in-range', caption: 'Day 14: Mid-mission steady state. All systems in range, baseline adaptation stable.' },
-    18: { name: 'Day 18: Pre-EVA Preparation', note: 'Pre-breathe oxygenation & suit checkout (308 µm, in-range)', ocular: 308, ocularStatus: 'in-range', caption: 'Day 18: Pre-EVA preparation. Workload elevated; vitals and ocular baseline remain in-range.' },
-    19: { name: 'Day 19: Simulated Scenario: Acute Retinal Deviation', note: 'Simulated scenario: Peripapillary retinal thickness reaches 328 µm . Contact flight surgeon recommended.', ocular: 328, ocularStatus: 'flight-surgeon', caption: 'Day 19: Simulated scenario: Ocular telemetry records 328 µm . Contact flight surgeon flagged; readiness adjusted to 74%.' },
-    20: { name: 'Day 20: Countermeasure Recovery', note: 'Enhanced lower-body negative pressure & rest protocol applied', ocular: 316, ocularStatus: 'attention', caption: 'Day 20: Countermeasure recovery initiated under close Watch protocol (316 µm).' },
-    24: { name: 'Day 24: Stabilization Under Watch', note: 'Retinal thickness resolves toward 316 µm; fatigue clearing', ocular: 316, ocularStatus: 'attention', caption: 'Day 24: Countermeasure recovery ongoing. Ocular swelling resolving under assigned protocol.' },
-    25: { name: 'Day 25: Post-Incident Stabilization', note: 'Retinal thickness restored to nominal envelope (306 µm)', ocular: 306, ocularStatus: 'in-range', caption: 'Day 25: Post-incident stabilization. Target countermeasures successful, returning toward baseline envelope (306 µm).' },
-    30: { name: 'Day 30: Mission Completion', note: 'Pre-landing fluid loading completed; ready for atmospheric re-entry', ocular: 306, ocularStatus: 'in-range', caption: 'Day 30: Mission completion & return prep. All systems stable within flight envelope, ready for re-entry protocols.' }
-  };
-
-  function getTimelineProfile(day) {
-    if (MISSION_TIMELINE[day]) return MISSION_TIMELINE[day];
-    if (day <= 17) {
-      const oc = Math.round(298 + ((day - 1) / 16) * 4); // 298 to 302 µm
-      return {
-        name: `Day ${day}: Nominal Flight Operations`,
-        note: 'All physiological systems within expected in-flight envelope',
-        ocular: oc,
-        ocularStatus: 'in-range',
-        caption: `Day ${day}: Nominal mission operations. All systems within expected adaptation ranges.`
-      };
-    } else if (day === 18) {
-      return MISSION_TIMELINE[18];
-    } else if (day === 19) {
-      return MISSION_TIMELINE[19];
-    } else if (day >= 20 && day <= 24) {
-      return {
-        name: `Day ${day}: Post-Incident Recovery Phase`,
-        note: 'Countermeasures stabilizing ocular hemodynamics (Watch protocol)',
-        ocular: 316,
-        ocularStatus: 'attention',
-        caption: `Day ${day}: Post-incident recovery phase. Ocular system on Watch under assigned countermeasures.`
-      };
-    } else {
-      const oc = Math.round(306 - ((30 - day) / 5) * 0); // 306 µm
-      return {
-        name: `Day ${day}: Return Preparation Phase`,
-        note: 'Physiological parameters stable within flight envelope',
-        ocular: 306,
-        ocularStatus: 'in-range',
-        caption: `Day ${day}: Return preparation. Physiology stable within expected in-flight envelope.`
-      };
-    }
-  }
 
   function applyMissionDay(day) {
     day = parseInt(day, 10);
@@ -2583,6 +2627,10 @@ document.addEventListener('DOMContentLoaded', () => {
   function switchTab(targetHash) {
     if (!targetHash) targetHash = '#overview';
     if (!targetHash.startsWith('#')) targetHash = '#' + targetHash;
+    if (targetHash === '#view-sans' || targetHash === '#sans') targetHash = '#sans';
+    if (targetHash === '#view-countermeasures' || targetHash === '#countermeasures') targetHash = '#countermeasures';
+    if (targetHash === '#view-journal' || targetHash === '#journal') targetHash = '#journal';
+    if (targetHash === '#view-overview' || targetHash === '#overview') targetHash = '#overview';
 
     let activeBtn = tabButtons.find(btn => btn.dataset.hash === targetHash);
     if (!activeBtn) {
@@ -2755,6 +2803,7 @@ document.addEventListener('DOMContentLoaded', () => {
   safeInitPanel('Clinical Log', renderClinicalLogTable, 'clinical-log-tbody');
   safeInitPanel('Overall Gauge', updateOverallGauge);
   safeInitPanel('System Selection', () => selectSystem('ocular'));
+  safeInitPanel('Active Guidance Card', () => updateActiveGuidancePreview(state.systems[state.selectedSystem || 'ocular'].status));
   safeInitPanel('Demo Synchronization', () => applyMissionDay(state.demoDay || 14));
   safeInitPanel('KPI Strip', updateKpis);
 

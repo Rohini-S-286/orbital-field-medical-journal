@@ -284,11 +284,12 @@ p, span, li, button, input {
 
 .text-muted {
   color: var(--color-ink-muted);
+  font-size: 13.5px;
 }
 
 .text-faint {
   color: var(--color-ink-faint);
-  font-size: 0.85rem;
+  font-size: 13.5px;
 }
 
 .text-ochre {
@@ -555,11 +556,11 @@ input:focus-visible,
 }
 
 .card-meta {
-  font-size: 0.82rem;
+  font-size: 13.5px;
   text-transform: uppercase;
   letter-spacing: 0.08em;
   color: var(--color-ink-muted);
-  font-weight: 600;
+  font-weight: 700;
 }
 
 /* ================= HEADER & APP SHELL (HERO EMERALD IDENTITY) ================= */
@@ -1472,7 +1473,7 @@ input:focus-visible,
 
 .ring-score-label,
 .readiness-unit-label {
-  font-size: 13px;
+  font-size: 13.5px;
   text-transform: uppercase;
   letter-spacing: 0.08em;
   color: var(--color-ink-muted);
@@ -1481,8 +1482,9 @@ input:focus-visible,
 }
 
 .readiness-ci-text {
-  font-size: 13px;
+  font-size: 13.5px;
   color: var(--color-ink-muted);
+  font-weight: 600;
   margin-top: 2px;
 }
 
@@ -3158,11 +3160,9 @@ input:focus-visible,
 /* ================= OVERVIEW TAB BALANCED TWO-COLUMN LAYOUT ================= */
 .overview-grid-two-col {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 20px;
-  align-items: start;
-  max-width: 1400px;
-  margin: 0 auto;
+  grid-template-columns: minmax(360px, 1fr) minmax(360px, 1.05fr);
+  gap: 24px;
+  align-items: stretch;
 }
 
 .overview-column {
@@ -3170,9 +3170,15 @@ input:focus-visible,
   flex-direction: column;
   gap: 20px;
 }
+.overview-column > .journal-card:last-child {
+  flex: 1;
+}
 
 @media (max-width: 900px) {
   .overview-grid-two-col {
-    grid-template-columns: 1fr;
-  }
+  display: grid;
+  grid-template-columns: minmax(360px, 1fr) minmax(360px, 1.05fr);
+  gap: 24px;
+  align-items: stretch;
+}
 }
